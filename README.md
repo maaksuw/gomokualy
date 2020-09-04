@@ -1,4 +1,4 @@
-# Gomoku tekoäly
+# Gomoku-tekoäly
 Ideana on toteuttaa toimiva Gomoku-pelin tekoäly. Gomoku on kaksinpelattava strategialautapeli, jota pelataan mustilla ja valkoisilla go-nappuloilla 15x15 pelilaudalla. Pelin tavoitteena on saada viisi oman väristä nappulaa peräkkäin vaaka-, pystysuoraan tai vinoittain. Nappulat asetetaan pelilaudan ruutujen risteyskohtiin.  
 Tarkemmat säännöt löytyvät esimerkiksi täältä: [Wikipedia - Gomoku](https://en.wikipedia.org/wiki/Gomoku)
 
