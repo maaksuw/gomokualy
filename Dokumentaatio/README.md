@@ -4,3 +4,8 @@ Tarkemmat säännöt löytyvät esimerkiksi täältä: [Wikipedia - Gomoku](http
 
 Projekti on Helsingin yliopiston Tietorakenteet ja algoritmit -labrakurssin harjoitustyö ja toteutetaan Javalla. Ideana on tutustua tekoälyn tekemiseen sekä threat-space search -algoritmiin.  
 Materiaalia aiheesta: [Go-Moku and Threat-Space Search, L.V.Allis, H.J. van den Herik, M.P.H. Huntjens](https://pdfs.semanticscholar.org/f476/00662cadb0975f9cfd7867389efedda6f873.pdf)
+
+Linkkejä:__
+* Viikkoraportit:
+    * [Viikko 1]()
+* [Määrittelydokumentti](https://github.com/pinjaw/gomokualy/blob/master/maarittelydokumentti.md)

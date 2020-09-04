@@ -2,12 +2,12 @@
 Määrittelydokumentti on vielä alkuvaiheessa ja sitä päivitetään projektin edetessä.
 
 ## Toteutettavat algoritmit ja tietorakenteet
-*Minimax-algoritmi
-*Alfa-beeta-karsinta
-*Threat-space search algoritmi
+* Minimax-algoritmi
+* Alfa-beeta-karsinta
+* Threat-space search algoritmi
 
 ## Ratkaistava ongelma
-Gomokussa pelipuu kasvaa nopeasti erittäin suureksi, joten haasteena on karsia turhaa laskentaa ja löytää tehokas tapa arvioida siirtoja.
+Gomokussa pelipuu kasvaa nopeasti erittäin suureksi, joten haasteena on karsia turhaa laskentaa ja löytää tehokas tapa arvioida siirtoja. Tekoälyn tavoite on pelata peliä hyvin.
 
 ## Syötteet
 Pelaaja lisää hiirellä painamalla nappulan laudalle haluamaansa kohtaan.

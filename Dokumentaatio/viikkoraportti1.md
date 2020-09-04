@@ -1,0 +1,2 @@
+# Viikkoraportti 1
+Ensimmäisellä viikolla päätin projektin aiheen ja tutustuin peliin. Päädyin Gomoku-tekoälyyn sillä siitä löytyi mielenkiintoista materiaalia ja halusin kokeilla tehdä pelitekoäly ohjelman. Gomokussa on todella yksinkertaiset säännöt, mutta peli itsessään ei ole helppo. Alustin projektin ja loin tarvittavat dokumentit, mutta en tehnyt muuta. Aloitan seuraavaksi koodaamaan pelin pohjan ja koitan luoda alkuun yksinkertaisen ja tyhmän tekoälyn.
