@@ -120,7 +120,7 @@ public class Peli {
     
     private void ohjeet(){
         System.out.println("Koordinaattien syöttäminen:");
-        System.out.println("Syötä ensin vaakarivin numero, paina enter ja syötä sitten pystyrivin kirjain.");
+        System.out.println("Syötä vaakarivin numero, välimerkki ja sitten pystyrivin kirjain.");
         System.out.println("Peliohjeiden tarkistaminen:");
         System.out.println("Kun ohjelma kysyy koordinaatteja, paina p.");
         System.out.println("Pelin lopettaminen:");
