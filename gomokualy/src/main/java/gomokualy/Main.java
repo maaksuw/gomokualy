@@ -1,13 +1,14 @@
 
 package gomokualy;
 
+import java.util.Scanner;
+
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        //Aloitetaan tästä!
+        Scanner s = new Scanner(System.in);
+        Peli p = new Peli(s);
+        p.kaynnista();
     }
     
 }
