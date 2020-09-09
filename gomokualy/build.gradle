@@ -2,7 +2,11 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'jacoco'
 
-mainClassName = 'gomokualy.Main'
+mainClassName = 'logiikka.Main'
+
+sourceSets.main.java.srcDirs = ['src/main/java']
+
+check.dependsOn jacocoTestReport
 
 jacocoTestReport {
     reports {
@@ -11,12 +15,14 @@ jacocoTestReport {
     }
 }
 
-check.dependsOn jacocoTestReport
-
 repositories {
     jcenter()
 }
 
 dependencies {
     testCompile 'junit:junit:4.12'
+}
+
+run {
+    standardInput = System.in
 }
