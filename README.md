@@ -8,4 +8,5 @@ Materiaalia aiheesta: [Go-Moku and Threat-Space Search, L.V.Allis, H.J. van den 
 Linkkejä:
 * Viikkoraportit:
     * [Viikko 1](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti1.md)
+    * [Viikko 2]()
 * [Määrittelydokumentti](https://github.com/pinjaw/gomokualy/blob/master/maarittelydokumentti.md)
