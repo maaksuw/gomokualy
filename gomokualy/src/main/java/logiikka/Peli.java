@@ -27,7 +27,7 @@ public class Peli {
             tulostaLauta(vari);
             while(true){
                 System.out.println("");
-                System.out.print("Sijoitus:");
+                System.out.print("Sijoitus: ");
                 String vastaus = lukija.nextLine().trim();
                 if(vastaus.equals("o")){
                     System.out.println("");
@@ -88,6 +88,8 @@ public class Peli {
             }
             if(lopetetaan) break;
         }
+        System.out.println("");
+        System.out.println("Kiitos pelistä!");
     }
     
     private boolean loppuuko(){
@@ -95,13 +97,12 @@ public class Peli {
         System.out.println("Haluatko pelata uudelleen?"
                 + "\n1) Kyllä   2) Ei");
         while(true){
-            System.out.println("Syötä vaihtoehdon numero:");
+            System.out.print("Syötä vaihtoehdon numero: ");
             String uudelleenko = lukija.nextLine().trim();
             if(uudelleenko.equals("1")){
                 System.out.println("");
                 return false;
             } else if (uudelleenko.equals("2")){
-                System.out.println("");
                 return true;
             }
         }
@@ -110,17 +111,13 @@ public class Peli {
     private boolean onkoVoittoa(int x, int y, int vari) {
         char omaMerkki = 'X';
         if(vari == 0) omaMerkki = 'O';
-        System.out.println(vaakasuoraTarkistus(x, y, omaMerkki));
-        System.out.println(pystysuoraTarkistus(x, y, omaMerkki));
-        System.out.println(vinoVasenTarkistus(x, y, omaMerkki));
-        System.out.println(vinoOikeaTarkistus(x, y, omaMerkki));
         return vaakasuoraTarkistus(x, y, omaMerkki) || pystysuoraTarkistus(x, y, omaMerkki) || vinoVasenTarkistus(x, y, omaMerkki) || vinoOikeaTarkistus(x, y, omaMerkki);
     }
     
     private boolean vinoOikeaTarkistus(int x, int y, char omaMerkki) {
+        int alkux = x - 4;
+        int alkuy = y + 4;
         for(int i = 0; i < 5; i++){
-            int alkux = x - 4;
-            int alkuy = y + 4;
             if(alkux < 0 || alkux + 4 >= pituus || alkuy >= pituus || alkuy - 4 < 0) continue;
             int omaa = 0;
             int kopiox = alkux;
@@ -138,9 +135,9 @@ public class Peli {
     }
     
     private boolean vinoVasenTarkistus(int x, int y, char omaMerkki) {
+        int alkux = x - 4;
+        int alkuy = y - 4;
         for(int i = 0; i < 5; i++){
-            int alkux = x - 4;
-            int alkuy = y - 4;
             if(alkux < 0 || alkux + 4 >= pituus || alkuy < 0 || alkuy + 4 >= pituus) continue;
             int omaa = 0;
             int kopiox = alkux;
@@ -281,7 +278,7 @@ public class Peli {
         System.out.println("Tervetuloa Gomoku-peliin.");
         System.out.println("Minkä kokoisella laudalla haluat pelata?");
         System.out.println("1) 19 x 19      2) 15 x 15");
-        System.out.println("Syötä vaihtoehdon numero:");
+        System.out.print("Syötä vaihtoehdon numero: ");
         while(true){
             String vastaus = lukija.nextLine();
             if(vastaus.equals("2")){
