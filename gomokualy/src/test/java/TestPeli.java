@@ -14,7 +14,7 @@ public class TestPeli {
     
     public TestPeli() {
         Scanner s = new Scanner(System.in);
-        p = new Peli(s);
+        p = new Peli();
     }
     
     @Before
