@@ -48,8 +48,8 @@ public class UI {
                     int x = p.muutaXKoordinaattiNumeroksi(vastaus.substring(0,2).trim());
                     int y = p.muutaYKoordinaattiNumeroksi(vastaus.substring(vastaus.length() - 1));
                     if(p.sijoita(x, y)){
-                        String tulos = p.pelaaVuoro(x, y);
-                        if(!tulos.equals("")){
+                        String tulos = p.tarkistaVoitto(x, y);
+                        if(!tulos.equals("Jatketaan.")){
                             p.tulostaLauta();
                             System.out.println("");
                             System.out.println(tulos);
