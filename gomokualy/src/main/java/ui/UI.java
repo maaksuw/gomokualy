@@ -2,70 +2,97 @@
 package ui;
 
 import java.util.Scanner;
-import logiikka.Peli;
+import logiikka.Aly;
+import logiikka.Lauta;
 
 public class UI {
     
     private final Scanner lukija;
     private String regex;
+    private boolean bottiPelaa;
+    private String vuorossa;
+    private Aly botti;
     
     public UI(Scanner s) {
         lukija = s;
         regex = "([1-9]|(1[0-9])) ([A-S])";
+        bottiPelaa = true;
+        vuorossa = "pelaaja";
     }
     
     public void kaynnista(){
         
-        Peli p = new Peli();
+        Lauta p = new Lauta();
         aloitusKonfiguraatio(p);
         boolean lopetetaan = false;
         
         while(true){
             
             p.tulostaLauta();
-            p.tulostaVuorot();
+            tulostaVuorot(p.getVari());
             
             while(true){
                 
-                System.out.println("");
-                System.out.print("Sijoitus: ");
-                String vastaus = lukija.nextLine().trim();
-                
-                if(vastaus.equals("o")){
+                if(vuorossa.equals("pelaaja")){
                     System.out.println("");
-                    ohjeet();
-                    continue;
-                } else if (vastaus.equals("p")){
-                    System.out.println("");
-                    pelisaannot();
-                    continue;
-                } else if (vastaus.equals("x")){
-                    lopetetaan = true;
+                    System.out.print("Sijoitus: ");
+                    String vastaus = lukija.nextLine().trim();
+
+                    if(vastaus.equals("o")){
+                        System.out.println("");
+                        ohjeet();
+                        continue;
+                    } else if (vastaus.equals("p")){
+                        System.out.println("");
+                        pelisaannot();
+                        continue;
+                    } else if (vastaus.equals("x")){
+                        lopetetaan = true;
+                        break;
+                    }
+
+                    if(vastaus.matches(regex)){
+                        int x = p.muutaXKoordinaattiNumeroksi(vastaus.substring(0,2).trim());
+                        int y = p.muutaYKoordinaattiNumeroksi(vastaus.substring(vastaus.length() - 1));
+                        if(p.sijoita(x, y)){
+                            String tulos = p.tarkistaVoitto(x, y);
+                            if(!tulos.equals("Jatketaan.")){
+                                p.tulostaLauta();
+                                System.out.println("");
+                                System.out.println(tulos);
+                                if(loppuuko()){
+                                    lopetetaan = true;
+                                    break;
+                                } else {
+                                    p.alustaPeli();
+                                    aloitusKonfiguraatio(p);
+                                }
+                            } else {
+                                if(bottiPelaa) vuorossa = "botti";
+                            }
+                            break;
+                        } else System.out.println("Näissä koordinaateissa on jo toinen nappula.");
+
+                    } else System.out.println("Koordinaatit eivät kelpaa.");
+                    
+                } else {
+                    int[] koordinaatit = botti.teeSiirto(p.getLauta());
+                    p.sijoita(koordinaatit[0], koordinaatit[1]);
+                    String tulos = p.tarkistaVoitto(koordinaatit[0], koordinaatit[1]);
+                    if(!tulos.equals("Jatketaan.")){
+                        p.tulostaLauta();
+                        System.out.println("");
+                        System.out.println(tulos);
+                        if(loppuuko()){
+                            lopetetaan = true;
+                            break;
+                        } else {
+                            p.alustaPeli();
+                            aloitusKonfiguraatio(p);
+                        }
+                    } else vuorossa = "pelaaja";
                     break;
                 }
-                
-                if(vastaus.matches(regex)){
-                    int x = p.muutaXKoordinaattiNumeroksi(vastaus.substring(0,2).trim());
-                    int y = p.muutaYKoordinaattiNumeroksi(vastaus.substring(vastaus.length() - 1));
-                    if(p.sijoita(x, y)){
-                        String tulos = p.tarkistaVoitto(x, y);
-                        if(!tulos.equals("Jatketaan.")){
-                            p.tulostaLauta();
-                            System.out.println("");
-                            System.out.println(tulos);
-                            if(loppuuko()){
-                                lopetetaan = true;
-                                break;
-                            } else {
-                                p.alustaPeli();
-                                aloitusKonfiguraatio(p);
-                            }
-                        }
-                        break;
-                    } else System.out.println("Näissä koordinaateissa on jo toinen nappula.");
-             
-                } else System.out.println("Koordinaatit eivät kelpaa.");
-                
             }
             if(lopetetaan) break;
         }
@@ -74,20 +101,57 @@ public class UI {
         System.out.println("Kiitos pelistä!");
     }
     
-     private void aloitusKonfiguraatio(Peli p){
+     private void aloitusKonfiguraatio(Lauta p){
         System.out.println("Tervetuloa Gomoku-peliin.");
         System.out.println("Minkä kokoisella laudalla haluat pelata?");
         System.out.println("1) 19 x 19      2) 15 x 15");
         System.out.print("Syötä vaihtoehdon numero: ");
+        int pituus = 0;
         while(true){
             String vastaus = lukija.nextLine();
             if(vastaus.equals("2")){
                 p.setPituus(15);
+                pituus = 15;
                 regex = "([1-9]|(1[0-5])) ([A-O])";
                 break;
             } else if (vastaus.equals("1")) {
                 p.setPituus(19);
+                pituus = 19;
                 regex = "([1-9]|(1[0-9])) ([A-S])";
+                break;
+            }
+            else System.out.println("Syötä jonkin yllä näkyvän vaihtoehdon numero:");
+        }
+        System.out.println("");
+        System.out.println("Ketä vastaan haluat pelata?");
+        System.out.println("1) Bottia     2) Ihmistä");
+        System.out.print("Syötä vaihtoehdon numero: ");
+        while(true){
+            String vastaus = lukija.nextLine();
+            if(vastaus.equals("1")){
+                bottiPelaa = true;
+                botti = new Aly();
+                botti.setPituus(pituus);
+                System.out.println("");
+                System.out.println("Kumpi aloittaa?");
+                System.out.println("1) Minä    2) Botti");
+                System.out.print("Syötä vaihtoehdon numero: ");
+                while(true){
+                    String vastaus2 = lukija.nextLine();
+                    if(vastaus2.equals("1")){
+                        vuorossa = "pelaaja";
+                        botti.setMerkki(0);
+                        break;
+                    } else if (vastaus2.equals("2")) {
+                        vuorossa = "botti";
+                        botti.setMerkki(1);
+                        break;
+                    }
+                    else System.out.println("Syötä jonkin yllä näkyvän vaihtoehdon numero:");
+                }
+                break;
+            } else if (vastaus.equals("2")) {
+                bottiPelaa = false;
                 break;
             }
             else System.out.println("Syötä jonkin yllä näkyvän vaihtoehdon numero:");
@@ -126,5 +190,10 @@ public class UI {
                 + "\nPeliä pelaa kaksi pelaajaa vuorotellen, toinen mustilla ja toinen valkoisilla nappuloilla."
                 + "\nEnsimmäinen pelaaja, joka saa viisi omaa nappulaansa peräkkäin, voittaa pelin."
                 + "\nMusta aloittaa.");
+    }
+    
+    public void tulostaVuorot(int vari) {
+        if (vari == 1) System.out.println("Vuorossa: MUSTA");
+        else System.out.println("Vuorossa: VALKOINEN");
     }
 }

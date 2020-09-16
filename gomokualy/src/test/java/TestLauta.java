@@ -1,15 +1,15 @@
 
-import logiikka.Peli;
+import logiikka.Lauta;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class TestPeli {
+public class TestLauta {
     
-    private Peli p;
+    private Lauta p;
     
-    public TestPeli() {
-        p = new Peli();
+    public TestLauta() {
+        p = new Lauta();
     }
     
     @Before

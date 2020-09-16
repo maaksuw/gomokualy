@@ -1,14 +1,14 @@
 
 package logiikka;
 
-public class Peli {
+public class Lauta {
     
     private int pituus;
     private char[][] lauta;
     private int vari;
     private int vuoroja;
     
-    public Peli() {
+    public Lauta() {
         pituus = 19;
         lauta = new char[pituus][pituus];
         alustaLauta();
@@ -25,6 +25,14 @@ public class Peli {
 
     public void setPituus(int pituus) {
         this.pituus = pituus;
+    }
+
+    public char[][] getLauta() {
+        return lauta;
+    }
+
+    public int getVari() {
+        return vari;
     }
     
     public int muutaYKoordinaattiNumeroksi(String ykoordinaatti) {
@@ -147,11 +155,6 @@ public class Peli {
                 lauta[i][j] = '+';
             }
         }
-    }
-    
-    public void tulostaVuorot() {
-        if (vari == 1) System.out.println("Vuorossa: MUSTA");
-        else System.out.println("Vuorossa: VALKOINEN");
     }
     
     public void tulostaLauta() {
