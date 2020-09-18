@@ -9,4 +9,5 @@ Linkkejä:
 * Viikkoraportit:
     * [Viikko 1](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti1.md)
     * [Viikko 2](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti2.md)
+    * [Viikko 3](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti3.md)
 * [Määrittelydokumentti](https://github.com/pinjaw/gomokualy/blob/master/maarittelydokumentti.md)
