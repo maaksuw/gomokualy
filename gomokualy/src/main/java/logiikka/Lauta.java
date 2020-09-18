@@ -47,8 +47,8 @@ public class Lauta {
     
     public boolean sijoita(int x, int y) {
         if (lauta[x][y] == '+') {
-            if(vari == 1) lauta[x][y] = 'X';
-            if(vari == 0) lauta[x][y] = 'O';
+            if (vari == 1) lauta[x][y] = 'X';
+            if (vari == 0) lauta[x][y] = 'O';
             vuoroja++;
             return true;
         } 
@@ -61,7 +61,7 @@ public class Lauta {
             if (vari == 1) tulos = "Musta voitti pelin!";
             else tulos = "Valkoinen voitti pelin!";
             return tulos;
-        } else if (vuoroja == pituus*pituus) {
+        } else if (vuoroja == pituus * pituus) {
             tulos = "Tasapeli!";
             return tulos;
         } else {
@@ -114,7 +114,7 @@ public class Lauta {
             int kopiox = alkux;
             int kopioy = alkuy;
             for (int j = 0; j < 5; j++) {
-                if(lauta[kopiox][kopioy] == omaMerkki) omaa++;
+                if (lauta[kopiox][kopioy] == omaMerkki) omaa++;
                 kopiox++;
                 kopioy++;
             }

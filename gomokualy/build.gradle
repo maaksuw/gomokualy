@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
 
 mainClassName = 'logiikka.Main'
 
@@ -25,4 +26,17 @@ dependencies {
 
 run {
     standardInput = System.in
+}
+
+checkstyle {
+    toolVersion '7.8.1'
+    configFile file("checkstyle.xml")
+}
+
+checkstyleMain {
+    source ='src/main/java'
+}
+
+checkstyleTest {
+    source ='src/test/java'
 }

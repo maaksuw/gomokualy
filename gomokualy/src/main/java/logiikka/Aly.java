@@ -1,6 +1,8 @@
 
 package logiikka;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Aly {
@@ -13,16 +15,16 @@ public class Aly {
     private int syvyys;
     private final int aareton;
     
-    public Aly(){
+    public Aly() {
         varasto = new HashMap<>();
         vuoroja = 0;
         sade = 2;
-        syvyys = 3;
+        syvyys = 4;
         aareton = 1000000000;
     }
 
     public void setMerkki(int vari) {
-        if(vari == 1) merkki = 'X';
+        if (vari == 1) merkki = 'X';
         else merkki = 'O';
     }
 
@@ -32,29 +34,42 @@ public class Aly {
     
     public int[] teeSiirto(char[][] lauta) {
         int[] koordinaatit = new int[2];
+        
+        //korvaa tämä myöhemmin
         vuoroja++;
-        if(vuoroja == 1 && merkki == 'X'){
-            koordinaatit[0] = pituus/2;
-            koordinaatit[1] = pituus/2;
+        if (vuoroja == 1 && merkki == 'X') {
+            koordinaatit[0] = pituus / 2;
+            koordinaatit[1] = pituus / 2;
             return koordinaatit;
         }
+        //
+        
         int tulos = -aareton - 1;
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                if(potentiaalinenSiirto(i, j, lauta) && lauta[i][j] == '+'){
+        int alpha = -aareton;
+        int beetta = aareton;
+        for (int i = 0; i < pituus; i++) {
+            for (int j = 0; j < pituus; j++) {
+                if (potentiaalinenSiirto(i, j, lauta) && lauta[i][j] == '+') {
                     lauta[i][j] = merkki;
-                    //System.out.println("siirto? " + i + " " + j);
-//                    for(int x = 0; x < pituus; x++){
-//                        for(int y = 0; y < pituus; y++){
+                    
+                    //testitulostuksia
+//                    System.out.println("siirto? " + i + " " + j);
+//                    for (int x = 0; x < pituus; x++) {
+//                        for (int y = 0; y < pituus; y++) {
 //                            System.out.print(lauta[x][y] + " ");
 //                        }
 //                        System.out.println("");
-//                    }
+//                    } //
                     
-                    int arvio = arvioi(0, 1, lauta);
+                    int arvio = arvioi(0, 1, lauta, alpha, beetta);
+                    if(arvio > alpha) alpha = arvio;
+                    
+                    //testitulostuksia
 //                    System.out.println("arvio " + arvio);
 //                    System.out.println("tulos " + tulos);
-                    if(arvio > tulos){
+//                    
+                    
+                    if (arvio > tulos) {
                         koordinaatit[0] = i;
                         koordinaatit[1] = j;
                         tulos = arvio;
@@ -66,175 +81,337 @@ public class Aly {
         return koordinaatit;
     }
     
-    private int arvioi(int minimax, int taso, char[][] lauta){
-        if(taso == syvyys){
+    private int arvioi(int minimax, int taso, char[][] lauta, int alpha, int beetta) {
+        if (taso == syvyys) {
             return pohjaHeuristiikka(lauta);
         }
-        int tulos = (minimax == 1)? -aareton : aareton;
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                if(potentiaalinenSiirto(i, j, lauta) && lauta[i][j] == '+'){
-                    if(minimax == 1){
-                        lauta[i][j] = merkki;
-                        tulos = Math.max(tulos, arvioi(0, taso + 1, lauta));
-                    } else {
-                        char vastustajanMerkki = (merkki == 'X') ? 'O' : 'X';
-                        lauta[i][j] = vastustajanMerkki;
-                        tulos = Math.min(tulos, arvioi(1, taso + 1, lauta));
-                    }
+        ArrayList<Kolmio> siirrot = new ArrayList<>();
+        int tulos = (minimax == 1) ? -aareton : aareton;
+        char nykyinenMerkki = (minimax == 1) ? 'X' : 'O';
+        for (int i = 0; i < pituus; i++) {
+            for (int j = 0; j < pituus; j++) {
+                if (potentiaalinenSiirto(i, j, lauta) && lauta[i][j] == '+') {
+                    lauta[i][j] = nykyinenMerkki;
+                    int arvio = pohjaHeuristiikka(lauta);
+                    siirrot.add(new Kolmio(arvio, i, j));
                     lauta[i][j] = '+';
                 }
             }
         }
+        Collections.sort(siirrot);
+        for(Kolmio k: siirrot){
+            int i = k.getX();
+            int j = k.getY();
+            if (minimax == 1) {
+                lauta[i][j] = nykyinenMerkki;
+                tulos = Math.max(tulos, arvioi(0, taso + 1, lauta, alpha, beetta));
+                if(tulos >= beetta) {
+                    lauta[i][j] = '+';
+                    return tulos;
+                }
+                if(tulos > alpha) alpha = tulos;
+            } else {
+                lauta[i][j] = nykyinenMerkki;
+                tulos = Math.min(tulos, arvioi(1, taso + 1, lauta, alpha, beetta));
+                if(tulos <= alpha) {
+                    lauta[i][j] = '+';
+                    return tulos;
+                }
+                if(tulos < beetta) beetta = tulos;
+            }
+            lauta[i][j] = '+';
+        }
+            
         return tulos;
     }
     
-    private int pohjaHeuristiikka(char[][] lauta){ //Huono!!!! Paranna tätä seuraavaksi
-        int tulos = 0;
+    public int yksinkertainenPohjaHeuristiikkaOngelmatilanteisiin(char[][] lauta) {
+        
         char vastustajanMerkki = merkki == 'X' ? 'O' : 'X';
-        int kahta = 0;
-        int kolmea = 0;
-        int neljaa = 0;
-        boolean enemman = false;
-        int kahtav = 0;
-        int kolmeav = 0;
-        int neljaav = 0;
-        boolean enemmanv = false;
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                if(lauta[i][j] == merkki){
-                    int vaaka = pisinVaaka(i, j, lauta, merkki);
-                    int pysty = pisinPysty(i, j, lauta, merkki);
-                    int vinovasen = pisinVinoVasen(i, j, lauta, merkki);
-                    int vinooikea = pisinVinoOikea(i, j, lauta, merkki);
-                    if(vaaka == 2) kahta++;
-                    if(vaaka == 3) kolmea++;
-                    if(vaaka == 4) neljaa++;
-                    if(vaaka > 4) enemman = true;
-                    if(pysty == 2) kahta++;
-                    if(pysty == 3) kolmea++;
-                    if(pysty == 4) neljaa++;
-                    if(pysty > 4) enemman = true;
-                    if(vinovasen == 2) kahta++;
-                    if(vinovasen == 3) kolmea++;
-                    if(vinovasen == 4) neljaa++;
-                    if(vinovasen > 4) enemman = true;
-                    if(vinooikea == 2) kahta++;
-                    if(vinooikea == 3) kolmea++;
-                    if(vinooikea == 4) neljaa++;
-                    if(vinooikea > 4) enemman = true;
-                } else if (lauta[i][j] == vastustajanMerkki){
-                    int vaaka = pisinVaaka(i, j, lauta, vastustajanMerkki);
-                    int pysty = pisinPysty(i, j, lauta, vastustajanMerkki);
-                    int vinovasen = pisinVinoVasen(i, j, lauta, vastustajanMerkki);
-                    int vinooikea = pisinVinoOikea(i, j, lauta, vastustajanMerkki);
-                    if(vaaka == 2) kahtav++;
-                    if(vaaka == 3) kolmeav++;
-                    if(vaaka == 4) neljaav++;
-                    if(vaaka > 4) enemmanv = true;
-                    if(pysty == 2) kahtav++;
-                    if(pysty == 3) kolmeav++;
-                    if(pysty == 4) neljaav++;
-                    if(pysty > 4) enemmanv = true;
-                    if(vinovasen == 2) kahtav++;
-                    if(vinovasen == 3) kolmeav++;
-                    if(vinovasen == 4) neljaav++;
-                    if(vinovasen > 4) enemmanv = true;
-                    if(vinooikea == 2) kahtav++;
-                    if(vinooikea == 3) kolmeav++;
-                    if(vinooikea == 4) neljaav++;
-                    if(vinooikea > 4) enemmanv = true;
+        for (int i = 0; i < pituus; i++) {
+            for (int j = 0; j < pituus; j++) {
+                if (lauta[i][j] == merkki) {
+                    
+                    int[] ans = new int[3];
+                    pisinVaaka(i, j, lauta, merkki, ans);
+                    if (ans[0] >= 5) return aareton;
+                    
+                    pisinPysty(i, j, lauta, merkki, ans);
+                    if (ans[0] >= 5) return aareton;
+                    
+                    ans = new int[5];
+                    pisinVinoVasen(i, j, lauta, merkki, ans);
+                    
+                    pisinVinoOikea(i, j, lauta, merkki, ans);
+                    if (ans[0] >= 5) return aareton;
+                    
+                } else if (lauta[i][j] == vastustajanMerkki) {
+                    int[] ans = new int[3];
+                    pisinVaaka(i, j, lauta, vastustajanMerkki, ans);
+                    if (ans[0] >= 5) return -aareton;
+                    
+                    pisinPysty(i, j, lauta, vastustajanMerkki, ans);
+                    if (ans[0] >= 5) return -aareton;
+                    
+                    ans = new int[5];
+                    pisinVinoVasen(i, j, lauta, vastustajanMerkki, ans);
+                    if (ans[0] >= 5) return -aareton;
+                    
+                    pisinVinoOikea(i, j, lauta, vastustajanMerkki, ans);
+                    if (ans[0] >= 5) return -aareton;
                 }
-                if(enemman) return aareton;
-                if(enemmanv) return -aareton;
             }
         }
-        kahta /= 2;
-        kolmea /= 3;
-        neljaa /= 4;
-        kahtav /= 2;
-        kolmeav /= 3;
-        neljaav /= 4;
-        tulos = kahta*10 + kolmea*100 + neljaa*500 - kahtav*10 - kolmeav*100 - neljaav*500;
+        return 0;
+    }
+    
+    private int pohjaHeuristiikka(char[][] lauta) { // refaktoroiroiroi??
+        int tulos = 0;
+        int kakkosia = 0;
+        int avoimiaKakkosia = 0;
+        int kolmosia = 0;
+        int avoimiaKolmosia = 0;
+        int nelosia = 0;
+        int kakkosiav = 0;
+        int avoimiaKakkosiav = 0;
+        int kolmosiav = 0;
+        int avoimiaKolmosiav = 0;
+        int nelosiav = 0;
+        char vastustajanMerkki = merkki == 'X' ? 'O' : 'X';
+        for (int i = 0; i < pituus; i++) {
+            for (int j = 0; j < pituus; j++) {
+                if (lauta[i][j] == merkki) {
+                    
+                    int[] ans = new int[3];
+                    pisinVaaka(i, j, lauta, merkki, ans);
+                    if (ans[0] == 2) {
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') && (ans[2] < pituus && lauta[i][ans[2]] == '+')) avoimiaKakkosia++;
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') || (ans[2] < pituus && lauta[i][ans[2]] == '+')) kakkosia++;
+                    }
+                    if (ans[0] == 3) {
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') && (ans[2] < pituus && lauta[i][ans[2]] == '+')) avoimiaKolmosia++;
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') || (ans[2] < pituus && lauta[i][ans[2]] == '+')) kolmosia++;
+                    }
+                    if (ans[0] == 4) {
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') && (ans[2] < pituus && lauta[i][ans[2]] == '+')) return aareton;
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') || (ans[2] < pituus && lauta[i][ans[2]] == '+')) nelosia++;
+                    } 
+                    if (ans[0] >= 5) return aareton;
+                    
+                    pisinPysty(i, j, lauta, merkki, ans);
+                    if (ans[0] == 2) {
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') && (ans[2] < pituus && lauta[ans[2]][j] == '+')) avoimiaKakkosia++;
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') || (ans[2] < pituus && lauta[ans[2]][j] == '+')) kakkosia++;
+                    }
+                    if (ans[0] == 3) {
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') && (ans[2] < pituus && lauta[ans[2]][j] == '+')) avoimiaKolmosia++;
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') || (ans[2] < pituus && lauta[ans[2]][j] == '+')) kolmosia++;
+                    }
+                    if (ans[0] == 4) {
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') && (ans[2] < pituus && lauta[ans[2]][j] == '+')) return aareton;
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') || (ans[2] < pituus && lauta[ans[2]][j] == '+')) nelosia++;
+                    }
+                    if (ans[0] >= 5) return aareton;
+                    
+                    ans = new int[5];
+                    pisinVinoVasen(i, j, lauta, merkki, ans);
+                    if (ans[0] == 2) {
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) avoimiaKakkosia++;
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) kakkosia++;
+                    }
+                    if (ans[0] == 3) {
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) avoimiaKolmosia++;
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) kolmosia++;
+                    }
+                    if (ans[0] == 4) {
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) return aareton;
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) nelosia++;
+                    }
+                    if (ans[0] >= 5) return aareton;
+                    
+                    pisinVinoOikea(i, j, lauta, merkki, ans);
+                    if (ans[0] == 2) {
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) avoimiaKakkosia++;
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) kakkosia++;
+                    }
+                    if (ans[0] == 3) {
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) avoimiaKolmosia++;
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) kolmosia++;
+                    }
+                    if (ans[0] == 4) {
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) return aareton;
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) nelosia++;
+                    }
+                    if (ans[0] >= 5) return aareton;
+                    
+                } else if (lauta[i][j] == vastustajanMerkki) {
+                    
+                    int[] ans = new int[3];
+                    pisinVaaka(i, j, lauta, vastustajanMerkki, ans);
+                    if (ans[0] == 2) {
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') && (ans[2] < pituus && lauta[i][ans[2]] == '+')) avoimiaKakkosiav++;
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') || (ans[2] < pituus && lauta[i][ans[2]] == '+')) kakkosiav++;
+                    }
+                    if (ans[0] == 3) {
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') && (ans[2] < pituus && lauta[i][ans[2]] == '+')) avoimiaKolmosiav++;
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') || (ans[2] < pituus && lauta[i][ans[2]] == '+')) kolmosiav++;
+                    }
+                    if (ans[0] == 4) {
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') && (ans[2] < pituus && lauta[i][ans[2]] == '+')) return -aareton;
+                        if ((ans[1] >= 0 && lauta[i][ans[1]] == '+') || (ans[2] < pituus && lauta[i][ans[2]] == '+')) nelosiav++;
+                    } 
+                    if (ans[0] >= 5) return -aareton;
+                    
+                    pisinPysty(i, j, lauta, vastustajanMerkki, ans);
+                    if (ans[0] == 2) {
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') && (ans[2] < pituus && lauta[ans[2]][j] == '+')) avoimiaKakkosiav++;
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') || (ans[2] < pituus && lauta[ans[2]][j] == '+')) kakkosiav++;
+                    }
+                    if (ans[0] == 3) {
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') && (ans[2] < pituus && lauta[ans[2]][j] == '+')) avoimiaKolmosiav++;
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') || (ans[2] < pituus && lauta[ans[2]][j] == '+')) kolmosiav++;
+                    }
+                    if (ans[0] == 4) {
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') && (ans[2] < pituus && lauta[ans[2]][j] == '+')) return -aareton;
+                        if ((ans[1] >= 0 && lauta[ans[1]][j] == '+') || (ans[2] < pituus && lauta[ans[2]][j] == '+')) nelosiav++;
+                    }
+                    if (ans[0] >= 5) return -aareton;
+                    
+                    ans = new int[5];
+                    pisinVinoVasen(i, j, lauta, vastustajanMerkki, ans);
+                    if (ans[0] == 2) {
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) avoimiaKakkosiav++;
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) kakkosiav++;
+                    }
+                    if (ans[0] == 3) {
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) avoimiaKolmosiav++;
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) kolmosiav++;
+                    }
+                    if (ans[0] == 4) {
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) return -aareton;
+                        if ((ans[1] >= 0 && ans[2] >= 0 && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] < pituus && lauta[ans[3]][ans[4]] == '+')) nelosiav++;
+                    }
+                    if (ans[0] >= 5) return -aareton;
+                    
+                    pisinVinoOikea(i, j, lauta, vastustajanMerkki, ans);
+                    if (ans[0] == 2) {
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) avoimiaKakkosiav++;
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) kakkosiav++;
+                    }
+                    if (ans[0] == 3) {
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) avoimiaKolmosiav++;
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) kolmosiav++;
+                    }
+                    if (ans[0] == 4) {
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') && (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) return -aareton;
+                        if ((ans[1] >= 0 && ans[2] < pituus && lauta[ans[1]][ans[2]] == '+') || (ans[3] < pituus && ans[4] >= 0 && lauta[ans[3]][ans[4]] == '+')) nelosiav++;
+                    }
+                    if (ans[0] >= 5) return -aareton;
+                }
+            }
+        }
+        kakkosia /= 2;
+        avoimiaKakkosia /= 2;
+        kolmosia /= 3;
+        avoimiaKolmosia /= 3;
+        nelosia /= 4;
+        kakkosiav /= 2;
+        avoimiaKakkosiav /= 2;
+        kolmosiav /= 3;
+        avoimiaKolmosiav /= 3;
+        nelosiav /= 4;
+        tulos = kakkosia * 1 - kakkosiav * 1 + avoimiaKakkosia * 50 - avoimiaKakkosiav * 50 + kolmosia * 100 - kolmosiav * 100 + avoimiaKolmosia * 1000 - avoimiaKolmosiav * 1000 + nelosia * 1000 - nelosiav * 1000;
         return tulos;
     }
     
-    private int pisinVaaka(int x, int y, char[][] lauta, char merkki){
+    private void pisinVaaka(int x, int y, char[][] lauta, char merkki, int[] ans) {
         int summa = 0;
         int alkuy = y;
-        while(alkuy < pituus && lauta[x][alkuy] == merkki){
+        while (alkuy < pituus && lauta[x][alkuy] == merkki) {
             summa++;
             alkuy++;
         }
+        ans[2] = alkuy; 
         alkuy = --y;
-        while(alkuy >= 0 && lauta[x][alkuy] == merkki){
+        while (alkuy >= 0 && lauta[x][alkuy] == merkki) {
             summa++;
             alkuy--;
         }
-        return summa;
+        ans[1] = alkuy;
+        ans[0] = summa;
     }
     
-    private int pisinPysty(int x, int y, char[][] lauta, char merkki){
+    private void pisinPysty(int x, int y, char[][] lauta, char merkki, int[] ans) {
         int summa = 0;
         int alkux = x;
-        while(alkux < pituus && lauta[alkux][y] == merkki){
+        while (alkux < pituus && lauta[alkux][y] == merkki) {
             summa++;
             alkux++;
         }
+        ans[2] = alkux;
         alkux = --x;
-        while(alkux >= 0 && lauta[alkux][y] == merkki){
+        while (alkux >= 0 && lauta[alkux][y] == merkki) {
             summa++;
             alkux--;
         }
-        return summa;
+        ans[1] = alkux;
+        ans[0] = summa;
     }
     
-    private int pisinVinoVasen(int x, int y, char[][] lauta, char merkki){
+    private void pisinVinoVasen(int x, int y, char[][] lauta, char merkki, int[] ans) {
         int summa = 0;
         int alkux = x;
         int alkuy = y;
-        while(alkux >= 0 && alkuy >= 0 && lauta[alkux][alkuy] == merkki){
+        while (alkux >= 0 && alkuy >= 0 && lauta[alkux][alkuy] == merkki) {
             summa++;
             alkux--;
             alkuy--;
         }
+        ans[1] = alkux;
+        ans[2] = alkuy;
         alkux = ++x;
         alkuy = ++y;
-        while(alkux < pituus && alkuy < pituus && lauta[alkux][alkuy] == merkki){
+        while (alkux < pituus && alkuy < pituus && lauta[alkux][alkuy] == merkki) {
             summa++;
             alkux++;
             alkuy++;
         }
-        return summa;
+        ans[3] = alkux;
+        ans[4] = alkuy;
+        ans[0] = summa;
     }
     
-    private int pisinVinoOikea(int x, int y, char[][] lauta, char merkki){
+    private void pisinVinoOikea(int x, int y, char[][] lauta, char merkki, int[] ans) {
         int summa = 0;
         int alkux = x;
         int alkuy = y;
-        while(alkux >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
+        while (alkux >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki) {
             summa++;
             alkux--;
             alkuy++;
         }
+        ans[1] = alkux;
+        ans[2] = alkuy;
         alkux = ++x;
         alkuy = --y;
-        while(alkux < pituus && alkuy >= 0 && lauta[alkux][alkuy] == merkki){
+        while (alkux < pituus && alkuy >= 0 && lauta[alkux][alkuy] == merkki) {
             summa++;
             alkux++;
             alkuy--;
         }
-        return summa;
+        ans[3] = alkux;
+        ans[4] = alkuy;
+        ans[0] = summa;
     }
         
-    private boolean potentiaalinenSiirto(int x, int y, char[][] lauta){
+    private boolean potentiaalinenSiirto(int x, int y, char[][] lauta) {
         int mistax = Math.max(0, x - sade);
         int mihinx = Math.min(x + sade, pituus - 1);
         int mistay = Math.max(y - sade, 0);
         int mihiny = Math.min(y + sade, pituus - 1);
-        for(int i = mistax; i <= mihinx; i++){
-            for(int j = mistay; j <= mihiny; j++){
-                if(lauta[i][j] != '+') return true;
+        for (int i = mistax; i <= mihinx; i++) {
+            for (int j = mistay; j <= mihiny; j++) {
+                if (lauta[i][j] != '+') return true;
             }
         }
         return false;
