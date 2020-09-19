@@ -44,12 +44,12 @@ public class Aly {
         }
         //
         
-        int tulos = -aareton - 1;
+        int paras = -aareton - 1;
         int alpha = -aareton;
         int beetta = aareton;
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
-                if (potentiaalinenSiirto(i, j, lauta) && lauta[i][j] == '+') {
+                if (potentiaalinenSiirto(i, j, lauta)) {
                     lauta[i][j] = merkki;
                     
                     //testitulostuksia
@@ -61,18 +61,18 @@ public class Aly {
 //                        System.out.println("");
 //                    } //
                     
-                    int arvio = arvioi(0, 1, lauta, alpha, beetta);
-                    if(arvio > alpha) alpha = arvio;
+                    int tulos = arvioi(0, 1, lauta, alpha, beetta);
+                    if(tulos > alpha) alpha = tulos;
                     
                     //testitulostuksia
-//                    System.out.println("arvio " + arvio);
 //                    System.out.println("tulos " + tulos);
+//                    System.out.println("paras " + paras);
 //                    
                     
-                    if (arvio > tulos) {
+                    if (tulos > paras) {
                         koordinaatit[0] = i;
                         koordinaatit[1] = j;
-                        tulos = arvio;
+                        paras = tulos;
                     }
                     lauta[i][j] = '+';
                 }
@@ -90,7 +90,7 @@ public class Aly {
         char nykyinenMerkki = (minimax == 1) ? 'X' : 'O';
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
-                if (potentiaalinenSiirto(i, j, lauta) && lauta[i][j] == '+') {
+                if (potentiaalinenSiirto(i, j, lauta)) {
                     lauta[i][j] = nykyinenMerkki;
                     int arvio = pohjaHeuristiikka(lauta);
                     siirrot.add(new Kolmio(arvio, i, j));
@@ -99,11 +99,12 @@ public class Aly {
             }
         }
         Collections.sort(siirrot);
+        if(minimax == 1) Collections.reverse(siirrot);
         for(Kolmio k: siirrot){
             int i = k.getX();
             int j = k.getY();
+            lauta[i][j] = nykyinenMerkki;
             if (minimax == 1) {
-                lauta[i][j] = nykyinenMerkki;
                 tulos = Math.max(tulos, arvioi(0, taso + 1, lauta, alpha, beetta));
                 if(tulos >= beetta) {
                     lauta[i][j] = '+';
@@ -111,7 +112,6 @@ public class Aly {
                 }
                 if(tulos > alpha) alpha = tulos;
             } else {
-                lauta[i][j] = nykyinenMerkki;
                 tulos = Math.min(tulos, arvioi(1, taso + 1, lauta, alpha, beetta));
                 if(tulos <= alpha) {
                     lauta[i][j] = '+';
@@ -121,7 +121,6 @@ public class Aly {
             }
             lauta[i][j] = '+';
         }
-            
         return tulos;
     }
     
@@ -405,9 +404,10 @@ public class Aly {
     }
         
     private boolean potentiaalinenSiirto(int x, int y, char[][] lauta) {
+        if(lauta[x][y] != '+') return false;
         int mistax = Math.max(0, x - sade);
         int mihinx = Math.min(x + sade, pituus - 1);
-        int mistay = Math.max(y - sade, 0);
+        int mistay = Math.max(0, y - sade);
         int mihiny = Math.min(y + sade, pituus - 1);
         for (int i = mistax; i <= mihinx; i++) {
             for (int j = mistay; j <= mihiny; j++) {

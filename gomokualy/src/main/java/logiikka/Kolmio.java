@@ -10,6 +10,7 @@ public class Kolmio implements Comparable<Kolmio> {
     public Kolmio(int arvo, int x, int y) {
         this.arvo = arvo;
         this.x = x;
+        this.y = y;
     }
 
     public int getArvo() {
@@ -29,7 +30,7 @@ public class Kolmio implements Comparable<Kolmio> {
     }
     
     public int compareTo(Kolmio k) {
-       return k.arvo - this.arvo; 
+       return this.arvo - k.arvo; 
     }
     
 }
