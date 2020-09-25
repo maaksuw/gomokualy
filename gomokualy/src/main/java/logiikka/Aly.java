@@ -1,6 +1,7 @@
 
 package logiikka;
 
+import apu.Kolmio;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,9 +13,10 @@ public class Aly {
     private char merkki;
     private int pituus;
     private boolean ekaSiirto;
-    private int sade;
-    private int syvyys;
+    private final int sade;
+    private final int syvyys;
     private final long aareton;
+    private int[] siirto;
     
     public Aly() {
         varasto = new HashMap<>();
@@ -24,9 +26,10 @@ public class Aly {
         }
         alustaSuunnat();
         sade = 2;
-        syvyys = 4;
+        syvyys = 6;
         aareton = 1000000000;
         ekaSiirto = true;
+        siirto = new int[2];
     }
     
     private void alustaSuunnat(){
@@ -70,67 +73,27 @@ public class Aly {
     }
     
     public int[] teeSiirto(char[][] lauta) {
-        int[] koordinaatit = new int[2];
-        
         if(ekaSiirto) return ekaSiirto(lauta);
         
-        long tulos = 0;
-        long paras = -aareton - 1;
         long alpha = -aareton;
         long beetta = aareton;
-        for (int i = 0; i < pituus; i++) {  
-            for (int j = 0; j < pituus; j++) {
-                if (potentiaalinenSiirto(i, j, lauta)) {
-                    lauta[i][j] = merkki;
-                    
-                    //testitulostuksia
-//                    System.out.println("siirto? " + i + " " + j);
-//                    for (int x = 0; x < pituus; x++) {
-//                        for (int y = 0; y < pituus; y++) {
-//                            System.out.print(lauta[x][y] + " ");
-//                        }
-//                        System.out.println("");
-//                    }
-                    
-                    if(onkoVoittoa(i, j, merkki, lauta)) {
-                        koordinaatit[0] = i;
-                        koordinaatit[1] = j;
-                        lauta[i][j] = '+';
-                        return koordinaatit;
-                    } else tulos = arvioi(0, 1, lauta, alpha, beetta);
-                    if(tulos > alpha) alpha = tulos;
-                    
-                    //testitulostuksia
-//                    System.out.println("tulos " + tulos);
-//                    System.out.println("paras " + paras);
-                    
-                    
-                    if (tulos > paras) {
-                        koordinaatit[0] = i;
-                        koordinaatit[1] = j;
-                        paras = tulos;
-                    }
-                    lauta[i][j] = '+';
-                }
-            }
-        }
-//        System.out.println("tulos " + tulos);
-        return koordinaatit;
+        arvioi(1, 1, lauta, alpha, beetta);
+//        System.out.println("siirto[0] " + siirto[0]);
+//        System.out.println("siirto[1] " + siirto[1]);
+        return siirto;
     }
     
     private long arvioi(int minimax, int taso, char[][] lauta, long alpha, long beetta) {
         char sijoitettavaMerkki;
-        if(merkki == 'X'){
-            sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
-        } else {
-            sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';
-        }
+        if(merkki == 'X') sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
+        else sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';
         
         if (taso == syvyys) {
             return pohjaHeuristiikka(lauta, sijoitettavaMerkki);
         }
+        
         ArrayList<Kolmio> siirrot = new ArrayList<>();
-        long tulos = (minimax == 1) ? -aareton : aareton;
+        long tulos = (minimax == 1) ? -aareton - 1: aareton + 1;
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
                 if (potentiaalinenSiirto(i, j, lauta)) {
@@ -141,18 +104,37 @@ public class Aly {
                 }
             }
         }
+        
         Collections.sort(siirrot);
         if(minimax == 1) Collections.reverse(siirrot);
+//        if(taso == 1){
+//            for(Kolmio k: siirrot){
+//                System.out.println(k);
+//            }
+//        }
+        
         for(Kolmio k: siirrot){
             int i = k.getX();
             int j = k.getY();
+            //if(taso == 1) System.out.println("i " + i + " j " + j);
             lauta[i][j] = sijoitettavaMerkki;
             if (minimax == 1) {
                 if(onkoVoittoa(i, j, sijoitettavaMerkki, lauta)) {
+                    if(taso == 1){
+                        siirto[0] = i;
+                        siirto[1] = j;
+                    }
                     lauta[i][j] = '+';
                     return aareton;
                 }
-                tulos = Math.max(tulos, arvioi(0, taso + 1, lauta, alpha, beetta));
+                if(taso == 1){
+                    long arvio = arvioi(0, taso + 1, lauta, alpha, beetta);
+                    if(arvio > tulos){
+                        tulos = arvio;
+                        siirto[0] = i;
+                        siirto[1] = j;
+                    }
+                } else tulos = Math.max(tulos, arvioi(0, taso + 1, lauta, alpha, beetta));
                 if(tulos >= beetta) {
                     lauta[i][j] = '+';
                     return tulos;
@@ -189,57 +171,43 @@ public class Aly {
         int[] tilasto = new int[10]; //kakkoset 0, avoimet kakkoset 1, kolmoset 2, avoimet kolmoset 3, neloset 4, ja vastustajan vastaavat (5 - 9)
         char vastustajanMerkki = merkki == 'X' ? 'O' : 'X';
         int[] ans = new int[5];
+        boolean avoinNelja = false;
+        boolean avoinNeljaVastustajalla = false;
         boolean voitto = false;
         boolean vastustajaVoittaa = false;
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
                 if (lauta[i][j] == merkki) {
                     
-                    laskePisinSuora(i, j, suunnat.get(0), lauta, merkki, ans);
-                    if(uhkaarvio(ans, lauta, true, tilasto, i, j) == aareton) voitto = true;
-                    tulos += uhkaarvio(ans, lauta, true, tilasto, i, j);
-                    
-                    laskePisinSuora(i, j, suunnat.get(1), lauta, merkki, ans);
-                    if(uhkaarvio(ans, lauta, true, tilasto, i, j) == aareton) voitto = true;
-                    tulos += uhkaarvio(ans, lauta, true, tilasto, i, j);
-                    
-                    laskePisinSuora(i, j, suunnat.get(2), lauta, merkki, ans);
-                    if(uhkaarvio(ans, lauta, true, tilasto, i, j) == aareton) voitto = true;
-                    tulos += uhkaarvio(ans, lauta, true, tilasto, i, j);
-                    
-                    laskePisinSuora(i, j, suunnat.get(3), lauta, merkki, ans);
-                    if(uhkaarvio(ans, lauta, true, tilasto, i, j) == aareton) voitto = true;
-                    tulos += uhkaarvio(ans, lauta, true, tilasto, i, j);
+                    for(int k = 0; k < 4; k++){
+                        laskePisinSuora(i, j, suunnat.get(k), lauta, merkki, ans);
+                        long arvio = uhkaarvio(ans, lauta, true, tilasto, i, j);
+                        if(arvio == aareton) voitto = true;
+                        if(arvio == aareton - 1) avoinNelja = true;
+                        tulos += uhkaarvio(ans, lauta, true, tilasto, i, j);
+                    }
                     
                 } else if (lauta[i][j] == vastustajanMerkki) {
                     
-                    laskePisinSuora(i, j, suunnat.get(0), lauta, vastustajanMerkki, ans);
-                    if(uhkaarvio(ans, lauta, false, tilasto, i, j) == -aareton) vastustajaVoittaa = true;
-                    tulos += uhkaarvio(ans, lauta, false, tilasto, i, j);
-                    
-                    laskePisinSuora(i, j, suunnat.get(1), lauta, vastustajanMerkki, ans);
-                    if(uhkaarvio(ans, lauta, false, tilasto, i, j) == -aareton) vastustajaVoittaa = true;
-                    tulos += uhkaarvio(ans, lauta, false, tilasto, i, j);
-                    
-                    laskePisinSuora(i, j, suunnat.get(2), lauta, vastustajanMerkki, ans);
-                    if(uhkaarvio(ans, lauta, false, tilasto, i, j) == -aareton) vastustajaVoittaa = true;
-                    tulos += uhkaarvio(ans, lauta, false, tilasto, i, j);
-                    
-                    laskePisinSuora(i, j, suunnat.get(3), lauta, vastustajanMerkki, ans);
-                    if(uhkaarvio(ans, lauta, false, tilasto, i, j) == -aareton) vastustajaVoittaa = true;
-                    tulos += uhkaarvio(ans, lauta, false, tilasto, i, j);
+                    for(int k = 0; k < 4; k++){
+                        laskePisinSuora(i, j, suunnat.get(k), lauta, vastustajanMerkki, ans);
+                        long arvio = uhkaarvio(ans, lauta, false, tilasto, i, j);
+                        if(arvio == -aareton) vastustajaVoittaa = true;
+                        if(arvio == -aareton + 1) avoinNeljaVastustajalla = true;
+                        tulos += uhkaarvio(ans, lauta, false, tilasto, i, j);
+                    }
                     
                 }
             }
         }
-        //jos vastustajalla avoin neljä ja mulla ei, häviö riippumatta kenen vuoro
-        //jos mulla avoin neljä ja vastustajalla ei, voitti riippumatta kenen vuoro
-        //jos molemmilla on avoin neljä, se voittaa kumman vuoro on
-        if(vastustajaVoittaa && !voitto) return -aareton;
-        if(voitto && !vastustajaVoittaa) return aareton;
-        if(voitto && vastustajaVoittaa){
-            if(vuoro == merkki) return aareton;
-            else return -aareton;
+        if(vastustajaVoittaa) return -aareton;
+        if(voitto) return aareton;
+        
+        if(avoinNeljaVastustajalla && !avoinNelja) return -aareton + 1;
+        if(avoinNelja && !avoinNeljaVastustajalla) return aareton - 1;
+        if(avoinNelja && avoinNeljaVastustajalla){
+            if(vuoro == merkki) return aareton - 1;
+            else return -aareton + 1;
         }
         
         for(int i = 0; i < tilasto.length; i++){
@@ -294,8 +262,8 @@ public class Aly {
                 else tilasto[8]++;
             }
             if(ans[0] == 4) {
-                if(botti) return aareton;
-                return -aareton;
+                if(botti) return aareton - 1;
+                return -aareton + 1;
             }
         } else if ((laudalla(ans[1]) && laudalla(ans[2]) && lauta[ans[1]][ans[2]] == '+') || (laudalla(ans[3]) && laudalla(ans[4]) && lauta[ans[3]][ans[4]] == '+')){
             if(ans[0] == 2) {

@@ -1,19 +1,25 @@
 
 package logiikka;
 
+import java.util.ArrayList;
+
 public class Lauta {
     
     private int pituus;
     private char[][] lauta;
+    private ArrayList<int[]> suunnat;
     private int vari;
     private int vuoroja;
     
     public Lauta() {
         pituus = 19;
         lauta = new char[pituus][pituus];
+        suunnat = new ArrayList<>();
+        for(int i = 0; i < 4; i++) suunnat.add(new int[4]);
         alustaLauta();
         vari = 1;
         vuoroja = 0;
+        alustaSuunnat();
     }
     
     public void alustaPeli() {
@@ -21,6 +27,28 @@ public class Lauta {
         alustaLauta();
         vari = 1;
         vuoroja = 0;
+    }
+    
+    private void alustaSuunnat(){
+        suunnat.get(0)[0] = 0;
+        suunnat.get(0)[1] = 1;
+        suunnat.get(0)[2] = 0;
+        suunnat.get(0)[3] = -1;
+        
+        suunnat.get(1)[0] = 1;
+        suunnat.get(1)[1] = 0;
+        suunnat.get(1)[2] = -1;
+        suunnat.get(1)[3] = 0;
+        
+        suunnat.get(2)[0] = -1;
+        suunnat.get(2)[1] = -1;
+        suunnat.get(2)[2] = 1;
+        suunnat.get(2)[3] = 1;
+        
+        suunnat.get(3)[0] = -1;
+        suunnat.get(3)[1] = 1;
+        suunnat.get(3)[2] = 1;
+        suunnat.get(3)[3] = -1;
     }
 
     public void setPituus(int pituus) {
@@ -72,81 +100,31 @@ public class Lauta {
     }
     
     private boolean onkoVoittoa(int x, int y) {
-        char omaMerkki = 'X';
-        if (vari == 0) omaMerkki = 'O';
-        return vaakasuoraTarkistus(x, y, omaMerkki) || pystysuoraTarkistus(x, y, omaMerkki) || vinoVasenTarkistus(x, y, omaMerkki) || vinoOikeaTarkistus(x, y, omaMerkki);
-    }
-    
-    private boolean vinoOikeaTarkistus(int x, int y, char omaMerkki) {
-        int alkux = x - 4;
-        int alkuy = y + 4;
-        for (int i = 0; i < 5; i++) {
-            if (alkux < 0 || alkux + 4 >= pituus || alkuy >= pituus || alkuy - 4 < 0) {
-                alkux++;
-                alkuy--;
-                continue;
-            }
-            int omaa = 0;
-            int kopiox = alkux;
-            int kopioy = alkuy;
-            for (int j = 0; j < 5; j++) {
-                if (lauta[kopiox][kopioy] == omaMerkki) omaa++;
-                kopiox++;
-                kopioy--;
-            }
-            if (omaa == 5) return true;
-            alkux++;
-            alkuy--;
+        char merkki = 'X';
+        if (vari == 0) merkki = 'O';
+        for(int i = 0; i < 4; i++){
+            if(laskePisinSuora(x, y, suunnat.get(i), merkki) >= 5) return true;
         }
         return false;
     }
     
-    private boolean vinoVasenTarkistus(int x, int y, char omaMerkki) {
-        int alkux = x - 4;
-        int alkuy = y - 4;
-        for (int i = 0; i < 5; i++) {
-            if (alkux < 0 || alkux + 4 >= pituus || alkuy < 0 || alkuy + 4 >= pituus) {
-                alkux++;
-                alkuy++;
-                continue;
-            }
-            int omaa = 0;
-            int kopiox = alkux;
-            int kopioy = alkuy;
-            for (int j = 0; j < 5; j++) {
-                if (lauta[kopiox][kopioy] == omaMerkki) omaa++;
-                kopiox++;
-                kopioy++;
-            }
-            if (omaa == 5) return true;
-            alkux++;
-            alkuy++;
+    private int laskePisinSuora(int x, int y, int[] suunnat, char merkki){
+        int summa = 0;
+        int alkux = x;
+        int alkuy = y;
+        while(alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
+            summa++;
+            alkux += suunnat[0];
+            alkuy += suunnat[1];
         }
-        return false;
-    }
-    
-    private boolean pystysuoraTarkistus(int x, int y, char omaMerkki) {
-        for (int i = x - 4; i <= x; i++) {
-            if (i < 0 || i + 4 >= pituus) continue;
-            int omaa = 0;
-            for (int j = i; j < i + 5; j++) {
-                if (lauta[j][y] == omaMerkki) omaa++;
-            }
-            if (omaa == 5) return true;
+        alkux = x + suunnat[2];
+        alkuy = y + suunnat[3];
+        while(alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
+            summa++;
+            alkux += suunnat[2];
+            alkuy += suunnat[3];
         }
-        return false;
-    }
-    
-    private boolean vaakasuoraTarkistus(int x, int y, char omaMerkki) {
-        for (int i = y - 4; i <= y; i++) {
-            if (i < 0 || i + 4 >= pituus) continue;
-            int omaa = 0;
-            for (int j = i; j < i + 5; j++) {
-                if (lauta[x][j] == omaMerkki) omaa++;
-            }
-            if (omaa == 5) return true;
-        }
-        return false;
+        return summa;
     }
     
     private void alustaLauta() {

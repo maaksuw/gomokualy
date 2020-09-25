@@ -181,8 +181,6 @@ public class UI {
     private void ohjeet() {
         System.out.println("Koordinaattien syöttäminen:");
         System.out.println("Syötä vaakarivin numero, välimerkki ja sitten pystyrivin kirjain.");
-        System.out.println("Peliohjeiden tarkistaminen:");
-        System.out.println("Kun ohjelma kysyy koordinaatteja, paina p.");
         System.out.println("Pelin lopettaminen:");
         System.out.println("Kun ohjelma kysyy koordinaatteja, paina x.");
         
@@ -191,7 +189,7 @@ public class UI {
     private void pelisaannot() {
         System.out.println("Gomoku:");
         System.out.println("Pelin tarkoituksena on saada viisi omaa nappulaa peräkkäin joko vaaka-, pystyriviin tai vinoittain."
-                + "\nPeliä pelaa kaksi pelaajaa vuorotellen, toinen mustilla ja toinen valkoisilla nappuloilla."
+                + "\nPeliä pelaa kaksi pelaajaa vuorotellen, toinen mustilla (X) ja toinen valkoisilla (O) nappuloilla."
                 + "\nEnsimmäinen pelaaja, joka saa viisi omaa nappulaansa peräkkäin, voittaa pelin."
                 + "\nMusta aloittaa.");
     }

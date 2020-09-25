@@ -1,5 +1,5 @@
 
-package logiikka;
+package apu;
 
 public class Kolmio implements Comparable<Kolmio> {
     
@@ -33,6 +33,11 @@ public class Kolmio implements Comparable<Kolmio> {
         if(this.arvo -  k.arvo < 0) return -1;
         else if (this.arvo -  k.arvo > 0) return 1;
         return 0; 
+    }
+
+    @Override
+    public String toString() {
+        return x + " " + y + " " + arvo;
     }
     
 }
