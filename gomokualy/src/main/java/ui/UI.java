@@ -25,11 +25,16 @@ public class UI {
         Lauta p = new Lauta();
         aloitusKonfiguraatio(p);
         boolean lopetetaan = false;
+        boolean tyhjaLauta = true;
         
         while (true) {
             
-            p.tulostaLauta();
-            tulostaVuorot(p.getVari());
+            if(tyhjaLauta && vuorossa.equals("botti")){
+            } else {
+                p.tulostaLauta();
+                tulostaVuorot(p.getVari());
+                tyhjaLauta = false;
+            }
             
             while (true) {
                 
@@ -66,6 +71,7 @@ public class UI {
                                 } else {
                                     p.alustaPeli();
                                     aloitusKonfiguraatio(p);
+                                    tyhjaLauta = true;
                                 }
                             } else {
                                 if (bottiPelaa) vuorossa = "botti";
@@ -89,6 +95,7 @@ public class UI {
                         } else {
                             p.alustaPeli();
                             aloitusKonfiguraatio(p);
+                            tyhjaLauta = true;
                         }
                     } else vuorossa = "pelaaja";
                     break;

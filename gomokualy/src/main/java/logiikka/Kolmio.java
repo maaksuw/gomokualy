@@ -3,17 +3,17 @@ package logiikka;
 
 public class Kolmio implements Comparable<Kolmio> {
     
-    private int arvo;
+    private long arvo;
     private int x;
     private int y;
     
-    public Kolmio(int arvo, int x, int y) {
+    public Kolmio(long arvo, int x, int y) {
         this.arvo = arvo;
         this.x = x;
         this.y = y;
     }
 
-    public int getArvo() {
+    public long getArvo() {
         return arvo;
     }
 
@@ -30,7 +30,9 @@ public class Kolmio implements Comparable<Kolmio> {
     }
     
     public int compareTo(Kolmio k) {
-       return this.arvo - k.arvo; 
+        if(this.arvo -  k.arvo < 0) return -1;
+        else if (this.arvo -  k.arvo > 0) return 1;
+        return 0; 
     }
     
 }
