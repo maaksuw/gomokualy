@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+/**
+ * Pelin teko‰ly.
+ * @author pinjaw
+ */
+
 public class Aly {
     
     private HashMap<String, Integer> varasto;
@@ -32,6 +37,10 @@ public class Aly {
         siirto = new int[2];
     }
     
+    /**
+     * Alustaa listaan koordinaatit nelj‰lle eri suunnalle, vaaka, pysty, vinovasen ja vino-oikea.
+     * N‰it‰ suuntia k‰ytet‰‰n yksinkertaistamaan suorien laskemista.
+     */
     private void alustaSuunnat(){
         suunnat.get(0)[0] = 0;
         suunnat.get(0)[1] = 1;
@@ -54,15 +63,29 @@ public class Aly {
         suunnat.get(3)[3] = -1;
     }
 
+    /**
+     * Metodilla asetetaan kumman v‰risill‰ nappuloilla botti pelaa, mustilla vai valkoisilla.
+     * @param vari
+     */
     public void setMerkki(int vari) {
         if (vari == 1) merkki = 'X';
         else merkki = 'O';
     }
 
+    /**
+     * Metodilla kerrotaan botille mink‰ kokoisella laudalla pelataan.
+     * T‰m‰ pit‰‰ aina olla sama kuin pelilaudan koko, ett‰ botti antaa oikeat koordinaatit.
+     * @param pituus 
+     */
     public void setPituus(int pituus) {
         this.pituus = pituus;
     }
     
+    /**
+     * Metodissa on kovakoodattuna botin ensimm‰inen siirto sek‰ mustilla ett‰ valkoisilla nappuloilla pelatessa.
+     * @param lauta, pelilauta char[][]-taulukkona
+     * @return koordinaatit joihin botti asettaa nappulansa, int[]-taulukko
+     */
     private int[] ekaSiirto(char[][] lauta) {
         ekaSiirto = false;
         int[] koordinaatit = new int[2];
@@ -72,6 +95,12 @@ public class Aly {
         return koordinaatit;
     }
     
+    /**
+     * Metodi saa parametrin‰ pelilaudan, joka kertoo teko‰lylle pelin tilanteen ja
+     * palauttaa int[]-taulukon, joka kertoo koordinaatit joihin botti halutaa tehd‰ seuraavan siirtonsa.
+     * @param lauta pelilauta char[][]-taulukkona.
+     * @return koordinaatit joihin botti haluaa asettaa nappulansa, int[]-taulukko.
+     */
     public int[] teeSiirto(char[][] lauta) {
         if(ekaSiirto) return ekaSiirto(lauta);
         
@@ -83,6 +112,16 @@ public class Aly {
         return siirto;
     }
     
+    /**
+     * Metodi saa parametrina pelilaudan, joka kuvaa pelitilanteen ja palauttaa tilanteelle arvion numerona.
+     * Metodi tallentaa botin oliomuuttujaan siirto parhaan siirron koordinaatit.
+     * @param minimax 1 tarkoittaa maximitasoa ja 0 tarkoittaa minimitasoa.
+     * @param taso kertoo mill‰ pelipuun tasolla ollaan menossa. Muuttuja pit‰‰ huolen siit‰ ett‰ rekursio p‰‰ttyy.
+     * @param lauta kertoo pelitilanteen.
+     * @param alpha alaraja arviolle.
+     * @param beetta yl‰raja arviolle.
+     * @return numeroarvio pelitilanteelle.
+     */
     private long arvioi(int minimax, int taso, char[][] lauta, long alpha, long beetta) {
         char sijoitettavaMerkki;
         if(merkki == 'X') sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
@@ -157,6 +196,15 @@ public class Aly {
         return tulos;
     }
     
+    /**
+     * Metodi saa parametrina pelilaudan, koordinaatit ja pelimerkin ja kertoo onko koordinaateissa annettu siirto aiheuttanut voiton.
+     * Huomasin nyt ett‰ parametri vuoro on turha, poistan sen myˆhemmin.
+     * @param x koordinaatti.
+     * @param y koordinaatti.
+     * @param vuoro tutkittavan siirron pelimerkki X tai O.
+     * @param lauta pelilauta char[][]-taulukkona.
+     * @return 
+     */
     public boolean onkoVoittoa(int x, int y, char vuoro, char[][] lauta) {
         int[] ans = new int[5];
         for(int i = 0; i < 4; i++){
@@ -166,6 +214,15 @@ public class Aly {
         return false;
     }
     
+    /**
+     * Metodi saa parametrina pelilaudan ja seuraavaksi vuorossa olevan pelaajan pelimerkin ja palauttaa numeroarvion annetulle tilanteelle.
+     * Metodi antaa arvion pelitilanteen hyvyydest‰ botin kannalta.
+     * Arvio on positiivinen jos tilanne on parempi botille ja negatiivinen jos se on parempi vastustajalle. T‰t‰ metodia k‰ytet‰‰n
+     * arvioi-metodin viimeisell‰ tasolla, jolloin alkoille ei en‰‰ lasketa numeroarvoa sen lapsien avulla.
+     * @param lauta pelilauta char[][]-taulukkona.
+     * @param vuoro pelimerkki, X tai O.
+     * @return numeroarvio pelitilanteelle.
+     */
     public long pohjaHeuristiikka(char[][] lauta, char vuoro) {
         int tulos = 0;
         int[] tilasto = new int[10]; //kakkoset 0, avoimet kakkoset 1, kolmoset 2, avoimet kolmoset 3, neloset 4, ja vastustajan vastaavat (5 - 9)
@@ -220,6 +277,17 @@ public class Aly {
         return tulos;
     }
     
+    /**
+     * Metodi laskee mik‰ on pisin suora johon annetuissa koordinaateissa oleva pelimerkki sis‰ltyy.
+     * Metodi kertoo mik‰ on pisin tiettyyn suuntaan oleva suora (vaakasuora, pystysuora tai vinosuora) jossa koordinaateissa oleva pelimerkki on osana.
+     * Suoran p‰‰tepisteiden koordinaatit ja suoran pituus kirjoitetaan parametrina annettuun taulukkoon.
+     * @param x koordinaati.
+     * @param y koordinaatti.
+     * @param suunnat mink‰ suuntainen suora tarkistetaan.
+     * @param lauta pelilauta char[][]-taulukkona.
+     * @param merkki pelimerkki, jolle suoraa lasketaan.
+     * @param ans taulukko, johon tulokset kirjoitetaan.
+     */
     private void laskePisinSuora(int x, int y, int[] suunnat, char[][] lauta, char merkki, int[] ans){
         int summa = 0;
         int alkux = x;
@@ -243,6 +311,19 @@ public class Aly {
         ans[0] = summa;
     }
     
+    /**
+     * Metodi saa parametrina laskePisinSuora-metodin tulostaulukon ja kertoo sen sis‰llˆn perusteella onko mink‰ tyyppinen uhka parametrin ans-taulukossa
+     * kuvailtu suora on.
+     * Vastaus kirjoitetaan parametrina saatavaan tilasto-taulukkoon. Mik‰li suora on pelin kannalta eritt‰in oleellinen, metodi palauttaa suoraan
+     * numeroarvion. T‰t‰ metodia voisi selkeytt‰‰, niin ett‰ se ei palauttaisi vastausta kahdella tavalla.
+     * @param ans suoran tiedot kertova taulukko.
+     * @param lauta pelilauta char[][]-taulukkona.
+     * @param botti true, jos kyseess‰ on botin suora ja false muuten.
+     * @param tilasto taulukko, johon tilastoidaan mink‰laisia suoria on ja kuinka monta.
+     * @param i 
+     * @param j
+     * @return 
+     */
     private long uhkaarvio(int[] ans, char[][] lauta, boolean botti, int[] tilasto, int i, int j){
         if (ans[0] >= 5) {
             if (botti) return aareton;
@@ -282,11 +363,26 @@ public class Aly {
         return 0;
     }
     
+    /**
+     * Metodi kertoo onko annettu koordinaatti pelilaudalla.
+     * Huomasin nyt ett‰ t‰h‰n kannattaisi antaa kaksi parametri‰ kerralla. Korjataan. Mit‰kˆh‰n olen aikaisemmin ajatellut.
+     * @param a
+     * @return true, jos luku on pelilaudan sis‰ll‰, false muuten.
+     */
     private boolean laudalla(int a){
         if(a >= 0 && a < pituus) return true;
         return false;
     }
-        
+    
+    /**
+     * Metodi kertoo kannattaako parametreina annettuihin koordinaatteihin mahdollisesti sijoittaa pelimerkki.
+     * Pelimerkki‰ ei kannata sijoittaa liian kauas muista pelimerkeist‰. Botin oliomuuttuja sade m‰‰ritt‰‰ mik‰ on pisin et‰isyys,
+     * kuinka kauas toisesta pelimerkist‰ uusi pelimerkki kannattaa korkeintaan sijoittaa.
+     * @param x koordinaatti
+     * @param y koordinaatti
+     * @param lauta pelilauta char[][]-taulukkona.
+     * @return true, jos s‰teen sis‰ll‰ annetuista koordinaateista on toinen nappula, false muuten.
+     */
     private boolean potentiaalinenSiirto(int x, int y, char[][] lauta) {
         if(lauta[x][y] != '+') return false;
         int mistax = Math.max(0, x - sade);

@@ -3,6 +3,11 @@ package logiikka;
 
 import java.util.ArrayList;
 
+/**
+ * Pelilauta.
+ * @author OMISTAJA
+ */
+
 public class Lauta {
     
     private int pituus;
@@ -22,6 +27,9 @@ public class Lauta {
         alustaSuunnat();
     }
     
+    /**
+     * Metodi joka alustaa pelilaudan aloitustilanteeseen, kun pelaaja haluaa aloittaa uuden pelin ilman ett‰ ohjelma suljetaan v‰liss‰.
+     */
     public void alustaPeli() {
         pituus = 19;
         alustaLauta();
@@ -29,6 +37,10 @@ public class Lauta {
         vuoroja = 0;
     }
     
+    /**
+     * Alustaa listaan koordinaatit nelj‰lle eri suunnalle, vaaka, pysty, vinovasen ja vino-oikea.
+     * N‰it‰ suuntia k‰ytet‰‰n yksinkertaistamaan voittotarkistusta.
+     */
     private void alustaSuunnat(){
         suunnat.get(0)[0] = 0;
         suunnat.get(0)[1] = 1;
@@ -63,11 +75,21 @@ public class Lauta {
         return vari;
     }
     
+    /**
+     * Metodi muuttaa annetun Gomoku-peli muodossa olevan y-koordinaatin ohjelman k‰ytt‰m‰n taulukon koordinaatiksi.
+     * @param ykoordinaatti
+     * @return 
+     */
     public int muutaYKoordinaattiNumeroksi(String ykoordinaatti) {
         int y = ykoordinaatti.charAt(0) - 64;
         return y - 1;
     }
     
+    /**
+     * Metodi muuttaa annetun Gomoku-peli muodossa olevan x-koordinaatin ohjelman k‰ytt‰m‰n taulukon koordinaatiksi.
+     * @param xkoordinaatti
+     * @return 
+     */
     public int muutaXKoordinaattiNumeroksi(String xkoordinaatti) {
         int x = Integer.valueOf(xkoordinaatti);
         return pituus - x;
