@@ -95,6 +95,12 @@ public class Lauta {
         return pituus - x;
     }
     
+    /**
+     * Sijoittaa vuorossa olevan pelaajan merkin laudalle annettuihin koordinaatteihin ja vaihtaa vuoroa.
+     * @param x koordinaatti.
+     * @param y koordinaatti.
+     * @return true, jos siirto onnistui ja false, jos koordinaateissa on jo nappula.
+     */
     public boolean sijoita(int x, int y) {
         if (lauta[x][y] == '+') {
             if (vari == 1) lauta[x][y] = 'X';
@@ -105,6 +111,12 @@ public class Lauta {
         return false;
     }
     
+    /**
+     * Tarkistaa onko annettu siirto aiheuttanut pelilaudalle voiton.
+     * @param x koordinaatti.
+     * @param y koordinaatti.
+     * @return merkkijono, joka kertoo jatketaanko peliä, onko tilanne tasapeli vai kumpi pelaaja voitti.
+     */
     public String tarkistaVoitto(int x, int y) {
         String tulos = "Jatketaan.";
         if (onkoVoittoa(x, y)) {
@@ -121,6 +133,13 @@ public class Lauta {
         return tulos;
     }
     
+    /**
+     * Apumetodi tarkistaVoitto-metodille.
+     * Hommaudun tästä eroon, tämä jako ei ole jotenkin järkevä.
+     * @param x
+     * @param y
+     * @return 
+     */
     private boolean onkoVoittoa(int x, int y) {
         char merkki = 'X';
         if (vari == 0) merkki = 'O';
@@ -130,6 +149,14 @@ public class Lauta {
         return false;
     }
     
+    /**
+     * Metodi laskee mikä on pisin annetun suuntainen suora, jossa annettu pelimerkki on mukana.
+     * @param x koordinaatti.
+     * @param y koordinaatti.
+     * @param suunnat
+     * @param merkki pelimerkki, X tai O.
+     * @return 
+     */
     private int laskePisinSuora(int x, int y, int[] suunnat, char merkki){
         int summa = 0;
         int alkux = x;
@@ -149,6 +176,9 @@ public class Lauta {
         return summa;
     }
     
+    /**
+     * Alustaa pelilaudan tyhjällä merkillä.
+     */
     private void alustaLauta() {
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
@@ -157,6 +187,9 @@ public class Lauta {
         }
     }
     
+    /**
+     * Tulostaa pelilaudan.
+     */
     public void tulostaLauta() {
         System.out.println("");
         System.out.println("ohjeet(o) pelisäännöt(p) lopeta(x)");

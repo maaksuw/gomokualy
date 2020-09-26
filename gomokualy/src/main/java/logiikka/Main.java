@@ -19,7 +19,8 @@ public class Main {
             //*Listan jarjesta-metodi (Collections.sort)
         //Testit
             //*
-        //Javadoc-kommentit ja github-dokumentaatio
+        //Muuta
+            //* Laita Javadoc-kommentit ja github-dokumentaatio kuntoon
         
         Scanner s = new Scanner(System.in);
         UI ui = new UI(s);
