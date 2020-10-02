@@ -11,6 +11,7 @@ Linkkejä:
     * [Viikko 2](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti2.md)
     * [Viikko 3](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti3.md)
     * [Viikko 4](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti4.md)
+    * [Viikko 5](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti5.md)
 * [Määrittelydokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/maarittelydokumentti.md)
 * [Toteutusdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md)
 * [Testausdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/testausdokumentti.md)
