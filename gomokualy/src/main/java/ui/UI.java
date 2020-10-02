@@ -5,13 +5,29 @@ import java.util.Scanner;
 import logiikka.Aly;
 import logiikka.Lauta;
 
+/**
+ * Pelin tekstikäyttöliittymä.
+ */
+
 public class UI {
     
     private final Scanner lukija;
-    private String regex;
-    private boolean bottiPelaa;
-    private String vuorossa;
     private Aly botti;
+    
+    /**
+     * Kertoo pelaako pelaaja peliä bottia vai ihmistä vastaan.
+     */
+    private boolean bottiPelaa;
+    
+    /**
+     * Kertoo onko vuorossa botti vai ihmispelaaja.
+     */
+    private String vuorossa;
+    
+    /**
+     * Käytetään tarkistaessa ovatko syötetyt koordinaatit oikeaa muotoa.
+     */
+    private String regex;
     
     public UI(Scanner s) {
         lukija = s;
@@ -20,6 +36,9 @@ public class UI {
         vuorossa = "pelaaja";
     }
     
+    /**
+     * Pelisilmukka.
+     */
     public void kaynnista() {
         
         Lauta p = new Lauta();
@@ -32,7 +51,7 @@ public class UI {
             if(tyhjaLauta && vuorossa.equals("botti")){
             } else {
                 p.tulostaLauta();
-                tulostaVuorot(p.getVari());
+                p.tulostaVuorot();
                 tyhjaLauta = false;
             }
             
@@ -108,6 +127,11 @@ public class UI {
         System.out.println("Kiitos pelistä!");
     }
     
+    /**
+     * Ennen peliä valmistelee pelin sellaiseksi kuin käyttäjä haluaa.
+     * Kysyy pelilaudan koon, haluaako käyttäjä pelata bottia vai ihmistä vastaan ja kuka aloittaa.
+     * @param p Pelilauta.
+     */
     private void aloitusKonfiguraatio(Lauta p) {
         System.out.println("Tervetuloa Gomoku-peliin.");
         System.out.println("Minkä kokoisella laudalla haluat pelata?");
@@ -161,7 +185,11 @@ public class UI {
             } else System.out.println("Syötä jonkin yllä näkyvän vaihtoehdon numero:");
         }
     }
-     
+    
+    /**
+     * Yhden pelin loputtua kysyy käyttäjältä haluaako hän pelata uudelleen vai lopettaa pelaamisen.
+     * @return true, jos ohjelma suljetaan, ja false muuten.
+     */
     private boolean loppuuko() {
         System.out.println("");
         System.out.println("Haluatko pelata uudelleen?"
@@ -178,6 +206,9 @@ public class UI {
         }
     }
     
+    /**
+     * Tulostaa käyttöliittymän ohjeet.
+     */
     private void ohjeet() {
         System.out.println("Koordinaattien syöttäminen:");
         System.out.println("Syötä vaakarivin numero, välimerkki ja sitten pystyrivin kirjain.");
@@ -186,6 +217,9 @@ public class UI {
         
     }
     
+    /**
+     * Tulostaa lyhyesti Gomoku-pelin säännöt.
+     */
     private void pelisaannot() {
         System.out.println("Gomoku:");
         System.out.println("Pelin tarkoituksena on saada viisi omaa nappulaa peräkkäin joko vaaka-, pystyriviin tai vinoittain."
@@ -194,8 +228,4 @@ public class UI {
                 + "\nMusta aloittaa.");
     }
     
-    public void tulostaVuorot(int vari) {
-        if (vari == 1) System.out.println("Vuorossa: MUSTA");
-        else System.out.println("Vuorossa: VALKOINEN");
-    }
 }

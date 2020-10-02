@@ -2,7 +2,6 @@
 package logiikka;
 
 import apu.Matikka;
-import apu.Siirto;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 public class Aly {
     
     private HashMap<String, Long> varasto;
-    private ArrayList<int[]> suunnat;
+    private int[][] suunnat;
     private char botinMerkki;
     private int pituus;
     private boolean ekaSiirto;
@@ -25,10 +24,7 @@ public class Aly {
     
     public Aly() {
         varasto = new HashMap<>();
-        suunnat = new ArrayList<>();
-        for(int i = 0; i < 4; i++){
-            suunnat.add(new int[4]);
-        }
+        suunnat = new int[4][4];
         alustaSuunnat();
         sade = 2;
         syvyys = 6;
@@ -42,25 +38,25 @@ public class Aly {
      * Näitä suuntia käytetään yksinkertaistamaan suorien laskemista.
      */
     private void alustaSuunnat(){
-        suunnat.get(0)[0] = 0;
-        suunnat.get(0)[1] = 1;
-        suunnat.get(0)[2] = 0;
-        suunnat.get(0)[3] = -1;
+        suunnat[0][0] = 0;
+        suunnat[0][1] = 1;
+        suunnat[0][2] = 0;
+        suunnat[0][3] = -1;
         
-        suunnat.get(1)[0] = 1;
-        suunnat.get(1)[1] = 0;
-        suunnat.get(1)[2] = -1;
-        suunnat.get(1)[3] = 0;
+        suunnat[1][0] = 1;
+        suunnat[1][1] = 0;
+        suunnat[1][2] = -1;
+        suunnat[1][3] = 0;
         
-        suunnat.get(2)[0] = -1;
-        suunnat.get(2)[1] = -1;
-        suunnat.get(2)[2] = 1;
-        suunnat.get(2)[3] = 1;
+        suunnat[2][0] = -1;
+        suunnat[2][1] = -1;
+        suunnat[2][2] = 1;
+        suunnat[2][3] = 1;
         
-        suunnat.get(3)[0] = -1;
-        suunnat.get(3)[1] = 1;
-        suunnat.get(3)[2] = 1;
-        suunnat.get(3)[3] = -1;
+        suunnat[3][0] = -1;
+        suunnat[3][1] = 1;
+        suunnat[3][2] = 1;
+        suunnat[3][3] = -1;
     }
 
     /**
@@ -223,7 +219,7 @@ public class Aly {
     public boolean onkoVoittoa(int x, int y, char[][] lauta) {
         int[] vastaus = new int[5];
         for(int i = 0; i < 4; i++){
-            laskePisinSuora(x, y, suunnat.get(i), lauta, vastaus);
+            laskePisinSuora(x, y, suunnat[i], lauta, vastaus);
             if(vastaus[0] >= 5) return true;
         }
         return false;
@@ -255,7 +251,7 @@ public class Aly {
                 if (lauta[i][j] == botinMerkki) {
                     
                     for(int k = 0; k < 4; k++){
-                        laskePisinSuora(i, j, suunnat.get(k), lauta, vastaus);
+                        laskePisinSuora(i, j, suunnat[k], lauta, vastaus);
                         uhkaarvio(vastaus, lauta, true, tilasto, i, j);
                         tulos += tilasto[0];
                         tilasto[0] = 0;
@@ -264,7 +260,7 @@ public class Aly {
                 } else if (lauta[i][j] == vastustajanMerkki) {
                     
                     for(int k = 0; k < 4; k++){
-                        laskePisinSuora(i, j, suunnat.get(k), lauta, vastaus);
+                        laskePisinSuora(i, j, suunnat[k], lauta, vastaus);
                         uhkaarvio(vastaus, lauta, false, tilasto, i, j);
                         tulos += tilasto[8];
                         tilasto[8] = 0;

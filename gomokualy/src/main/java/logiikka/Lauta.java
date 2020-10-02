@@ -207,6 +207,14 @@ public class Lauta {
     }
     
     /**
+     * Tulostaa kumman pelaajan vuoro on, mustan vai valkoisen.
+     */
+    public void tulostaVuorot() {
+        if (vuorossa == 1) System.out.println("Vuorossa: MUSTA");
+        else System.out.println("Vuorossa: VALKOINEN");
+    }
+    
+    /**
      * Muuttaa parametrina annetun pelilaudan merkkijonoksi.
      * @param lauta pelilauta char[][]-taulukkona.
      * @return pelilauta merkkijono-muodossa.

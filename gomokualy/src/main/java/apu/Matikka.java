@@ -1,6 +1,10 @@
 
 package apu;
 
+/**
+ * Tarjoaa laskemiseen liittyviä apumetodeja.
+ */
+
 public class Matikka {
     
     public static long max(long a, long b){
