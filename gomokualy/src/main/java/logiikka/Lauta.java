@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 /**
  * Pelilauta.
- * @author OMISTAJA
  */
 
 public class Lauta {
@@ -13,7 +12,7 @@ public class Lauta {
     private int pituus;
     private char[][] lauta;
     private ArrayList<int[]> suunnat;
-    private int vari;
+    private int vuorossa;
     private int vuoroja;
     
     public Lauta() {
@@ -22,18 +21,18 @@ public class Lauta {
         suunnat = new ArrayList<>();
         for(int i = 0; i < 4; i++) suunnat.add(new int[4]);
         alustaLauta();
-        vari = 1;
+        vuorossa = 1;
         vuoroja = 0;
         alustaSuunnat();
     }
     
     /**
-     * Metodi joka alustaa pelilaudan aloitustilanteeseen, kun pelaaja haluaa aloittaa uuden pelin ilman että ohjelma suljetaan välissä.
+     * Metodi, joka alustaa pelilaudan aloitustilanteeseen, kun pelaaja haluaa aloittaa uuden pelin ilman että ohjelma suljetaan välissä.
      */
     public void alustaPeli() {
         pituus = 19;
         alustaLauta();
-        vari = 1;
+        vuorossa = 1;
         vuoroja = 0;
     }
     
@@ -72,13 +71,14 @@ public class Lauta {
     }
 
     public int getVari() {
-        return vari;
+        return vuorossa;
     }
     
     /**
-     * Metodi muuttaa annetun Gomoku-peli muodossa olevan y-koordinaatin ohjelman käyttämän taulukon koordinaatiksi.
-     * @param ykoordinaatti
-     * @return 
+     * Metodi muuttaa annetun Gomoku-pelilaudan kirjaimen ohjelman käyttämän taulukon y-koordinaatiksi.
+     * @param ykoordinaatti Gomoku-pelilaudan kirjain.
+     * @return annettua kirjainta vastaava luku väliltä 0 - pituus.
+     * @see Lauta#pituus
      */
     public int muutaYKoordinaattiNumeroksi(String ykoordinaatti) {
         int y = ykoordinaatti.charAt(0) - 64;
@@ -86,9 +86,10 @@ public class Lauta {
     }
     
     /**
-     * Metodi muuttaa annetun Gomoku-peli muodossa olevan x-koordinaatin ohjelman käyttämän taulukon koordinaatiksi.
-     * @param xkoordinaatti
-     * @return 
+     * Metodi muuttaa annetun Gomoku-pelilaudan numeron ohjelman käyttämän taulukon x-koordinaatiksi.
+     * @param xkoordinaatti Gomoku-pelilaudan numero.
+     * @return annettua numeroa vastaava luku väliltä 0 - pituus.
+     * @see Lauta#pituus
      */
     public int muutaXKoordinaattiNumeroksi(String xkoordinaatti) {
         int x = Integer.valueOf(xkoordinaatti);
@@ -99,12 +100,12 @@ public class Lauta {
      * Sijoittaa vuorossa olevan pelaajan merkin laudalle annettuihin koordinaatteihin ja vaihtaa vuoroa.
      * @param x koordinaatti.
      * @param y koordinaatti.
-     * @return true, jos siirto onnistui ja false, jos koordinaateissa on jo nappula.
+     * @return true, jos siirto onnistui ja false, jos koordinaateissa on jo pelimerkki.
      */
     public boolean sijoita(int x, int y) {
         if (lauta[x][y] == '+') {
-            if (vari == 1) lauta[x][y] = 'X';
-            if (vari == 0) lauta[x][y] = 'O';
+            if (vuorossa == 1) lauta[x][y] = 'X';
+            if (vuorossa == 0) lauta[x][y] = 'O';
             vuoroja++;
             return true;
         } 
@@ -112,66 +113,57 @@ public class Lauta {
     }
     
     /**
-     * Tarkistaa onko annettu siirto aiheuttanut pelilaudalle voiton.
+     * Tarkistaa, onko annettu siirto aiheuttanut pelilaudalle voiton.
+     * Lauta tarkistaa jokaisen siirron jälkeen, päättyikö peli ja ilmoittaa tuloksen, jos peli päättyi.
      * @param x koordinaatti.
      * @param y koordinaatti.
      * @return merkkijono, joka kertoo jatketaanko peliä, onko tilanne tasapeli vai kumpi pelaaja voitti.
      */
     public String tarkistaVoitto(int x, int y) {
         String tulos = "Jatketaan.";
-        if (onkoVoittoa(x, y)) {
-            if (vari == 1) tulos = "Musta voitti pelin!";
+        boolean onVoitto = false;
+        char merkki = 'X';
+        if (vuorossa == 0) merkki = 'O';
+        for(int i = 0; i < 4; i++){
+            if(laskePisinSuora(x, y, suunnat.get(i), merkki) >= 5) onVoitto = true;
+        }
+        if (onVoitto) {
+            if (vuorossa == 1) tulos = "Musta voitti pelin!";
             else tulos = "Valkoinen voitti pelin!";
             return tulos;
         } else if (vuoroja == pituus * pituus) {
             tulos = "Tasapeli!";
             return tulos;
         } else {
-            if (vari == 1) vari--;
-            else vari++;
+            if (vuorossa == 1) vuorossa--;
+            else vuorossa++;
         }
         return tulos;
     }
     
     /**
-     * Apumetodi tarkistaVoitto-metodille.
-     * Hommaudun tästä eroon, tämä jako ei ole jotenkin järkevä.
-     * @param x
-     * @param y
-     * @return 
-     */
-    private boolean onkoVoittoa(int x, int y) {
-        char merkki = 'X';
-        if (vari == 0) merkki = 'O';
-        for(int i = 0; i < 4; i++){
-            if(laskePisinSuora(x, y, suunnat.get(i), merkki) >= 5) return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Metodi laskee mikä on pisin annetun suuntainen suora, jossa annettu pelimerkki on mukana.
+     * Metodi laskee, mikä on pisin annetun suuntainen suora, jossa koordinaateissa oleva pelimerkki on mukana.
      * @param x koordinaatti.
      * @param y koordinaatti.
-     * @param suunnat
-     * @param merkki pelimerkki, X tai O.
-     * @return 
+     * @param suunta tutkittava suunta (vaakasuora, pystysuora tai vasen- tai oikea vinosuora).
+     * @param merkki pelimerkki, X tai O. Kertoo kumman pelaajan suoraa lasketaan.
+     * @return pisimmän annetun suuntaisen suoran pituus.
      */
-    private int laskePisinSuora(int x, int y, int[] suunnat, char merkki){
+    private int laskePisinSuora(int x, int y, int[] suunta, char merkki){
         int summa = 0;
         int alkux = x;
         int alkuy = y;
         while(alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
             summa++;
-            alkux += suunnat[0];
-            alkuy += suunnat[1];
+            alkux += suunta[0];
+            alkuy += suunta[1];
         }
-        alkux = x + suunnat[2];
-        alkuy = y + suunnat[3];
+        alkux = x + suunta[2];
+        alkuy = y + suunta[3];
         while(alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
             summa++;
-            alkux += suunnat[2];
-            alkuy += suunnat[3];
+            alkux += suunta[2];
+            alkuy += suunta[3];
         }
         return summa;
     }
@@ -214,12 +206,34 @@ public class Lauta {
         System.out.println("");
     }
     
-    //TESTI-METODIT
-    
-    public void setVariTesti(int x) {
-        this.vari = x;
+    /**
+     * Muuttaa parametrina annetun pelilaudan merkkijonoksi.
+     * @param lauta pelilauta char[][]-taulukkona.
+     * @return pelilauta merkkijono-muodossa.
+     */
+    public static String muutaMerkkijonoksi(char[][] lauta) {
+        StringBuilder merkkijono = new StringBuilder();
+        for(int i = 0; i < lauta.length; i++){
+            for(int j = 0; j < lauta.length; j++){
+                merkkijono.append(lauta[i][j]);
+            }
+        }
+        return merkkijono.toString();
     }
     
+    //TESTI-METODIT
+    
+    /**
+     * Testimetodi. Metodia käytetään apuna JUnit-testauksessa.
+     * @param x 
+     */
+    public void setVariTesti(int x) {
+        this.vuorossa = x;
+    }
+    
+    /**
+     * Testimetodi. Metodia käytetään apuna JUnit-testauksessa.
+     */
     public void alustaLautaTesti() {
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {

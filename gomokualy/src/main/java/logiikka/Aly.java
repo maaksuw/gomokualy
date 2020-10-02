@@ -1,27 +1,27 @@
 
 package logiikka;
 
-import apu.Kolmio;
+import apu.Matikka;
+import apu.Siirto;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 /**
  * Pelin teko‰ly.
- * @author pinjaw
  */
 
 public class Aly {
     
-    private HashMap<String, Integer> varasto;
+    private HashMap<String, Long> varasto;
     private ArrayList<int[]> suunnat;
-    private char merkki;
+    private char botinMerkki;
     private int pituus;
     private boolean ekaSiirto;
     private final int sade;
     private final int syvyys;
     private final long aareton;
-    private int[] siirto;
+    private int[] koordinaatit;
     
     public Aly() {
         varasto = new HashMap<>();
@@ -34,7 +34,7 @@ public class Aly {
         syvyys = 6;
         aareton = 1000000000;
         ekaSiirto = true;
-        siirto = new int[2];
+        koordinaatit = new int[2];
     }
     
     /**
@@ -65,11 +65,11 @@ public class Aly {
 
     /**
      * Metodilla asetetaan kumman v‰risill‰ nappuloilla botti pelaa, mustilla vai valkoisilla.
-     * @param vari
+     * @param vari 1 on musta ja 0 on valkoinen.
      */
     public void setMerkki(int vari) {
-        if (vari == 1) merkki = 'X';
-        else merkki = 'O';
+        if (vari == 1) botinMerkki = 'X';
+        else botinMerkki = 'O';
     }
 
     /**
@@ -84,7 +84,7 @@ public class Aly {
     /**
      * Metodissa on kovakoodattuna botin ensimm‰inen siirto sek‰ mustilla ett‰ valkoisilla nappuloilla pelatessa.
      * @param lauta, pelilauta char[][]-taulukkona
-     * @return koordinaatit joihin botti asettaa nappulansa, int[]-taulukko
+     * @return koordinaatit, joihin botti haluaa asettaa nappulansa.
      */
     private int[] ekaSiirto(char[][] lauta) {
         ekaSiirto = false;
@@ -96,49 +96,53 @@ public class Aly {
     }
     
     /**
-     * Metodi saa parametrin‰ pelilaudan, joka kertoo teko‰lylle pelin tilanteen ja
-     * palauttaa int[]-taulukon, joka kertoo koordinaatit joihin botti halutaa tehd‰ seuraavan siirtonsa.
+     * Metodi saa parametrin‰ pelilaudan, joka kertoo teko‰lylle pelin tilanteen, ja
+     * palauttaa koordinaatit, joihin botti halutaa tehd‰ seuraavan siirtonsa.
      * @param lauta pelilauta char[][]-taulukkona.
-     * @return koordinaatit joihin botti haluaa asettaa nappulansa, int[]-taulukko.
+     * @return koordinaatit, joihin botti haluaa asettaa nappulansa.
      */
     public int[] teeSiirto(char[][] lauta) {
         if(ekaSiirto) return ekaSiirto(lauta);
-        
+        varasto.clear();
         long alpha = -aareton;
         long beetta = aareton;
         arvioi(1, 1, lauta, alpha, beetta);
-//        System.out.println("siirto[0] " + siirto[0]);
-//        System.out.println("siirto[1] " + siirto[1]);
-        return siirto;
+        System.out.println(koordinaatit[0]);
+        System.out.println(koordinaatit[1]);
+        return koordinaatit;
     }
     
     /**
-     * Metodi saa parametrina pelilaudan, joka kuvaa pelitilanteen ja palauttaa tilanteelle arvion numerona.
-     * Metodi tallentaa botin oliomuuttujaan siirto parhaan siirron koordinaatit.
+     * Metodi saa parametrina pelilaudan, joka kuvaa pelitilanteen, ja palauttaa tilanteelle numeroarvion.
+     * Metodi tallentaa botin oliomuuttujaan koordinaatit parhaan siirron koordinaatit.
      * @param minimax 1 tarkoittaa maximitasoa ja 0 tarkoittaa minimitasoa.
-     * @param taso kertoo mill‰ pelipuun tasolla ollaan menossa. Muuttuja pit‰‰ huolen siit‰ ett‰ rekursio p‰‰ttyy.
-     * @param lauta kertoo pelitilanteen.
-     * @param alpha alaraja arviolle.
+     * @param taso kertoo mill‰ pelipuun tasolla ollaan menossa. Muuttuja pit‰‰ huolen siit‰ ett‰ rekursio p‰‰ttyy. Juurisolmu on tasolla 1.
+     * @param lauta pelilauta char[][]-taulukkona.
+     * @param alfa alaraja arviolle.
      * @param beetta yl‰raja arviolle.
      * @return numeroarvio pelitilanteelle.
+     * @see Aly#koordinaatit
      */
-    private long arvioi(int minimax, int taso, char[][] lauta, long alpha, long beetta) {
+    private long arvioi(int minimax, int taso, char[][] lauta, long alfa, long beetta) {
         char sijoitettavaMerkki;
-        if(merkki == 'X') sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
+        if(botinMerkki == 'X') sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
         else sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';
         
         if (taso == syvyys) {
-            return pohjaHeuristiikka(lauta, sijoitettavaMerkki);
+            String tilanne = Lauta.muutaMerkkijonoksi(lauta);
+            if(varasto.containsKey(tilanne)) return varasto.get(tilanne);
+            long arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
+            varasto.put(tilanne, arvio);
+            return arvio;
         }
         
-        ArrayList<Kolmio> siirrot = new ArrayList<>();
-        long tulos = (minimax == 1) ? -aareton - 1: aareton + 1;
+        ArrayList<Siirto> siirrot = new ArrayList<>();
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
                 if (potentiaalinenSiirto(i, j, lauta)) {
                     lauta[i][j] = sijoitettavaMerkki;
                     long arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
-                    siirrot.add(new Kolmio(arvio, i, j));
+                    siirrot.add(new Siirto(arvio, i, j));
                     lauta[i][j] = '+';
                 }
             }
@@ -146,46 +150,59 @@ public class Aly {
         
         Collections.sort(siirrot);
         if(minimax == 1) Collections.reverse(siirrot);
+        
 //        if(taso == 1){
-//            for(Kolmio k: siirrot){
+//            for(Siirto k: siirrot){
 //                System.out.println(k);
 //            }
 //        }
-        
-        for(Kolmio k: siirrot){
-            int i = k.getX();
-            int j = k.getY();
-            //if(taso == 1) System.out.println("i " + i + " j " + j);
+
+        long tulos = (minimax == 1) ? -aareton - 1: aareton + 1;
+        for(Siirto s: siirrot){
+            int i = s.getX();
+            int j = s.getY();
             lauta[i][j] = sijoitettavaMerkki;
+            String tilanne = Lauta.muutaMerkkijonoksi(lauta);
             if (minimax == 1) {
-                if(onkoVoittoa(i, j, sijoitettavaMerkki, lauta)) {
+                if(onkoVoittoa(i, j, lauta)) {
                     if(taso == 1){
-                        siirto[0] = i;
-                        siirto[1] = j;
+                        koordinaatit[0] = i;
+                        koordinaatit[1] = j;
                     }
                     lauta[i][j] = '+';
                     return aareton;
                 }
-                if(taso == 1){
-                    long arvio = arvioi(0, taso + 1, lauta, alpha, beetta);
-                    if(arvio > tulos){
-                        tulos = arvio;
-                        siirto[0] = i;
-                        siirto[1] = j;
+                long arvio = 0;
+                if(varasto.containsKey(tilanne)) arvio = varasto.get(tilanne);
+                else {
+                    arvio = arvioi(0, taso + 1, lauta, alfa, beetta);
+                    varasto.put(tilanne, arvio);
+                }
+                if(arvio > tulos){
+                    tulos = arvio;
+                    if(taso == 1){
+                        koordinaatit[0] = i;
+                        koordinaatit[1] = j;
                     }
-                } else tulos = Math.max(tulos, arvioi(0, taso + 1, lauta, alpha, beetta));
+                }
                 if(tulos >= beetta) {
                     lauta[i][j] = '+';
                     return tulos;
                 }
-                if(tulos > alpha) alpha = tulos;
+                if(tulos > alfa) alfa = tulos;
             } else {
-                if(onkoVoittoa(i, j, sijoitettavaMerkki, lauta)) {
+                if(onkoVoittoa(i, j, lauta)) {
                     lauta[i][j] = '+';
                     return -aareton;
                 }
-                tulos = Math.min(tulos, arvioi(1, taso + 1, lauta, alpha, beetta));
-                if(tulos <= alpha) {
+                long arvio = 0;
+                if(varasto.containsKey(tilanne)) arvio = varasto.get(tilanne);
+                else {
+                    arvio = arvioi(1, taso + 1, lauta, alfa, beetta);
+                    varasto.put(tilanne, arvio);
+                }
+                tulos = Matikka.min(tulos, arvio);
+                if(tulos <= alfa) {
                     lauta[i][j] = '+';
                     return tulos;
                 }
@@ -197,19 +214,17 @@ public class Aly {
     }
     
     /**
-     * Metodi saa parametrina pelilaudan, koordinaatit ja pelimerkin ja kertoo onko koordinaateissa annettu siirto aiheuttanut voiton.
-     * Huomasin nyt ett‰ parametri vuoro on turha, poistan sen myˆhemmin.
+     * Metodi saa parametrina pelilaudan ja koordinaatit ja kertoo, onko koordinaateissa annettu siirto aiheuttanut voiton.
      * @param x koordinaatti.
      * @param y koordinaatti.
-     * @param vuoro tutkittavan siirron pelimerkki X tai O.
      * @param lauta pelilauta char[][]-taulukkona.
      * @return 
      */
-    public boolean onkoVoittoa(int x, int y, char vuoro, char[][] lauta) {
-        int[] ans = new int[5];
+    public boolean onkoVoittoa(int x, int y, char[][] lauta) {
+        int[] vastaus = new int[5];
         for(int i = 0; i < 4; i++){
-            laskePisinSuora(x, y, suunnat.get(i), lauta, vuoro, ans);
-            if(ans[0] >= 5) return true;
+            laskePisinSuora(x, y, suunnat.get(i), lauta, vastaus);
+            if(vastaus[0] >= 5) return true;
         }
         return false;
     }
@@ -217,178 +232,183 @@ public class Aly {
     /**
      * Metodi saa parametrina pelilaudan ja seuraavaksi vuorossa olevan pelaajan pelimerkin ja palauttaa numeroarvion annetulle tilanteelle.
      * Metodi antaa arvion pelitilanteen hyvyydest‰ botin kannalta.
-     * Arvio on positiivinen jos tilanne on parempi botille ja negatiivinen jos se on parempi vastustajalle. T‰t‰ metodia k‰ytet‰‰n
+     * Arvio on positiivinen, jos tilanne on parempi botille, ja negatiivinen, jos se on parempi vastustajalle. T‰t‰ metodia k‰ytet‰‰n
      * arvioi-metodin viimeisell‰ tasolla, jolloin alkoille ei en‰‰ lasketa numeroarvoa sen lapsien avulla.
      * @param lauta pelilauta char[][]-taulukkona.
-     * @param vuoro pelimerkki, X tai O.
+     * @param vuoro pelimerkki, X tai O. Kertoo, kenen vuoro on seuraavaksi tehd‰ siirto.
      * @return numeroarvio pelitilanteelle.
+     * @see Aly#arvioi(int, int, char[][], long, long) 
      */
     public long pohjaHeuristiikka(char[][] lauta, char vuoro) {
         int tulos = 0;
-        int[] tilasto = new int[10]; //kakkoset 0, avoimet kakkoset 1, kolmoset 2, avoimet kolmoset 3, neloset 4, ja vastustajan vastaavat (5 - 9)
-        char vastustajanMerkki = merkki == 'X' ? 'O' : 'X';
-        int[] ans = new int[5];
+        int[] tilasto = new int[16]; 
+        //ykkˆset 0, kakkoset 1, avoimet kakkoset 2, kolmoset 3, avoimet kolmoset 4, neloset 5, avoimet neloset 6, vitoset 7 
+        //vastustajan vastaavat (8 - 15)
+        char vastustajanMerkki = botinMerkki == 'X' ? 'O' : 'X';
+        int[] vastaus = new int[5];
         boolean avoinNelja = false;
         boolean avoinNeljaVastustajalla = false;
         boolean voitto = false;
         boolean vastustajaVoittaa = false;
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
-                if (lauta[i][j] == merkki) {
+                if (lauta[i][j] == botinMerkki) {
                     
                     for(int k = 0; k < 4; k++){
-                        laskePisinSuora(i, j, suunnat.get(k), lauta, merkki, ans);
-                        long arvio = uhkaarvio(ans, lauta, true, tilasto, i, j);
-                        if(arvio == aareton) voitto = true;
-                        if(arvio == aareton - 1) avoinNelja = true;
-                        tulos += uhkaarvio(ans, lauta, true, tilasto, i, j);
+                        laskePisinSuora(i, j, suunnat.get(k), lauta, vastaus);
+                        uhkaarvio(vastaus, lauta, true, tilasto, i, j);
+                        tulos += tilasto[0];
+                        tilasto[0] = 0;
                     }
                     
                 } else if (lauta[i][j] == vastustajanMerkki) {
                     
                     for(int k = 0; k < 4; k++){
-                        laskePisinSuora(i, j, suunnat.get(k), lauta, vastustajanMerkki, ans);
-                        long arvio = uhkaarvio(ans, lauta, false, tilasto, i, j);
-                        if(arvio == -aareton) vastustajaVoittaa = true;
-                        if(arvio == -aareton + 1) avoinNeljaVastustajalla = true;
-                        tulos += uhkaarvio(ans, lauta, false, tilasto, i, j);
+                        laskePisinSuora(i, j, suunnat.get(k), lauta, vastaus);
+                        uhkaarvio(vastaus, lauta, false, tilasto, i, j);
+                        tulos += tilasto[8];
+                        tilasto[8] = 0;
                     }
                     
                 }
             }
         }
+        if(tilasto[7] > 0) voitto = true;
+        if(tilasto[6] > 0) avoinNelja = true;
+        if(tilasto[15] > 0) vastustajaVoittaa = true;
+        if(tilasto[14] > 0) avoinNeljaVastustajalla = true;
+        
         if(vastustajaVoittaa) return -aareton;
         if(voitto) return aareton;
         
         if(avoinNeljaVastustajalla && !avoinNelja) return -aareton + 1;
         if(avoinNelja && !avoinNeljaVastustajalla) return aareton - 1;
         if(avoinNelja && avoinNeljaVastustajalla){
-            if(vuoro == merkki) return aareton - 1;
+            if(vuoro == botinMerkki) return aareton - 1;
             else return -aareton + 1;
         }
         
         for(int i = 0; i < tilasto.length; i++){
-            if(i == 0 || i == 1 || i == 5 || i == 6) tilasto[i] /= 2;
-            if(i == 2 || i == 3 || i == 7 || i == 8) tilasto[i] /= 3;
-            if(i == 4 || i == 9) tilasto[i] /= 4;
+            if(i == 1 || i == 2 || i == 9 || i == 10) tilasto[i] /= 2;
+            if(i == 3 || i == 4 || i == 11 || i == 12) tilasto[i] /= 3;
+            if(i == 5 || i == 13) tilasto[i] /= 4;
         }
-        tulos = tilasto[0] * 10 - tilasto[5] * 10 + tilasto[1] * 50 - tilasto[6] * 50 + tilasto[2] * 100 - tilasto[7] * 100 
-                + tilasto[3] * 1000 - tilasto[8] * 1000 + tilasto[4] * 1000 - tilasto[9] * 1000;
+        tulos = tilasto[1] * 10 - tilasto[9] * 10 + tilasto[2] * 50 - tilasto[10] * 50 + tilasto[3] * 100 - tilasto[11] * 100 
+                + tilasto[4] * 1000 - tilasto[12] * 1000 + tilasto[5] * 1000 - tilasto[13] * 1000;
         return tulos;
     }
     
     /**
-     * Metodi laskee mik‰ on pisin suora johon annetuissa koordinaateissa oleva pelimerkki sis‰ltyy.
-     * Metodi kertoo mik‰ on pisin tiettyyn suuntaan oleva suora (vaakasuora, pystysuora tai vinosuora) jossa koordinaateissa oleva pelimerkki on osana.
-     * Suoran p‰‰tepisteiden koordinaatit ja suoran pituus kirjoitetaan parametrina annettuun taulukkoon.
+     * Metodi laskee, mik‰ on pisin annetun suuntainen suora, johon annetuissa koordinaateissa oleva pelimerkki sis‰ltyy.
+     * Metodi kertoo, mik‰ on pisin annettuun suuntaan jatkuva suora, jossa koordinaateissa oleva pelimerkki on osana.
+     * Suunta, jota tutkitaan, annetaan parametrina (vaakasuora, pystysuora tai vasen- tai oikea vinosuora).
+     * Suoran p‰‰tepisteiden koordinaatit ja suoran pituus kirjoitetaan parametrina annettuun vastaus-taulukkoon.
      * @param x koordinaati.
      * @param y koordinaatti.
-     * @param suunnat mink‰ suuntainen suora tarkistetaan.
+     * @param suunta mink‰ suuntainen suora tarkistetaan.
      * @param lauta pelilauta char[][]-taulukkona.
-     * @param merkki pelimerkki, jolle suoraa lasketaan.
-     * @param ans taulukko, johon tulokset kirjoitetaan.
+     * @param vastaus taulukko, johon saadut tulokset kirjoitetaan.
      */
-    private void laskePisinSuora(int x, int y, int[] suunnat, char[][] lauta, char merkki, int[] ans){
+    private void laskePisinSuora(int x, int y, int[] suunta, char[][] lauta, int[] vastaus){
+        char merkki = lauta[x][y];
         int summa = 0;
         int alkux = x;
         int alkuy = y;
         while(alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
             summa++;
-            alkux += suunnat[0];
-            alkuy += suunnat[1];
+            alkux += suunta[0];
+            alkuy += suunta[1];
         }
-        ans[1] = alkux;
-        ans[2] = alkuy;
-        alkux = x + suunnat[2];
-        alkuy = y + suunnat[3];
+        vastaus[1] = alkux;
+        vastaus[2] = alkuy;
+        alkux = x + suunta[2];
+        alkuy = y + suunta[3];
         while(alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
             summa++;
-            alkux += suunnat[2];
-            alkuy += suunnat[3];
+            alkux += suunta[2];
+            alkuy += suunta[3];
         }
-        ans[3] = alkux;
-        ans[4] = alkuy;
-        ans[0] = summa;
+        vastaus[3] = alkux;
+        vastaus[4] = alkuy;
+        vastaus[0] = summa;
     }
     
     /**
-     * Metodi saa parametrina laskePisinSuora-metodin tulostaulukon ja kertoo sen sis‰llˆn perusteella onko mink‰ tyyppinen uhka parametrin ans-taulukossa
-     * kuvailtu suora on.
-     * Vastaus kirjoitetaan parametrina saatavaan tilasto-taulukkoon. Mik‰li suora on pelin kannalta eritt‰in oleellinen, metodi palauttaa suoraan
-     * numeroarvion. T‰t‰ metodia voisi selkeytt‰‰, niin ett‰ se ei palauttaisi vastausta kahdella tavalla.
-     * @param ans suoran tiedot kertova taulukko.
+     * Metodi saa parametrina laskePisinSuora-metodin tulostaulukon ja kertoo sen sis‰llˆn perusteella, mink‰lainen uhka taulukossa kuvailtu suora on.
+     * Vastaus kirjoitetaan parametrina saatavaan tilasto-taulukkoon, jossa eri uhat on luokiteltuna.
+     * @param suora arvioitavan suoran tiedot.
      * @param lauta pelilauta char[][]-taulukkona.
-     * @param botti true, jos kyseess‰ on botin suora ja false muuten.
-     * @param tilasto taulukko, johon tilastoidaan mink‰laisia suoria on ja kuinka monta.
-     * @param i 
-     * @param j
-     * @return 
+     * @param botti true, jos kyseess‰ on botin oma uhka ja false muuten.
+     * @param tilasto taulukko, johon arvioitu uhka tilastoidaan.
+     * @param i lis‰parametri yksinkertaistamaan metodia.
+     * @param j lis‰parametri yksinkertaistamaan metodia.
+     * @see Aly#laskePisinSuora(int, int, int[], char[][], int[])
      */
-    private long uhkaarvio(int[] ans, char[][] lauta, boolean botti, int[] tilasto, int i, int j){
-        if (ans[0] >= 5) {
-            if (botti) return aareton;
-            return -aareton;
+    private void uhkaarvio(int[] suora, char[][] lauta, boolean botti, int[] tilasto, int i, int j){
+        if (suora[0] >= 5) {
+            if (botti) tilasto[7]++;
+            else tilasto[15]++;
         }
-        if(ans[0] == 1) {
-            if (botti) return Math.max(Math.min(i,(pituus -  1 - i)), Math.min(j, (pituus - 1 - j)));
-            return -Math.max(Math.min(i,(pituus -  1 - i)),Math.min(j, (pituus - 1 - j)));
+        if(suora[0] == 1) {
+            if (botti) tilasto[0] = Matikka.maxi(Matikka.mini(i,(pituus -  1 - i)), Matikka.mini(j, (pituus - 1 - j)));
+            else tilasto[8] = -Matikka.maxi(Matikka.mini(i,(pituus -  1 - i)), Matikka.mini(j, (pituus - 1 - j)));
         }
-        if ((laudalla(ans[1]) && laudalla(ans[2]) && lauta[ans[1]][ans[2]] == '+') && (laudalla(ans[3]) && laudalla(ans[4]) && lauta[ans[3]][ans[4]] == '+')){
-            if(ans[0] == 2) {
-                if(botti) tilasto[1]++;
-                else tilasto[6]++;
-            }
-            if(ans[0] == 3) {
-                if(botti) tilasto[3]++;
-                else tilasto[8]++;
-            }
-            if(ans[0] == 4) {
-                if(botti) return aareton - 1;
-                return -aareton + 1;
-            }
-        } else if ((laudalla(ans[1]) && laudalla(ans[2]) && lauta[ans[1]][ans[2]] == '+') || (laudalla(ans[3]) && laudalla(ans[4]) && lauta[ans[3]][ans[4]] == '+')){
-            if(ans[0] == 2) {
-                if(botti) tilasto[0]++;
-                else tilasto[5]++;
-            }
-            if(ans[0] == 3) {
+        if ((laudalla(suora[1], suora[2]) && lauta[suora[1]][suora[2]] == '+') && (laudalla(suora[3], suora[4]) && lauta[suora[3]][suora[4]] == '+')){
+            if(suora[0] == 2) {
                 if(botti) tilasto[2]++;
-                else tilasto[7]++;
+                else tilasto[10]++;
             }
-            if(ans[0] == 4) {
+            if(suora[0] == 3) {
                 if(botti) tilasto[4]++;
+                else tilasto[12]++;
+            }
+            if(suora[0] == 4) {
+                if(botti) tilasto[6]++;
+                else tilasto[14]++;
+            }
+        } else if ((laudalla(suora[1], suora[2]) && lauta[suora[1]][suora[2]] == '+') || (laudalla(suora[3], suora[4]) && lauta[suora[3]][suora[4]] == '+')){
+            if(suora[0] == 2) {
+                if(botti) tilasto[1]++;
                 else tilasto[9]++;
             }
+            if(suora[0] == 3) {
+                if(botti) tilasto[3]++;
+                else tilasto[11]++;
+            }
+            if(suora[0] == 4) {
+                if(botti) tilasto[5]++;
+                else tilasto[13]++;
+            }
         }
-        return 0;
     }
     
     /**
-     * Metodi kertoo onko annettu koordinaatti pelilaudalla.
-     * Huomasin nyt ett‰ t‰h‰n kannattaisi antaa kaksi parametri‰ kerralla. Korjataan. Mit‰kˆh‰n olen aikaisemmin ajatellut.
-     * @param a
+     * Metodi kertoo, ovatko annetut koordinaatit pelilaudalla.
+     * @param x koordinaatti
+     * @param y koordinaatti
      * @return true, jos luku on pelilaudan sis‰ll‰, false muuten.
      */
-    private boolean laudalla(int a){
-        if(a >= 0 && a < pituus) return true;
+    private boolean laudalla(int x, int y){
+        if(x >= 0 && x < pituus && y >= 0 && y < pituus) return true;
         return false;
     }
     
     /**
-     * Metodi kertoo kannattaako parametreina annettuihin koordinaatteihin mahdollisesti sijoittaa pelimerkki.
-     * Pelimerkki‰ ei kannata sijoittaa liian kauas muista pelimerkeist‰. Botin oliomuuttuja sade m‰‰ritt‰‰ mik‰ on pisin et‰isyys,
+     * Metodi kertoo, kannattaako parametreina annettuihin koordinaatteihin mahdollisesti sijoittaa pelimerkki.
+     * Pelimerkki‰ ei kannata sijoittaa liian kauas muista pelimerkeist‰. Botin oliomuuttuja sade m‰‰ritt‰‰, mik‰ on pisin et‰isyys,
      * kuinka kauas toisesta pelimerkist‰ uusi pelimerkki kannattaa korkeintaan sijoittaa.
      * @param x koordinaatti
      * @param y koordinaatti
      * @param lauta pelilauta char[][]-taulukkona.
      * @return true, jos s‰teen sis‰ll‰ annetuista koordinaateista on toinen nappula, false muuten.
+     * @see Aly#sade
      */
     private boolean potentiaalinenSiirto(int x, int y, char[][] lauta) {
         if(lauta[x][y] != '+') return false;
-        int mistax = Math.max(0, x - sade);
-        int mihinx = Math.min(x + sade, pituus - 1);
-        int mistay = Math.max(0, y - sade);
-        int mihiny = Math.min(y + sade, pituus - 1);
+        int mistax = Matikka.maxi(0, x - sade);
+        int mihinx = Matikka.mini(x + sade, pituus - 1);
+        int mistay = Matikka.maxi(0, y - sade);
+        int mihiny = Matikka.mini(y + sade, pituus - 1);
         for (int i = mistax; i <= mihinx; i++) {
             for (int j = mistay; j <= mihiny; j++) {
                 if (lauta[i][j] != '+') return true;

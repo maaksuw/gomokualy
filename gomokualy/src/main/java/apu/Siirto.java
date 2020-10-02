@@ -1,13 +1,13 @@
 
 package apu;
 
-public class Kolmio implements Comparable<Kolmio> {
+public class Siirto implements Comparable<Siirto> {
     
     private long arvo;
     private int x;
     private int y;
     
-    public Kolmio(long arvo, int x, int y) {
+    public Siirto(long arvo, int x, int y) {
         this.arvo = arvo;
         this.x = x;
         this.y = y;
@@ -29,7 +29,7 @@ public class Kolmio implements Comparable<Kolmio> {
         this.arvo = arvo;
     }
     
-    public int compareTo(Kolmio k) {
+    public int compareTo(Siirto k) {
         if(this.arvo -  k.arvo < 0) return -1;
         else if (this.arvo -  k.arvo > 0) return 1;
         return 0; 

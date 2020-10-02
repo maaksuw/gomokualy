@@ -1,6 +1,10 @@
 
 package apu;
 
+/**
+ * Taulukkolista jonka loppuun voi lisätä alkion ja josta voi hakea alkion indeksin perusteella.
+ */
+
 public class Lista {
     
     private Object[] lista;
@@ -8,29 +12,48 @@ public class Lista {
     private int koko;
     
     public Lista(){
-        koko = 200;
+        koko = 10;
         lista = new Object[koko];
         loppu = 0;
     }
     
     public Object hae(int indeksi) {
+        if(indeksi < 0 || indeksi >= loppu) return null;
         return lista[indeksi];
+    }
+    
+    public Object poista() {
+        if(loppu == 0) return null;
+        loppu--;
+        return lista[loppu];
     }
     
     public void lisaa(Object o){
         lista[loppu] = o;
         loppu++;
-        if(loppu == koko - 50) suurennaListaa();
+        if(loppu == (int)(koko*0.75)) suurennaListaa();
     }
     
     private void suurennaListaa(){
-        int koko2 = koko*2;
-        Object[] lista2 = new Object[koko2];
-        for(int i = 0; i < koko; i++){
-            lista2[i] = lista[i];
+        int uusikoko = koko*2;
+        Object[] uusilista = new Object[uusikoko];
+        for(int i = 0; i < loppu; i++) uusilista[i] = lista[i];
+        koko = uusikoko;
+        lista = uusilista;
+    }
+    
+    public int pituus() {
+        return koko;
+    }
+    
+    public String toString() {
+        String s = "[";
+        for(int i = 0; i < loppu; i++){
+            if(i == loppu - 1) s += lista[i];
+            else s += lista[i] + ", ";
         }
-        koko = koko2;
-        lista = lista2;
+        s += "]";
+        return s;
     }
     
     public void jarjesta() {
