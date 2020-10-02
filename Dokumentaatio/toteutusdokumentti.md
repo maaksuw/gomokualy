@@ -1,6 +1,6 @@
 # Toteutusdokumentti
 ## Ohjelman rakenne
-Ohjelma koostuu kolmesta pakkauksesta:
+Ohjelma koostuu kolmesta pakkauksesta:  
     * Logiikka:
     Tässä pakkauksessa on kaikki pelilogiikan kannalta oleelliset luokat, kuten tekoälyn Aly-luokka, pelilautaa kuvaava Lauta-luokka sekä pelin käynnistävä Main-luokka. Logiikka-pakkauksesta löytyy myös siirtoa kuvaava Siirto-luokka sekä pelitilannetta kuvaava Tilanne-luokka.
     * UI:
