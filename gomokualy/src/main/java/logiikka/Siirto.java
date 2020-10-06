@@ -9,15 +9,15 @@ public class Siirto implements Comparable<Siirto> {
     
     private int x;
     private int y;
-    private long arvo;
+    private int arvo;
     
-    public Siirto(long arvo, int x, int y) {
+    public Siirto(int arvo, int x, int y) {
         this.arvo = arvo;
         this.x = x;
         this.y = y;
     }
 
-    public long getArvo() {
+    public int getArvo() {
         return arvo;
     }
 
@@ -32,6 +32,15 @@ public class Siirto implements Comparable<Siirto> {
     public void setArvo(int arvo) {
         this.arvo = arvo;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if(!(o instanceof Siirto)) return false;
+        Siirto s = (Siirto) o;
+        if(s.getArvo() == this.getArvo() && s.getX() == this.getX() && s.getY() == this.getY()) return true;
+        return false;
+    }
     
     /**
      * Siirrot j‰rjestet‰‰n niiden arvon mukaan.
@@ -41,9 +50,7 @@ public class Siirto implements Comparable<Siirto> {
      * @return -1, 0 tai 1.
      */
     public int compareTo(Siirto k) {
-        if(this.arvo -  k.arvo < 0) return -1;
-        else if (this.arvo -  k.arvo > 0) return 1;
-        return 0; 
+        return this.arvo - k.arvo; 
     }
 
     @Override

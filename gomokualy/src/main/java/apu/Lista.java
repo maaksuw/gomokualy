@@ -3,7 +3,7 @@ package apu;
 
 /**
  * Yksinkertainen j‰rjestett‰v‰ taulukkolista. 
- * Listan loppuun voi lis‰t‰ ja lopusta voi poistaa alkion ja listalta voi hakea alkion indeksin perusteella.
+ * Listan loppuun voi lis‰t‰ alkion ja listalta voi hakea alkion indeksin perusteella.
  * Listan voi j‰rjest‰‰ ja listan voi k‰‰nt‰‰ toisinp‰in.
  * @param <O> Listan alkioiden tulee toteuttaa Comparable-rajapinta.
  */
@@ -13,28 +13,28 @@ public class Lista<O extends Comparable<O>> {
     private Object[] lista;
     private int loppu;
     private int koko;
+    private final double taytto;
     
     public Lista(){
-        koko = 20;
+        koko = 10;
         lista = new Object[koko];
         loppu = 0;
+        taytto = 0.9;
     }
     
-    public O hae(int indeksi) {
-        if(indeksi < 0 || indeksi >= loppu) return null;
-        return (O) lista[indeksi];
-    }
-    
-    public O poista() {
-        if(loppu == 0) return null;
-        loppu--;
-        return (O) lista[loppu];
+    public int pituus() {
+        return loppu;
     }
     
     public void lisaa(O o){
         lista[loppu] = o;
         loppu++;
-        if(loppu == (int)(koko*0.75)) suurennaListaa();
+        if(loppu == (int)(koko*taytto)) suurennaListaa();
+    }
+    
+    public O hae(int indeksi) {
+        if(indeksi < 0 || indeksi >= loppu) return null;
+        return (O) lista[indeksi];
     }
     
     private void suurennaListaa(){
@@ -43,10 +43,6 @@ public class Lista<O extends Comparable<O>> {
         for(int i = 0; i < loppu; i++) uusilista[i] = lista[i];
         koko = uusikoko;
         lista = uusilista;
-    }
-    
-    public int pituus() {
-        return loppu;
     }
     
     public String toString() {

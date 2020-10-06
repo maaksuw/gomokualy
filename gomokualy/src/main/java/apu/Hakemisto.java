@@ -15,60 +15,89 @@ public class Hakemisto {
     private Lista<Tilanne>[] hakemisto;
     private int koko;
     private int kerroin;
-    private int isoluku;
+    private int alkioita;
     
     public Hakemisto(){
-        koko = 100019;
+        koko = 300007;
         kerroin = 31;
-        isoluku = 1010101010;
+        alkioita = 0;
         hakemisto = new Lista[koko];
     }
     
-    public void lisaa(String avain, long arvo) {
+    /**
+     * Lisää merkkijono-kokonaisluku parin hakemistoon.
+     * Jos tällä avaimella on löytyy jo arvo hakemistosta, vanha arvo korvataan uudella. 
+     * @param avain
+     * @param arvo 
+     */
+    public void lisaa(String avain, Integer arvo) {
         int hajautusarvo = hajautusFunktio(avain);
         Tilanne t = new Tilanne(avain, arvo);
-        boolean loytyy = false;
-        if(hakemisto[hajautusarvo] == null) hakemisto[hajautusarvo] = new Lista<Tilanne>();
-        for(int i = 0; i < hakemisto[hajautusarvo].pituus(); i++){
-            Tilanne tt = hakemisto[hajautusarvo].hae(i);
-            if(tt.getLauta().equals(avain)) {
+        boolean uusiAvain = true;
+        if(hakemisto[hajautusarvo] == null) hakemisto[hajautusarvo] = new Lista<>();
+        Lista<Tilanne> l = hakemisto[hajautusarvo];
+        for(int i = 0; i < l.pituus(); i++){
+            Tilanne tt = l.hae(i);
+            if(tt.getLauta().equals(avain)){
+                uusiAvain = false;
                 tt.setArvo(arvo);
-                loytyy = true;
+                break;
             }
         }
-        if(!loytyy) hakemisto[hajautusarvo].lisaa(t);
+        if(uusiAvain) {
+            l.lisaa(t);
+            alkioita++;
+        }
     }
     
     private int hajautusFunktio(String avain) {
         int x = 0;
-        for(int i = 0; i < avain.length(); i++){
+        int n = avain.length();
+        for(int i = 0; i < n; i++){
             x = (x*kerroin + avain.charAt(i))%koko;
+            
         }
         return x;
     }
     
-    public long hae(String avain) {
+    public Integer hae(String avain) {
         int hajautusarvo = hajautusFunktio(avain);
-        if(hakemisto[hajautusarvo] == null) return isoluku;
-        for(int i = 0; i < hakemisto[hajautusarvo].pituus(); i++){
-            Tilanne t = hakemisto[hajautusarvo].hae(i);
+        Lista<Tilanne> l = hakemisto[hajautusarvo];
+        if(l == null) return null;
+        for(int i = 0; i < l.pituus(); i++){
+            Tilanne t = l.hae(i);
             if(t.getLauta().equals(avain)) return t.getArvo();
         }
-        return isoluku;
+        return null;
+    }
+    
+    public boolean onkoAvainta(String avain) {
+        int hajautusarvo = hajautusFunktio(avain);
+        Lista<Tilanne> l = hakemisto[hajautusarvo];
+        if(l == null) return false;
+        for(int i = 0; i < l.pituus(); i++){
+            Tilanne t = l.hae(i);
+            if(t.getLauta().equals(avain)) return true;
+        }
+        return false;
+    }
+    
+    public int alkioita() {
+        return alkioita;
     }
     
     public void tyhjenna() {
         for(int i = 0; i < koko; i++){
             hakemisto[i] = null;
         }
+        alkioita = 0;
     }
 
-    public String hajautusArvio() {
-        String s = "";
-        int kok = 0;
+    public int pahinTormays() {
+        int max = 0;
         for(int i = 0; i < koko; i++){
-            if(hakemisto[i] != null) kok++;
+            if(hakemisto[i] != null) max = Math.max(max, hakemisto[i].pituus());
         }
-        return s + "listoja: " + kok;
+        return max;
     }
 }

@@ -2,6 +2,7 @@
 import logiikka.Aly;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 
 public class TestAly {
     
@@ -15,17 +16,30 @@ public class TestAly {
         lauta = new char[pituus][pituus];
     }
     
+    @Before
+    public void setUp() {
+        for(int i = 0; i < pituus; i++){
+            for(int j = 0; j < pituus; j++){
+                lauta[i][j] = '+';
+            }
+        }
+    }
+    
+    private void tulostaLauta() {
+        for(int i = 0; i < pituus; i++){
+            for(int j = 0; j < pituus; j++){
+                System.out.print(lauta[i][j] + " ");
+            }
+            System.out.println("");
+        }
+    }
+    
     //Testaa reagoigo botti suljettuun neljän uhkaan
     //Suljettu neljän uhka on pakottava siirto
     @Test
     public void bottiEstääSuljetunNeljänUhanMusta() {
         botti.setMerkki(1);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
         lauta[9][10] = 'O';
@@ -41,11 +55,6 @@ public class TestAly {
     public void bottiEstääSuljetunNeljänUhanValkoinen() {
         botti.setMerkki(0);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
         lauta[9][10] = 'X';
@@ -63,11 +72,6 @@ public class TestAly {
     public void bottiEstääAvoimenKolmenUhanMusta() {
         botti.setMerkki(1);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
         lauta[8][11] = 'O';
@@ -82,11 +86,6 @@ public class TestAly {
     public void bottiEstääAvoimenKolmenUhanValkoinen() {
         botti.setMerkki(0);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
         lauta[8][11] = 'X';
@@ -103,11 +102,6 @@ public class TestAly {
     public void bottiPäättääPelinKunOnPakkoMusta() {
         botti.setMerkki(1);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
         lauta[9][10] = 'X';
@@ -126,11 +120,6 @@ public class TestAly {
     public void bottiPäättääPelinKunOnPakkoValkoinen() {
         botti.setMerkki(0);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
         lauta[9][10] = 'O';
@@ -151,11 +140,6 @@ public class TestAly {
     public void bottiPäätääPelinMusta() {
         botti.setMerkki(1);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
         lauta[9][10] = 'X';
@@ -170,11 +154,6 @@ public class TestAly {
     public void bottiPäätääPelinMusta2() {
         botti.setMerkki(1);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
         lauta[9][10] = 'X';
@@ -192,11 +171,6 @@ public class TestAly {
     public void bottiPäätääPelinValkoinen() {
         botti.setMerkki(0);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
         lauta[9][10] = 'O';
@@ -211,11 +185,6 @@ public class TestAly {
     public void bottiPäätääPelinValkoinen2() {
         botti.setMerkki(0);
         botti.setPituus(pituus);
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                lauta[i][j] = '+';
-            }
-        }
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
         lauta[9][10] = 'O';
@@ -227,5 +196,102 @@ public class TestAly {
         koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
         assertTrue((lauta[9][8] == 'O') || (lauta[9][13] == 'O'));
+    }
+    
+    @Test
+    public void ensimmainenSiirto1() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2 - 1][pituus/2 - 1] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        assertTrue(lauta[pituus/2][pituus/2] == 'O');
+    }
+
+    @Test
+    public void ensimmainenSiirto2() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2 - 1][pituus/2] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        assertTrue(lauta[pituus/2][pituus/2] == 'O');
+    }
+    
+    @Test
+    public void ensimmainenSiirto3() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2 - 1][pituus/2 + 1] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        tulostaLauta();
+        assertTrue(lauta[pituus/2][pituus/2] == 'O');
+    }
+    
+    @Test
+    public void ensimmainenSiirto4() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2][pituus/2 - 1] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        tulostaLauta();
+        assertTrue(lauta[pituus/2][pituus/2] == 'O');
+    }
+    
+    @Test
+    public void ensimmainenSiirto5() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2][pituus/2] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        tulostaLauta();
+        assertTrue(lauta[pituus/2][pituus/2 + 1] == 'O');
+    }
+    
+    @Test
+    public void ensimmainenSiirto6() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2][pituus/2 + 1] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        tulostaLauta();
+        assertTrue(lauta[pituus/2][pituus/2] == 'O');
+    }
+    
+    @Test
+    public void ensimmainenSiirto7() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2 + 1][pituus/2 - 1] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        tulostaLauta();
+        assertTrue(lauta[pituus/2][pituus/2] == 'O');
+    }
+    
+    @Test
+    public void ensimmainenSiirto8() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2 + 1][pituus/2] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        tulostaLauta();
+        assertTrue(lauta[pituus/2][pituus/2] == 'O');
+    }
+    
+    @Test
+    public void ensimmainenSiirto9() {
+        botti.setMerkki('O');
+        botti.setPituus(pituus);
+        lauta[pituus/2 + 1][pituus/2 + 1] = 'X';
+        int[] koordinaatit = botti.teeSiirto(lauta);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
+        tulostaLauta();
+        assertTrue(lauta[pituus/2][pituus/2] == 'O');
     }
 }

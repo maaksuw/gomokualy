@@ -12,51 +12,27 @@ import java.util.HashMap;
 
 public class Aly {
     
-    private HashMap<String, Long> varasto;
+    private HashMap<String, Integer> varasto;
     private int[][] suunnat;
     private char botinMerkki;
     private int pituus;
     private boolean ekaSiirto;
     private final int sade;
     private final int syvyys;
-    private final long aareton;
+    private final int aareton;
     private int[] koordinaatit;
+    
+    private long askel;
     
     public Aly() {
         varasto = new HashMap<>();
         suunnat = new int[4][4];
-        alustaSuunnat();
+        Lauta.alustaSuunnat(suunnat);
         sade = 2;
         syvyys = 6;
         aareton = 1000000000;
         ekaSiirto = true;
         koordinaatit = new int[2];
-    }
-    
-    /**
-     * Alustaa listaan koordinaatit nelj‰lle eri suunnalle, vaaka, pysty, vinovasen ja vino-oikea.
-     * N‰it‰ suuntia k‰ytet‰‰n yksinkertaistamaan suorien laskemista.
-     */
-    private void alustaSuunnat(){
-        suunnat[0][0] = 0;
-        suunnat[0][1] = 1;
-        suunnat[0][2] = 0;
-        suunnat[0][3] = -1;
-        
-        suunnat[1][0] = 1;
-        suunnat[1][1] = 0;
-        suunnat[1][2] = -1;
-        suunnat[1][3] = 0;
-        
-        suunnat[2][0] = -1;
-        suunnat[2][1] = -1;
-        suunnat[2][2] = 1;
-        suunnat[2][3] = 1;
-        
-        suunnat[3][0] = -1;
-        suunnat[3][1] = 1;
-        suunnat[3][2] = 1;
-        suunnat[3][3] = -1;
     }
 
     /**
@@ -87,7 +63,35 @@ public class Aly {
         int[] koordinaatit = new int[2];
         koordinaatit[0] = pituus / 2;
         koordinaatit[1] = pituus / 2;
-        if(lauta[pituus / 2][pituus / 2] != '+') koordinaatit[1] = pituus / 2 + 1;
+        if(botinMerkki == 'O') {
+            for(int i = 0; i < pituus; i++){
+                for(int j = 0; j < pituus; j++){
+                    if(lauta[i][j] == 'X'){
+                        if (i < pituus/2 && j < pituus/2){
+                            koordinaatit[0] = i + 1;
+                            koordinaatit[1] = j + 1;
+                        } else if (i < pituus/2 && j > pituus/2){
+                            koordinaatit[0] = i + 1;
+                            koordinaatit[1] = j - 1;
+                        } else if (i > pituus/2 && j < pituus/2) {
+                            koordinaatit[0] = i - 1;
+                            koordinaatit[1] = j + 1;
+                        } else if (i > pituus/2 && j > pituus/2) {
+                            koordinaatit[0] = i - 1;
+                            koordinaatit[1] = j - 1;
+                        } else if (i == pituus/2) {
+                            koordinaatit[0] = i;
+                            if(j <= pituus/2) koordinaatit[1] = j + 1;
+                            else koordinaatit[1] = j - 1;
+                        } else {
+                            koordinaatit[1] = j;
+                            if(i > pituus/2) koordinaatit[0] = i - 1;
+                            else koordinaatit[0] = i + 1;
+                        }
+                    }
+                }
+            }
+        }
         return koordinaatit;
     }
     
@@ -100,11 +104,13 @@ public class Aly {
     public int[] teeSiirto(char[][] lauta) {
         if(ekaSiirto) return ekaSiirto(lauta);
         varasto.clear();
-        long alpha = -aareton;
-        long beetta = aareton;
+        int alpha = -aareton;
+        int beetta = aareton;
+        askel = 0;
         arvioi(1, 1, lauta, alpha, beetta);
-        System.out.println(koordinaatit[0]);
-        System.out.println(koordinaatit[1]);
+//        System.out.println(koordinaatit[0]);
+//        System.out.println(koordinaatit[1]);
+        System.out.println(askel);
         return koordinaatit;
     }
     
@@ -119,7 +125,7 @@ public class Aly {
      * @return numeroarvio pelitilanteelle.
      * @see Aly#koordinaatit
      */
-    private long arvioi(int minimax, int taso, char[][] lauta, long alfa, long beetta) {
+    private int arvioi(int minimax, int taso, char[][] lauta, int alfa, int beetta) {
         char sijoitettavaMerkki;
         if(botinMerkki == 'X') sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
         else sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';
@@ -127,8 +133,9 @@ public class Aly {
         if (taso == syvyys) {
             String tilanne = Lauta.muutaMerkkijonoksi(lauta);
             if(varasto.containsKey(tilanne)) return varasto.get(tilanne);
-            long arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
+            int arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
             varasto.put(tilanne, arvio);
+            askel++;
             return arvio;
         }
         
@@ -137,7 +144,7 @@ public class Aly {
             for (int j = 0; j < pituus; j++) {
                 if (potentiaalinenSiirto(i, j, lauta)) {
                     lauta[i][j] = sijoitettavaMerkki;
-                    long arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
+                    int arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
                     siirrot.add(new Siirto(arvio, i, j));
                     lauta[i][j] = '+';
                 }
@@ -153,7 +160,7 @@ public class Aly {
 //            }
 //        }
 
-        long tulos = (minimax == 1) ? -aareton - 1: aareton + 1;
+        int tulos = (minimax == 1) ? -aareton - 1: aareton + 1;
         for(Siirto s: siirrot){
             int i = s.getX();
             int j = s.getY();
@@ -168,11 +175,12 @@ public class Aly {
                     lauta[i][j] = '+';
                     return aareton;
                 }
-                long arvio = 0;
+                int arvio = 0;
                 if(varasto.containsKey(tilanne)) arvio = varasto.get(tilanne);
                 else {
                     arvio = arvioi(0, taso + 1, lauta, alfa, beetta);
                     varasto.put(tilanne, arvio);
+                    askel++;
                 }
                 if(arvio > tulos){
                     tulos = arvio;
@@ -191,11 +199,12 @@ public class Aly {
                     lauta[i][j] = '+';
                     return -aareton;
                 }
-                long arvio = 0;
+                int arvio = 0;
                 if(varasto.containsKey(tilanne)) arvio = varasto.get(tilanne);
                 else {
                     arvio = arvioi(1, taso + 1, lauta, alfa, beetta);
                     varasto.put(tilanne, arvio);
+                    askel++;
                 }
                 tulos = Matikka.min(tulos, arvio);
                 if(tulos <= alfa) {
@@ -233,9 +242,9 @@ public class Aly {
      * @param lauta pelilauta char[][]-taulukkona.
      * @param vuoro pelimerkki, X tai O. Kertoo, kenen vuoro on seuraavaksi tehd‰ siirto.
      * @return numeroarvio pelitilanteelle.
-     * @see Aly#arvioi(int, int, char[][], long, long) 
+     * @see Aly#arvioi(int, int, char[][], int, int) 
      */
-    public long pohjaHeuristiikka(char[][] lauta, char vuoro) {
+    public int pohjaHeuristiikka(char[][] lauta, char vuoro) {
         int tulos = 0;
         int[] tilasto = new int[16]; 
         //ykkˆset 0, kakkoset 1, avoimet kakkoset 2, kolmoset 3, avoimet kolmoset 4, neloset 5, avoimet neloset 6, vitoset 7 
@@ -346,8 +355,8 @@ public class Aly {
             else tilasto[15]++;
         }
         if(suora[0] == 1) {
-            if (botti) tilasto[0] = Matikka.maxi(Matikka.mini(i,(pituus -  1 - i)), Matikka.mini(j, (pituus - 1 - j)));
-            else tilasto[8] = -Matikka.maxi(Matikka.mini(i,(pituus -  1 - i)), Matikka.mini(j, (pituus - 1 - j)));
+            if (botti) tilasto[0] = Matikka.max(Matikka.min(i,(pituus -  1 - i)), Matikka.min(j, (pituus - 1 - j)));
+            else tilasto[8] = -Matikka.max(Matikka.min(i,(pituus -  1 - i)), Matikka.min(j, (pituus - 1 - j)));
         }
         if ((laudalla(suora[1], suora[2]) && lauta[suora[1]][suora[2]] == '+') && (laudalla(suora[3], suora[4]) && lauta[suora[3]][suora[4]] == '+')){
             if(suora[0] == 2) {
@@ -401,10 +410,10 @@ public class Aly {
      */
     private boolean potentiaalinenSiirto(int x, int y, char[][] lauta) {
         if(lauta[x][y] != '+') return false;
-        int mistax = Matikka.maxi(0, x - sade);
-        int mihinx = Matikka.mini(x + sade, pituus - 1);
-        int mistay = Matikka.maxi(0, y - sade);
-        int mihiny = Matikka.mini(y + sade, pituus - 1);
+        int mistax = Matikka.max(0, x - sade);
+        int mihinx = Matikka.min(x + sade, pituus - 1);
+        int mistay = Matikka.max(0, y - sade);
+        int mihiny = Matikka.min(y + sade, pituus - 1);
         for (int i = mistax; i <= mihinx; i++) {
             for (int j = mistay; j <= mihiny; j++) {
                 if (lauta[i][j] != '+') return true;

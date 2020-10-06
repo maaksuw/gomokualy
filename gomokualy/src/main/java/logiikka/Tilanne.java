@@ -8,10 +8,10 @@ package logiikka;
 public class Tilanne implements Comparable<Tilanne> {
     
     private String lauta;
-    private long arvo;
+    private int arvo;
     
-    public Tilanne(String s, long a) {
-        lauta = s;
+    public Tilanne(String lauta, int a) {
+        this.lauta = lauta;
         arvo = a;
     }
 
@@ -19,12 +19,21 @@ public class Tilanne implements Comparable<Tilanne> {
         return lauta;
     }
     
-    public long getArvo() {
+    public int getArvo() {
         return arvo;
     }
 
-    public void setArvo(long arvo) {
+    public void setArvo(int arvo) {
         this.arvo = arvo;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if(!(o instanceof Tilanne)) return false;
+        Tilanne t = (Tilanne) o;
+        if(t.getArvo() == this.getArvo() && t.getLauta().equals(this.getLauta())) return true;
+        return true;
     }
 
     /**

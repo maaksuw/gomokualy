@@ -9,12 +9,13 @@ public class Main {
     public static void main(String[] args) {
         //TO DO:
         //Tekoäly
-            //*koita syventää hakua
+            //*Tunnista pakottavat siirrot ja tutki vain ne
+            //*Laita pohjaheuristiikka tunnistamaan hajonneen avoimen kolmen
         //Tietorakenteet
             //*Ota käyttöön Lista ja Hakemisto
-            //*Hakemisto (HashMap)
+            //*Hommaudu eroon Lauta-luokan StringBuilderistä
         //Testit
-            //*
+            //*Selvitä miten tehokkuustesti-luokan saa toimimaan testipakkauksessa
         //Muuta
             //*Github-dokumentaatio kuntoon
         
