@@ -11,8 +11,6 @@ public class Main {
         //Tekoäly
             //*Tunnista pakottavat siirrot ja tutki vain ne
             //*Laita pohjaheuristiikka tunnistamaan hajonneen avoimen kolmen
-        //Tietorakenteet
-            //*Hommaudu eroon Pelilauta-luokan StringBuilderistä
         //Testit
             //*Tee tehokkuustestit botille
         //Muuta

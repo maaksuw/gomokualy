@@ -1,17 +1,17 @@
 package testit;
 
 
-import logiikka.Pelilauta;
+import logiikka.Lauta;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestLauta {
     
-    private Pelilauta p;
+    private Lauta p;
     
     public TestLauta() {
-        p = new Pelilauta();
+        p = new Lauta();
     }
     
     @Before

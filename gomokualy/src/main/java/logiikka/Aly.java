@@ -24,7 +24,7 @@ public class Aly {
     public Aly() {
         varasto = new Hakemisto();
         suunnat = new int[4][4];
-        Pelilauta.alustaSuunnat(suunnat);
+        Lauta.alustaSuunnat(suunnat);
         sade = 2;
         syvyys = 6;
         aareton = 1000000000;
@@ -124,7 +124,7 @@ public class Aly {
         else sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';
         
         if (taso == syvyys) {
-            String tilanne = Pelilauta.muutaMerkkijonoksi(lauta);
+            String tilanne = Lauta.muutaMerkkijonoksi(lauta);
             if(varasto.onkoAvainta(tilanne)) return varasto.hae(tilanne);
             int arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
             varasto.lisaa(tilanne, arvio);
@@ -152,7 +152,7 @@ public class Aly {
             int i = s.getX();
             int j = s.getY();
             lauta[i][j] = sijoitettavaMerkki;
-            String tilanne = Pelilauta.muutaMerkkijonoksi(lauta);
+            String tilanne = Lauta.muutaMerkkijonoksi(lauta);
             if (minimax == 1) {
                 if(onkoVoittoa(i, j, lauta)) {
                     if(taso == 1){

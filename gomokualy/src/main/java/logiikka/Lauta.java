@@ -5,7 +5,7 @@ package logiikka;
  * Pelilauta.
  */
 
-public class Pelilauta {
+public class Lauta {
     
     private int pituus;
     private char[][] lauta;
@@ -13,7 +13,7 @@ public class Pelilauta {
     private int vuorossa;
     private int vuoroja;
     
-    public Pelilauta() {
+    public Lauta() {
         pituus = 19;
         lauta = new char[pituus][pituus];
         suunnat = new int[4][4];
@@ -49,7 +49,7 @@ public class Pelilauta {
      * Metodi muuttaa annetun Gomoku-pelilaudan kirjaimen ohjelman käyttämän taulukon y-koordinaatiksi.
      * @param ykoordinaatti Gomoku-pelilaudan kirjain.
      * @return annettua kirjainta vastaava luku väliltä 0 - pituus.
-     * @see Pelilauta#pituus
+     * @see Lauta#pituus
      */
     public int muutaYKoordinaattiNumeroksi(String ykoordinaatti) {
         int y = ykoordinaatti.charAt(0) - 64;
@@ -60,7 +60,7 @@ public class Pelilauta {
      * Metodi muuttaa annetun Gomoku-pelilaudan numeron ohjelman käyttämän taulukon x-koordinaatiksi.
      * @param xkoordinaatti Gomoku-pelilaudan numero.
      * @return annettua numeroa vastaava luku väliltä 0 - pituus.
-     * @see Pelilauta#pituus
+     * @see Lauta#pituus
      */
     public int muutaXKoordinaattiNumeroksi(String xkoordinaatti) {
         int x = Integer.valueOf(xkoordinaatti);
@@ -185,15 +185,21 @@ public class Pelilauta {
         else System.out.println("Vuorossa: VALKOINEN");
     }
     
-
+    /**
+     * Muuttaa pelitilannetta kuvaavan char[][]-taulukon merkkijonoksi.
+     * @param lauta
+     * @return pelitilanne merkkijonona.
+     */
     static String muutaMerkkijonoksi(char[][] lauta) {
-        StringBuilder s = new StringBuilder();
+        char[] merkkijono = new char[lauta.length*lauta.length];
+        int idx = 0;
         for(int i = 0; i < lauta.length; i++){
             for(int j = 0; j < lauta.length; j++){
-                s.append(lauta[i][j]);
+                merkkijono[idx] = lauta[i][j];
+                idx++;
             }
         }
-        return s.toString();
+        return new String(merkkijono);
     }
     
     /**
