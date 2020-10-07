@@ -28,6 +28,11 @@ run {
     standardInput = System.in
 }
 
+test {
+    dependsOn cleanTest
+    testLogging.showStandardStreams = true
+}
+
 checkstyle {
     toolVersion '7.8.1'
     configFile file("checkstyle.xml")

@@ -1,35 +1,42 @@
-package logiikka;
-
+package tehokkuustestit;
 
 import apu.Hakemisto;
 import apu.Lista;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import logiikka.Siirto;
+import org.junit.Test;
 
-/**
- *
- */
 public class Tehokkuustestit {
     
-    public static void main(String[] args) {
+    @Test
+    public void testiraportti() {
         listaTestit();
-        hakemistoTestit();
+        hakemistoHajautustesti();
     }
     
-    private static void listaTestit() {
-        System.out.println("LISAAMINEN:");
+    //BOTIN TEHOKKUUSTESTIT
+    
+    
+    
+    //LISTAN TEHOKKUUSTESTIT
+    
+    private void listaTestit() {
+        System.out.println("LISTAN TESTIT");
+        System.out.println("");
+        System.out.println("LISTAAN LISAAMINEN:");
         listaLisaaTesti(10000);
         listaLisaaTesti(100000);
         listaLisaaTesti(1000000);
         System.out.println("");
-        System.out.println("JARJESTAMINEN");
+        System.out.println("LISTAN JARJESTAMINEN");
         listaJarjestaTesti(10000);
         listaJarjestaTesti(100000);
         listaJarjestaTesti(1000000);
     }
     
-    private static void listaLisaaTesti(int n) {
+    private void listaLisaaTesti(int n) {
         double listaka = 0;
         double javalistaka = 0;
         for(int i = 0; i < 100; i++){
@@ -44,7 +51,7 @@ public class Tehokkuustestit {
         System.out.println("");
     }
     
-    private static void listaJarjestaTesti(int n) {
+    private void listaJarjestaTesti(int n) {
         double listaka = 0;
         double javalistaka = 0;
         for(int i = 0; i < 10; i++){
@@ -59,7 +66,7 @@ public class Tehokkuustestit {
         System.out.println("");
     }
     
-    private static double[] listaLisaaVertailu(int n) {
+    private double[] listaLisaaVertailu(int n) {
         Lista<Siirto> lista = new Lista();
         long alku = System.nanoTime();
         for(int i = 0; i < n; i++){
@@ -82,7 +89,7 @@ public class Tehokkuustestit {
         return tulokset;
     }
     
-    private static double[] listaJarjestaVertailu(int n) {
+    private double[] listaJarjestaVertailu(int n) {
         Random r = new Random();
         r.setSeed(1337);
         
@@ -117,12 +124,13 @@ public class Tehokkuustestit {
         tulokset[1] = aikaJavalista;
         return tulokset;
     }
-
-    private static void hakemistoTestit() {
-        hakemistoHajautusTesti();
-    }
     
-    private static void hakemistoHajautusTesti() {
+    //HAKEMISTON TEHOKKUUSTESTIT
+    
+    private void hakemistoHajautustesti() {
+        System.out.println("HAKEMISTON TESTIT");
+        System.out.println("");
+        System.out.println("Hajautuksen tehokkuus:");
         System.out.println("Pisimman listan pituus / hakemistossa olevat alkiot.");
         System.out.println(hajautusArvio(1000) + " / 1000");
         System.out.println(hajautusArvio(10000) + " / 10000");
@@ -131,7 +139,7 @@ public class Tehokkuustestit {
         System.out.println(hajautusArvio(500000) + " / 500000");
     }
     
-    private static int hajautusArvio(int n) {
+    private int hajautusArvio(int n) {
         Random r = new Random();
         Hakemisto h = new Hakemisto();
         for(int i = 0; i < n; i++){

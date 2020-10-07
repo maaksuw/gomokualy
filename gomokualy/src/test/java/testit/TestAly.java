@@ -1,3 +1,5 @@
+package testit;
+
 
 import logiikka.Aly;
 import org.junit.Test;
@@ -225,7 +227,6 @@ public class TestAly {
         lauta[pituus/2 - 1][pituus/2 + 1] = 'X';
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
-        tulostaLauta();
         assertTrue(lauta[pituus/2][pituus/2] == 'O');
     }
     
@@ -236,7 +237,6 @@ public class TestAly {
         lauta[pituus/2][pituus/2 - 1] = 'X';
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
-        tulostaLauta();
         assertTrue(lauta[pituus/2][pituus/2] == 'O');
     }
     
@@ -247,7 +247,6 @@ public class TestAly {
         lauta[pituus/2][pituus/2] = 'X';
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
-        tulostaLauta();
         assertTrue(lauta[pituus/2][pituus/2 + 1] == 'O');
     }
     
@@ -258,7 +257,6 @@ public class TestAly {
         lauta[pituus/2][pituus/2 + 1] = 'X';
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
-        tulostaLauta();
         assertTrue(lauta[pituus/2][pituus/2] == 'O');
     }
     
@@ -269,7 +267,6 @@ public class TestAly {
         lauta[pituus/2 + 1][pituus/2 - 1] = 'X';
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
-        tulostaLauta();
         assertTrue(lauta[pituus/2][pituus/2] == 'O');
     }
     
@@ -280,7 +277,6 @@ public class TestAly {
         lauta[pituus/2 + 1][pituus/2] = 'X';
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
-        tulostaLauta();
         assertTrue(lauta[pituus/2][pituus/2] == 'O');
     }
     
@@ -291,7 +287,6 @@ public class TestAly {
         lauta[pituus/2 + 1][pituus/2 + 1] = 'X';
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
-        tulostaLauta();
         assertTrue(lauta[pituus/2][pituus/2] == 'O');
     }
 }

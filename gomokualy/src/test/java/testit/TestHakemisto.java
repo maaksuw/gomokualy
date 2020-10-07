@@ -1,3 +1,5 @@
+package testit;
+
 
 import apu.Hakemisto;
 import org.junit.Test;

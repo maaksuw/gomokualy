@@ -1,10 +1,9 @@
 
 package logiikka;
 
+import apu.Hakemisto;
+import apu.Lista;
 import apu.Matikka;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * Pelin tekoäly.
@@ -12,7 +11,7 @@ import java.util.HashMap;
 
 public class Aly {
     
-    private HashMap<String, Integer> varasto;
+    private Hakemisto varasto;
     private int[][] suunnat;
     private char botinMerkki;
     private int pituus;
@@ -22,12 +21,10 @@ public class Aly {
     private final int aareton;
     private int[] koordinaatit;
     
-    private long askel;
-    
     public Aly() {
-        varasto = new HashMap<>();
+        varasto = new Hakemisto();
         suunnat = new int[4][4];
-        Lauta.alustaSuunnat(suunnat);
+        Pelilauta.alustaSuunnat(suunnat);
         sade = 2;
         syvyys = 6;
         aareton = 1000000000;
@@ -103,14 +100,10 @@ public class Aly {
      */
     public int[] teeSiirto(char[][] lauta) {
         if(ekaSiirto) return ekaSiirto(lauta);
-        varasto.clear();
+        varasto.tyhjenna();
         int alpha = -aareton;
         int beetta = aareton;
-        askel = 0;
         arvioi(1, 1, lauta, alpha, beetta);
-//        System.out.println(koordinaatit[0]);
-//        System.out.println(koordinaatit[1]);
-        System.out.println(askel);
         return koordinaatit;
     }
     
@@ -131,41 +124,35 @@ public class Aly {
         else sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';
         
         if (taso == syvyys) {
-            String tilanne = Lauta.muutaMerkkijonoksi(lauta);
-            if(varasto.containsKey(tilanne)) return varasto.get(tilanne);
+            String tilanne = Pelilauta.muutaMerkkijonoksi(lauta);
+            if(varasto.onkoAvainta(tilanne)) return varasto.hae(tilanne);
             int arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
-            varasto.put(tilanne, arvio);
-            askel++;
+            varasto.lisaa(tilanne, arvio);
             return arvio;
         }
         
-        ArrayList<Siirto> siirrot = new ArrayList<>();
+        Lista<Siirto> siirrot = new Lista<>();
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
                 if (potentiaalinenSiirto(i, j, lauta)) {
                     lauta[i][j] = sijoitettavaMerkki;
                     int arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
-                    siirrot.add(new Siirto(arvio, i, j));
+                    siirrot.lisaa(new Siirto(arvio, i, j));
                     lauta[i][j] = '+';
                 }
             }
         }
         
-        Collections.sort(siirrot);
-        if(minimax == 1) Collections.reverse(siirrot);
+        siirrot.jarjesta();
+        if(minimax == 1) siirrot.kaanna();
         
-//        if(taso == 1){
-//            for(Siirto k: siirrot){
-//                System.out.println(k);
-//            }
-//        }
-
         int tulos = (minimax == 1) ? -aareton - 1: aareton + 1;
-        for(Siirto s: siirrot){
+        for(int u = 0; u < siirrot.pituus(); u++){
+            Siirto s = siirrot.hae(u);
             int i = s.getX();
             int j = s.getY();
             lauta[i][j] = sijoitettavaMerkki;
-            String tilanne = Lauta.muutaMerkkijonoksi(lauta);
+            String tilanne = Pelilauta.muutaMerkkijonoksi(lauta);
             if (minimax == 1) {
                 if(onkoVoittoa(i, j, lauta)) {
                     if(taso == 1){
@@ -176,11 +163,10 @@ public class Aly {
                     return aareton;
                 }
                 int arvio = 0;
-                if(varasto.containsKey(tilanne)) arvio = varasto.get(tilanne);
+                if(varasto.onkoAvainta(tilanne)) arvio = varasto.hae(tilanne);
                 else {
                     arvio = arvioi(0, taso + 1, lauta, alfa, beetta);
-                    varasto.put(tilanne, arvio);
-                    askel++;
+                    varasto.lisaa(tilanne, arvio);
                 }
                 if(arvio > tulos){
                     tulos = arvio;
@@ -200,11 +186,10 @@ public class Aly {
                     return -aareton;
                 }
                 int arvio = 0;
-                if(varasto.containsKey(tilanne)) arvio = varasto.get(tilanne);
+                if(varasto.onkoAvainta(tilanne)) arvio = varasto.hae(tilanne);
                 else {
                     arvio = arvioi(1, taso + 1, lauta, alfa, beetta);
-                    varasto.put(tilanne, arvio);
-                    askel++;
+                    varasto.lisaa(tilanne, arvio);
                 }
                 tulos = Matikka.min(tulos, arvio);
                 if(tulos <= alfa) {

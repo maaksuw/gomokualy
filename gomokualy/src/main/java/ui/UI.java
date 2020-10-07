@@ -3,7 +3,7 @@ package ui;
 
 import java.util.Scanner;
 import logiikka.Aly;
-import logiikka.Lauta;
+import logiikka.Pelilauta;
 
 /**
  * Pelin tekstikäyttöliittymä.
@@ -41,7 +41,7 @@ public class UI {
      */
     public void kaynnista() {
         
-        Lauta p = new Lauta();
+        Pelilauta p = new Pelilauta();
         aloitusKonfiguraatio(p);
         boolean lopetetaan = false;
         boolean tyhjaLauta = true;
@@ -132,7 +132,7 @@ public class UI {
      * Kysyy pelilaudan koon, haluaako käyttäjä pelata bottia vai ihmistä vastaan ja kuka aloittaa.
      * @param p Pelilauta.
      */
-    private void aloitusKonfiguraatio(Lauta p) {
+    private void aloitusKonfiguraatio(Pelilauta p) {
         System.out.println("Tervetuloa Gomoku-peliin.");
         System.out.println("Minkä kokoisella laudalla haluat pelata?");
         System.out.println("1) 19 x 19      2) 15 x 15");

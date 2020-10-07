@@ -12,10 +12,9 @@ public class Main {
             //*Tunnista pakottavat siirrot ja tutki vain ne
             //*Laita pohjaheuristiikka tunnistamaan hajonneen avoimen kolmen
         //Tietorakenteet
-            //*Ota käyttöön Lista ja Hakemisto
-            //*Hommaudu eroon Lauta-luokan StringBuilderistä
+            //*Hommaudu eroon Pelilauta-luokan StringBuilderistä
         //Testit
-            //*Selvitä miten tehokkuustesti-luokan saa toimimaan testipakkauksessa
+            //*Tee tehokkuustestit botille
         //Muuta
             //*Github-dokumentaatio kuntoon
         

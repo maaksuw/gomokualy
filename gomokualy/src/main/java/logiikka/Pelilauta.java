@@ -5,7 +5,7 @@ package logiikka;
  * Pelilauta.
  */
 
-public class Lauta {
+public class Pelilauta {
     
     private int pituus;
     private char[][] lauta;
@@ -13,7 +13,7 @@ public class Lauta {
     private int vuorossa;
     private int vuoroja;
     
-    public Lauta() {
+    public Pelilauta() {
         pituus = 19;
         lauta = new char[pituus][pituus];
         suunnat = new int[4][4];
@@ -49,7 +49,7 @@ public class Lauta {
      * Metodi muuttaa annetun Gomoku-pelilaudan kirjaimen ohjelman käyttämän taulukon y-koordinaatiksi.
      * @param ykoordinaatti Gomoku-pelilaudan kirjain.
      * @return annettua kirjainta vastaava luku väliltä 0 - pituus.
-     * @see Lauta#pituus
+     * @see Pelilauta#pituus
      */
     public int muutaYKoordinaattiNumeroksi(String ykoordinaatti) {
         int y = ykoordinaatti.charAt(0) - 64;
@@ -60,7 +60,7 @@ public class Lauta {
      * Metodi muuttaa annetun Gomoku-pelilaudan numeron ohjelman käyttämän taulukon x-koordinaatiksi.
      * @param xkoordinaatti Gomoku-pelilaudan numero.
      * @return annettua numeroa vastaava luku väliltä 0 - pituus.
-     * @see Lauta#pituus
+     * @see Pelilauta#pituus
      */
     public int muutaXKoordinaattiNumeroksi(String xkoordinaatti) {
         int x = Integer.valueOf(xkoordinaatti);
