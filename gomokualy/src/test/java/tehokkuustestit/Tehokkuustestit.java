@@ -5,20 +5,104 @@ import apu.Lista;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import logiikka.Aly;
 import logiikka.Siirto;
 import org.junit.Test;
 
 public class Tehokkuustestit {
     
+    private void tulostaLauta(int pituus, char[][] lauta) {
+        for(int i = 0; i < pituus; i++){
+            for(int j = 0; j < pituus; j++){
+                System.out.print(lauta[i][j] + " ");
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+    }
+    
     @Test
     public void testiraportti() {
+        System.out.println("TEHOKKUUSTESTIT"
+                + "Suoritetaan tekoälyn ja tietorakenteiden tehokkuustestit.");
+        System.out.println("");
+        bottiTestit();
         listaTestit();
         hakemistoHajautustesti();
     }
     
     //BOTIN TEHOKKUUSTESTIT
     
+    private void bottiTestit() {
+        System.out.println("BOTIN TESTIT");
+        System.out.println("");
+        System.out.println("Odota hetki, botti pelaa yhden esimerkkipelin...");
+        System.out.println("Keskimaarainen siirtoaika:");
+        double[] tulokset = esimerkkiPeli();
+        System.out.println(tulokset[0]);
+        System.out.println("Pisin odotusaika:");
+        System.out.println(tulokset[1]);
+        System.out.println("");
+    }
     
+    private void teeSiirto(Aly botti, char[][] lauta, int[] koordinaatit, ArrayList<Double> tulokset) {
+        long alku = System.nanoTime();
+        koordinaatit = botti.teeSiirto(lauta);
+        long loppu = System.nanoTime();
+        tulokset.add((loppu - alku)/1e9);
+        lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
+    }
+    
+    private double[] esimerkkiPeli() {
+        ArrayList<Double> tulokset = new ArrayList<>();
+        int[] koordinaatit = new int[2];
+        Aly botti = new Aly();
+        int pituus = 15;
+        botti.setPituus(pituus);
+        botti.setMerkki(1);
+        char[][] lauta = new char[15][15];
+        for(int i = 0; i < pituus; i++){
+            for(int j = 0; j < pituus; j++){
+                lauta[i][j] = '+';
+            }
+        }
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[7][8] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[8][8] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[8][7] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[9][5] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[6][9] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[7][6] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[6][4] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[4][7] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[4][8] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[4][5] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[5][8] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        lauta[5][6] = 'O';
+        teeSiirto(botti, lauta, koordinaatit, tulokset);
+        double tulos = 0;
+        double max = 0;
+        for(Double d: tulokset){
+            max = Math.max(max, d);
+            tulos += d;
+        }
+        tulos /= 12;
+        double[] palautus = new double[2];
+        palautus[0] = tulos;
+        palautus[1] = max;
+        return palautus;
+    }
     
     //LISTAN TEHOKKUUSTESTIT
     
