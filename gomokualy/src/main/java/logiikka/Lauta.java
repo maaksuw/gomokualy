@@ -16,11 +16,10 @@ public class Lauta {
     public Lauta() {
         pituus = 19;
         lauta = new char[pituus][pituus];
-        suunnat = new int[4][4];
+        suunnat = new int[][]{{0, 1, 0, -1}, {1, 0, -1, 0}, {-1, -1, 1, 1}, {-1, 1, 1, -1}};
         alustaLauta();
         vuorossa = 1;
         vuoroja = 0;
-        alustaSuunnat(suunnat);
     }
     
     /**
@@ -31,6 +30,10 @@ public class Lauta {
         alustaLauta();
         vuorossa = 1;
         vuoroja = 0;
+    }
+
+    public int getPituus() {
+        return pituus;
     }
 
     public void setPituus(int pituus) {
@@ -200,33 +203,6 @@ public class Lauta {
             }
         }
         return new String(merkkijono);
-    }
-    
-    /**
-     * Alustaa listaan koordinaatit neljälle eri suunnalle, vaaka, pysty, vinovasen ja vino-oikea.
-     * Näitä suuntia käytetään yksinkertaistamaan laudan käsittelyä.
-     * @param suunnat
-     */
-    public static void alustaSuunnat(int[][] suunnat){
-        suunnat[0][0] = 0;
-        suunnat[0][1] = 1;
-        suunnat[0][2] = 0;
-        suunnat[0][3] = -1;
-        
-        suunnat[1][0] = 1;
-        suunnat[1][1] = 0;
-        suunnat[1][2] = -1;
-        suunnat[1][3] = 0;
-        
-        suunnat[2][0] = -1;
-        suunnat[2][1] = -1;
-        suunnat[2][2] = 1;
-        suunnat[2][3] = 1;
-        
-        suunnat[3][0] = -1;
-        suunnat[3][1] = 1;
-        suunnat[3][2] = 1;
-        suunnat[3][3] = -1;
     }
     
     //TESTI-METODIT

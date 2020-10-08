@@ -16,18 +16,17 @@ public class Aly {
     private char botinMerkki;
     private int pituus;
     private boolean ekaSiirto;
-    private final int sade;
-    private final int syvyys;
-    private final int aareton;
+    private final int SADE;
+    private final int SYVYYS;
+    private final int AARETON;
     private int[] koordinaatit;
     
     public Aly() {
         varasto = new Hakemisto();
-        suunnat = new int[4][4];
-        Lauta.alustaSuunnat(suunnat);
-        sade = 2;
-        syvyys = 6;
-        aareton = 1000000000;
+        suunnat = new int[][]{{0, 1, 0, -1}, {1, 0, -1, 0}, {-1, -1, 1, 1}, {-1, 1, 1, -1}};
+        SADE = 2;
+        SYVYYS = 6;
+        AARETON = 1000000000;
         ekaSiirto = true;
         koordinaatit = new int[2];
     }
@@ -101,8 +100,8 @@ public class Aly {
     public int[] teeSiirto(char[][] lauta) {
         if(ekaSiirto) return ekaSiirto(lauta);
         varasto.tyhjenna();
-        int alpha = -aareton;
-        int beetta = aareton;
+        int alpha = -AARETON;
+        int beetta = AARETON;
         arvioi(1, 1, lauta, alpha, beetta);
         return koordinaatit;
     }
@@ -123,7 +122,7 @@ public class Aly {
         if(botinMerkki == 'X') sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
         else sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';
         
-        if (taso == syvyys) {
+        if (taso == SYVYYS) {
             String tilanne = Lauta.muutaMerkkijonoksi(lauta);
             if(varasto.onkoAvainta(tilanne)) return varasto.hae(tilanne);
             int arvio = pohjaHeuristiikka(lauta, sijoitettavaMerkki);
@@ -146,28 +145,33 @@ public class Aly {
         siirrot.jarjesta();
         if(minimax == 1) siirrot.kaanna();
         
-        int tulos = (minimax == 1) ? -aareton - 1: aareton + 1;
+        int tulos = (minimax == 1) ? -AARETON - 1: AARETON + 1;
         for(int u = 0; u < siirrot.pituus(); u++){
+            
             Siirto s = siirrot.hae(u);
             int i = s.getX();
             int j = s.getY();
             lauta[i][j] = sijoitettavaMerkki;
             String tilanne = Lauta.muutaMerkkijonoksi(lauta);
+            
             if (minimax == 1) {
+                
                 if(onkoVoittoa(i, j, lauta)) {
                     if(taso == 1){
                         koordinaatit[0] = i;
                         koordinaatit[1] = j;
                     }
                     lauta[i][j] = '+';
-                    return aareton;
+                    return AARETON;
                 }
+                
                 int arvio = 0;
                 if(varasto.onkoAvainta(tilanne)) arvio = varasto.hae(tilanne);
                 else {
                     arvio = arvioi(0, taso + 1, lauta, alfa, beetta);
                     varasto.lisaa(tilanne, arvio);
                 }
+                
                 if(arvio > tulos){
                     tulos = arvio;
                     if(taso == 1){
@@ -180,11 +184,14 @@ public class Aly {
                     return tulos;
                 }
                 if(tulos > alfa) alfa = tulos;
+                
             } else {
+                
                 if(onkoVoittoa(i, j, lauta)) {
                     lauta[i][j] = '+';
-                    return -aareton;
+                    return -AARETON;
                 }
+                
                 int arvio = 0;
                 if(varasto.onkoAvainta(tilanne)) arvio = varasto.hae(tilanne);
                 else {
@@ -192,11 +199,13 @@ public class Aly {
                     varasto.lisaa(tilanne, arvio);
                 }
                 tulos = Matikka.min(tulos, arvio);
+                
                 if(tulos <= alfa) {
                     lauta[i][j] = '+';
                     return tulos;
                 }
                 if(tulos < beetta) beetta = tulos;
+                
             }
             lauta[i][j] = '+';
         }
@@ -238,8 +247,6 @@ public class Aly {
         int[] vastaus = new int[5];
         boolean avoinNelja = false;
         boolean avoinNeljaVastustajalla = false;
-        boolean voitto = false;
-        boolean vastustajaVoittaa = false;
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
                 if (lauta[i][j] == botinMerkki) {
@@ -256,34 +263,41 @@ public class Aly {
                     for(int k = 0; k < 4; k++){
                         laskePisinSuora(i, j, suunnat[k], lauta, vastaus);
                         uhkaarvio(vastaus, lauta, false, tilasto, i, j);
-                        tulos += tilasto[8];
+                        tulos -= tilasto[8];
                         tilasto[8] = 0;
                     }
                     
                 }
             }
         }
-        if(tilasto[7] > 0) voitto = true;
+        
+        if(tilasto[7] > 0) return AARETON;
         if(tilasto[6] > 0) avoinNelja = true;
-        if(tilasto[15] > 0) vastustajaVoittaa = true;
+        if(tilasto[15] > 0) return -AARETON;
         if(tilasto[14] > 0) avoinNeljaVastustajalla = true;
         
-        if(vastustajaVoittaa) return -aareton;
-        if(voitto) return aareton;
-        
-        if(avoinNeljaVastustajalla && !avoinNelja) return -aareton + 1;
-        if(avoinNelja && !avoinNeljaVastustajalla) return aareton - 1;
+        if(avoinNeljaVastustajalla && !avoinNelja) return -AARETON + 1;
+        if(avoinNelja && !avoinNeljaVastustajalla) return AARETON - 1;
         if(avoinNelja && avoinNeljaVastustajalla){
-            if(vuoro == botinMerkki) return aareton - 1;
-            else return -aareton + 1;
+            if(vuoro == botinMerkki) return AARETON - 1;
+            else return -AARETON + 1;
         }
         
+        return tulos + laskeTulos(tilasto);
+    }
+    
+    /**
+     * Pisteytt‰‰ pelitilanteen muut kuin nelj‰n ja viidensuorat.
+     * @param tilasto
+     * @return tulos
+     */
+    private int laskeTulos(int[] tilasto) {
         for(int i = 0; i < tilasto.length; i++){
             if(i == 1 || i == 2 || i == 9 || i == 10) tilasto[i] /= 2;
             if(i == 3 || i == 4 || i == 11 || i == 12) tilasto[i] /= 3;
             if(i == 5 || i == 13) tilasto[i] /= 4;
         }
-        tulos = tilasto[1] * 10 - tilasto[9] * 10 + tilasto[2] * 50 - tilasto[10] * 50 + tilasto[3] * 100 - tilasto[11] * 100 
+        int tulos = tilasto[1] * 10 - tilasto[9] * 10 + tilasto[2] * 50 - tilasto[10] * 50 + tilasto[3] * 100 - tilasto[11] * 100 
                 + tilasto[4] * 1000 - tilasto[12] * 1000 + tilasto[5] * 1000 - tilasto[13] * 1000;
         return tulos;
     }
@@ -326,6 +340,7 @@ public class Aly {
     /**
      * Metodi saa parametrina laskePisinSuora-metodin tulostaulukon ja kertoo sen sis‰llˆn perusteella, mink‰lainen uhka taulukossa kuvailtu suora on.
      * Vastaus kirjoitetaan parametrina saatavaan tilasto-taulukkoon, jossa eri uhat on luokiteltuna.
+     * Uhka tarkoittaa siis pelin termeill‰ esimerkiksi avointa kolmen suoraa tai puoliavointa nelj‰n suoraa.
      * @param suora arvioitavan suoran tiedot.
      * @param lauta pelilauta char[][]-taulukkona.
      * @param botti true, jos kyseess‰ on botin oma uhka ja false muuten.
@@ -391,14 +406,14 @@ public class Aly {
      * @param y koordinaatti
      * @param lauta pelilauta char[][]-taulukkona.
      * @return true, jos s‰teen sis‰ll‰ annetuista koordinaateista on toinen nappula, false muuten.
-     * @see Aly#sade
+     * @see Aly#SADE
      */
     private boolean potentiaalinenSiirto(int x, int y, char[][] lauta) {
         if(lauta[x][y] != '+') return false;
-        int mistax = Matikka.max(0, x - sade);
-        int mihinx = Matikka.min(x + sade, pituus - 1);
-        int mistay = Matikka.max(0, y - sade);
-        int mihiny = Matikka.min(y + sade, pituus - 1);
+        int mistax = Matikka.max(0, x - SADE);
+        int mihinx = Matikka.min(x + SADE, pituus - 1);
+        int mistay = Matikka.max(0, y - SADE);
+        int mihiny = Matikka.min(y + SADE, pituus - 1);
         for (int i = mistax; i <= mihinx; i++) {
             for (int j = mistay; j <= mihiny; j++) {
                 if (lauta[i][j] != '+') return true;

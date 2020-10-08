@@ -11,15 +11,14 @@ public class Main {
         //Teko‰ly
             //*Tunnista pakottavat siirrot ja tutki vain ne
             //*Laita pohjaheuristiikka tunnistamaan hajonneen avoimen kolmen
-        //Testit
-            //*Tee tehokkuustestit botille
+            //*Koita syvent‰‰ hakua viel‰, principal variation search?
         //Muuta
             //*Github-dokumentaatio kuntoon
+            //*Checkstyle kuntoon ja tarksta jacoco
         
         Scanner s = new Scanner(System.in);
         UI ui = new UI(s);
         ui.kaynnista();
-
     }
     
 }
