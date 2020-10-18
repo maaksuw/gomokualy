@@ -98,8 +98,8 @@ public class Lauta {
         boolean onVoitto = false;
         char merkki = 'X';
         if (vuorossa == 0) merkki = 'O';
-        for(int i = 0; i < 4; i++){
-            if(laskePisinSuora(x, y, suunnat[i], merkki) >= 5) onVoitto = true;
+        for (int i = 0; i < 4; i++) {
+            if (laskePisinSuora(x, y, suunnat[i], merkki) >= 5) onVoitto = true;
         }
         if (onVoitto) {
             if (vuorossa == 1) tulos = "Musta voitti pelin!";
@@ -123,18 +123,18 @@ public class Lauta {
      * @param merkki pelimerkki, X tai O. Kertoo kumman pelaajan suoraa lasketaan.
      * @return pisimmän annetun suuntaisen suoran pituus.
      */
-    private int laskePisinSuora(int x, int y, int[] suunta, char merkki){
+    private int laskePisinSuora(int x, int y, int[] suunta, char merkki) {
         int summa = 0;
         int alkux = x;
         int alkuy = y;
-        while(alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
+        while (alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki) {
             summa++;
             alkux += suunta[0];
             alkuy += suunta[1];
         }
         alkux = x + suunta[2];
         alkuy = y + suunta[3];
-        while(alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki){
+        while (alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki) {
             summa++;
             alkux += suunta[2];
             alkuy += suunta[3];
@@ -194,10 +194,10 @@ public class Lauta {
      * @return pelitilanne merkkijonona.
      */
     static String muutaMerkkijonoksi(char[][] lauta) {
-        char[] merkkijono = new char[lauta.length*lauta.length];
-        int idx = 0;
-        for(int i = 0; i < lauta.length; i++){
-            for(int j = 0; j < lauta.length; j++){
+        char[] merkkijono = new char[lauta.length * lauta.length];
+        int idx = 0; 
+        for (int i = 0; i < lauta.length; i++) {
+            for (int j = 0; j < lauta.length; j++) {
                 merkkijono[idx] = lauta[i][j];
                 idx++;
             }

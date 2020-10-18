@@ -17,7 +17,7 @@ public class Hakemisto {
     private int kerroin;
     private int alkioita;
     
-    public Hakemisto(){
+    public Hakemisto() {
         koko = 300007;
         kerroin = 31;
         alkioita = 0;
@@ -34,17 +34,17 @@ public class Hakemisto {
         int hajautusarvo = hajautusFunktio(avain);
         Tilanne t = new Tilanne(avain, arvo);
         boolean uusiAvain = true;
-        if(hakemisto[hajautusarvo] == null) hakemisto[hajautusarvo] = new Lista<>();
+        if (hakemisto[hajautusarvo] == null) hakemisto[hajautusarvo] = new Lista<>();
         Lista<Tilanne> l = hakemisto[hajautusarvo];
-        for(int i = 0; i < l.pituus(); i++){
+        for (int i = 0; i < l.pituus(); i++) {
             Tilanne tt = l.hae(i);
-            if(tt.getLauta().equals(avain)){
+            if (tt.getLauta().equals(avain)) {
                 uusiAvain = false;
                 tt.setArvo(arvo);
                 break;
             }
         }
-        if(uusiAvain) {
+        if (uusiAvain) {
             l.lisaa(t);
             alkioita++;
         }
@@ -53,8 +53,8 @@ public class Hakemisto {
     private int hajautusFunktio(String avain) {
         int x = 0;
         int n = avain.length();
-        for(int i = 0; i < n; i++){
-            x = (x*kerroin + avain.charAt(i))%koko;
+        for (int i = 0; i < n; i++) {
+            x = (x * kerroin + avain.charAt(i)) % koko;
             
         }
         return x;
@@ -63,10 +63,10 @@ public class Hakemisto {
     public Integer hae(String avain) {
         int hajautusarvo = hajautusFunktio(avain);
         Lista<Tilanne> l = hakemisto[hajautusarvo];
-        if(l == null) return null;
-        for(int i = 0; i < l.pituus(); i++){
+        if (l == null) return null;
+        for (int i = 0; i < l.pituus(); i++) {
             Tilanne t = l.hae(i);
-            if(t.getLauta().equals(avain)) return t.getArvo();
+            if (t.getLauta().equals(avain)) return t.getArvo();
         }
         return null;
     }
@@ -74,10 +74,10 @@ public class Hakemisto {
     public boolean onkoAvainta(String avain) {
         int hajautusarvo = hajautusFunktio(avain);
         Lista<Tilanne> l = hakemisto[hajautusarvo];
-        if(l == null) return false;
-        for(int i = 0; i < l.pituus(); i++){
+        if (l == null) return false;
+        for (int i = 0; i < l.pituus(); i++) {
             Tilanne t = l.hae(i);
-            if(t.getLauta().equals(avain)) return true;
+            if (t.getLauta().equals(avain)) return true;
         }
         return false;
     }
@@ -87,7 +87,7 @@ public class Hakemisto {
     }
     
     public void tyhjenna() {
-        for(int i = 0; i < koko; i++){
+        for (int i = 0; i < koko; i++) {
             hakemisto[i] = null;
         }
         alkioita = 0;
@@ -95,8 +95,8 @@ public class Hakemisto {
 
     public int pahinTormays() {
         int max = 0;
-        for(int i = 0; i < koko; i++){
-            if(hakemisto[i] != null) max = Math.max(max, hakemisto[i].pituus());
+        for (int i = 0; i < koko; i++) {
+            if (hakemisto[i] != null) max = Math.max(max, hakemisto[i].pituus());
         }
         return max;
     }

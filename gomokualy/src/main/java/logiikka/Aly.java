@@ -21,6 +21,8 @@ public class Aly {
     private final int AARETON;
     private int[] koordinaatit;
     
+    private long counter;
+    
     public Aly() {
         varasto = new Hakemisto();
         suunnat = new int[][]{{0, 1, 0, -1}, {1, 0, -1, 0}, {-1, -1, 1, 1}, {-1, 1, 1, -1}};
@@ -98,11 +100,13 @@ public class Aly {
      * @return koordinaatit, joihin botti haluaa asettaa nappulansa.
      */
     public int[] teeSiirto(char[][] lauta) {
+        counter = 0;
         if(ekaSiirto) return ekaSiirto(lauta);
         varasto.tyhjenna();
         int alpha = -AARETON;
         int beetta = AARETON;
         arvioi(1, 1, lauta, alpha, beetta);
+        System.out.println("counter: " + counter);
         return koordinaatit;
     }
     
@@ -118,6 +122,7 @@ public class Aly {
      * @see Aly#koordinaatit
      */
     private int arvioi(int minimax, int taso, char[][] lauta, int alfa, int beetta) {
+        counter++;
         char sijoitettavaMerkki;
         if(botinMerkki == 'X') sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
         else sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';

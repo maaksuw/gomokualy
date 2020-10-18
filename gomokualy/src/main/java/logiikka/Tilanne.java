@@ -29,10 +29,10 @@ public class Tilanne implements Comparable<Tilanne> {
     
     @Override
     public boolean equals(Object o) {
-        if(o == null) return false;
-        if(!(o instanceof Tilanne)) return false;
+        if (o == null) return false;
+        if (!(o instanceof Tilanne)) return false;
         Tilanne t = (Tilanne) o;
-        if(t.getArvo() == this.getArvo() && t.getLauta().equals(this.getLauta())) return true;
+        if (t.getArvo() == this.getArvo() && t.getLauta().equals(this.getLauta())) return true;
         return true;
     }
 
@@ -45,7 +45,7 @@ public class Tilanne implements Comparable<Tilanne> {
      */
     @Override
     public int compareTo(Tilanne t) {
-        if(this.arvo - t.arvo < 0) return -1;
+        if (this.arvo - t.arvo < 0) return -1;
         else if (this.arvo - t.arvo > 0) return 1;
         else return 0;
     }

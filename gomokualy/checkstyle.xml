@@ -14,11 +14,10 @@
 
         <module name='EmptyBlock' />
         <module name='LeftCurly' />
-        <!-- <module name='NeedBraces' />  pois ? -->
         <module name='RightCurly' />
         <module name='AvoidNestedBlocks' />
         <module name="NestedIfDepth">
-          <property name="max" value="2"/>
+          <property name="max" value="4"/>
         </module>
         <module name="NestedForDepth">
           <property name="max" value="2"/>
@@ -28,7 +27,7 @@
         <!-- Miscellaneous -->
 
         <module name='Indentation' />
-        <module name="OneStatementPerLine"/> <!-- pois ? -->
+        <module name="OneStatementPerLine"/>
         <module name="MethodLength">
             <property name="tokens" value="METHOD_DEF"/>
             <property name="max" value="100"/>
@@ -39,7 +38,7 @@
 
         <module name='ClassTypeParameterName' />
         <module name='ConstantName' />
-        <module name='LocalFinalVariableName' />
+        <module name='LocalFinalVariableName'>
         <module name='LocalVariableName' />
         <module name='MemberName' />
         <module name='MethodName' />

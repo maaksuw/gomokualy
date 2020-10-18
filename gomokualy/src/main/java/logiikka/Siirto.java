@@ -35,10 +35,10 @@ public class Siirto implements Comparable<Siirto> {
 
     @Override
     public boolean equals(Object o) {
-        if(o == null) return false;
-        if(!(o instanceof Siirto)) return false;
+        if (o == null) return false;
+        if (!(o instanceof Siirto)) return false;
         Siirto s = (Siirto) o;
-        if(s.getArvo() == this.getArvo() && s.getX() == this.getX() && s.getY() == this.getY()) return true;
+        if (s.getArvo() == this.getArvo() && s.getX() == this.getX() && s.getY() == this.getY()) return true;
         return false;
     }
     
