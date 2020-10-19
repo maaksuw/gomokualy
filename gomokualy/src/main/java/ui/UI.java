@@ -59,7 +59,7 @@ public class UI {
         
         while (true) {
             
-            if(!(tyhjaLauta && botinVuoro == true)){
+            if (!(tyhjaLauta && botinVuoro == true)) {
                 lauta.tulostaLauta();
                 lauta.tulostaVuorot();
             }
@@ -119,7 +119,7 @@ public class UI {
                 } else {
                     
                     int[] koordinaatit;
-                    if(botin1Vuoro || bottiIhminen) {
+                    if (botin1Vuoro || bottiIhminen) {
                         koordinaatit = botti1.teeSiirto(lauta.getLauta());
                         botin1Vuoro = false;
                     } else {
@@ -220,13 +220,9 @@ public class UI {
                 }
                 
                 break;
-            } 
-            
-            else if (vastaus.equals("2")) {
+            } else if (vastaus.equals("2")) {
                 break;
-            } 
-            
-            else if (vastaus.equals("3")){
+            } else if (vastaus.equals("3")) {
                 botti1 = new Aly();
                 botti2 = new Aly();
                 botti1.setPituus(lauta.getPituus());
@@ -236,9 +232,7 @@ public class UI {
                 botinVuoro = true;
                 botin1Vuoro = true;
                 break;
-            } 
-            
-            else System.out.println("Syötä jonkin yllä näkyvän vaihtoehdon numero:");
+            } else System.out.println("Syötä jonkin yllä näkyvän vaihtoehdon numero:");
         }
     }
     
