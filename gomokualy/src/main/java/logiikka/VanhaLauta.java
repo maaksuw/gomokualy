@@ -5,82 +5,114 @@ package logiikka;
  * Pelilauta.
  */
 
-public class Lauta {
+public class VanhaLauta {
     
     private int pituus;
     private char[][] lauta;
     private int[][] suunnat;
-    private char vuorossa;
+    private int vuorossa;
     private int vuoroja;
-    private boolean tasapeli;
     
-    public Lauta() {
-        pituus = 15;
+    public VanhaLauta() {
+        pituus = 19;
         lauta = new char[pituus][pituus];
         suunnat = new int[][]{{0, 1, 0, -1}, {1, 0, -1, 0}, {-1, -1, 1, 1}, {-1, 1, 1, -1}};
         alustaLauta();
-        vuorossa = 'X';
+        vuorossa = 1;
         vuoroja = 0;
-        tasapeli = false;
     }
-
-    public boolean getTasapeli() {
-        return tasapeli;
+    
+    /**
+     * Metodi, joka alustaa pelilaudan aloitustilanteeseen, kun pelaaja haluaa aloittaa uuden pelin ilman ett‰ ohjelma suljetaan v‰liss‰.
+     */
+    public void alustaPeli() {
+        pituus = 19;
+        alustaLauta();
+        vuorossa = 1;
+        vuoroja = 0;
     }
 
     public int getPituus() {
         return pituus;
     }
 
+    public void setPituus(int pituus) {
+        this.pituus = pituus;
+    }
+
     public char[][] getLauta() {
         return lauta;
     }
 
-    public char getVuoro() {
+    public int getVari() {
         return vuorossa;
     }
     
     /**
-     * Sijoittaa vuorossa olevan pelaajan merkin laudalle annettuihin koordinaatteihin.
-     * @param x koordinaatti.
-     * @param y koordinaatti.
-     * @return true, jos peli p‰‰ttyi ja false, jos peli jatkuu.
+     * Metodi muuttaa annetun Gomoku-pelilaudan kirjaimen ohjelman k‰ytt‰m‰n taulukon y-koordinaatiksi.
+     * @param ykoordinaatti Gomoku-pelilaudan kirjain.
+     * @return annettua kirjainta vastaava luku v‰lilt‰ 0 - pituus.
+     * @see VanhaLauta#pituus
      */
-    public boolean sijoita(int x, int y) {
-        lauta[x][y] = vuorossa;
-        vuoroja++;
-        int tulos = tarkistaVoitto(x, y);
-        if(tulos >= 0) {
-            if(tulos == 0) tasapeli = true;
-            return true;
-        }
-        vaihdaVuoro();
-        return false;
-    }
-    
-    private void vaihdaVuoro() {
-        if(vuorossa == 'X') vuorossa = 'O';
-        else vuorossa = 'X';
+    public int muutaYKoordinaattiNumeroksi(String ykoordinaatti) {
+        int y = ykoordinaatti.charAt(0) - 64;
+        return y - 1;
     }
     
     /**
-     * Tarkistaa, onko annettu siirto lopettanut pelin.
+     * Metodi muuttaa annetun Gomoku-pelilaudan numeron ohjelman k‰ytt‰m‰n taulukon x-koordinaatiksi.
+     * @param xkoordinaatti Gomoku-pelilaudan numero.
+     * @return annettua numeroa vastaava luku v‰lilt‰ 0 - pituus.
+     * @see VanhaLauta#pituus
+     */
+    public int muutaXKoordinaattiNumeroksi(String xkoordinaatti) {
+        int x = Integer.valueOf(xkoordinaatti);
+        return pituus - x;
+    }
+    
+    /**
+     * Sijoittaa vuorossa olevan pelaajan merkin laudalle annettuihin koordinaatteihin ja vaihtaa vuoroa.
      * @param x koordinaatti.
      * @param y koordinaatti.
-     * @return -1, jos jatketaan peli‰, 1, jos peli p‰‰ttyi ja 0 jos tuli tasapeli.
+     * @return true, jos siirto onnistui ja false, jos koordinaateissa on jo pelimerkki.
      */
-    private int tarkistaVoitto(int x, int y) {
-        boolean voitto = false;
-        char merkki = lauta[x][y];
+    public boolean sijoita(int x, int y) {
+        if (lauta[x][y] == '+') {
+            if (vuorossa == 1) lauta[x][y] = 'X';
+            if (vuorossa == 0) lauta[x][y] = 'O';
+            vuoroja++;
+            return true;
+        } 
+        return false;
+    }
+    
+    /**
+     * Tarkistaa, onko annettu siirto aiheuttanut pelilaudalle voiton.
+     * Lauta tarkistaa jokaisen siirron j‰lkeen, p‰‰ttyikˆ peli ja ilmoittaa tuloksen, jos peli p‰‰ttyi.
+     * @param x koordinaatti.
+     * @param y koordinaatti.
+     * @return merkkijono, joka kertoo jatketaanko peli‰, onko tilanne tasapeli vai kumpi pelaaja voitti.
+     */
+    public String tarkistaVoitto(int x, int y) {
+        String tulos = "Jatketaan.";
+        boolean onVoitto = false;
+        char merkki = 'X';
+        if (vuorossa == 0) merkki = 'O';
         for (int i = 0; i < 4; i++) {
-            if (laskePisinSuora(x, y, suunnat[i], merkki) >= 5) {
-                voitto = true;
-                break;
-            }
+            if (laskePisinSuora(x, y, suunnat[i], merkki) >= 5) onVoitto = true;
         }
-        if (voitto) return 1;
-        else if (vuoroja == pituus * pituus) return 0;
-        return -1;
+        if (onVoitto) {
+            if (vuorossa == 1) tulos = "Musta voitti pelin!";
+            else tulos = "Valkoinen voitti pelin!";
+            return tulos;
+        } else if (vuoroja == pituus * pituus) {
+            tulos = "Tasapeli!";
+            return tulos;
+        } else {
+            if (vuorossa == 1) vuorossa--;
+            else vuorossa++;
+        }
+        return tulos;
     }
     
     /**
@@ -95,14 +127,14 @@ public class Lauta {
         int summa = 0;
         int alkux = x;
         int alkuy = y;
-        while (laudalla(alkux, alkuy) && lauta[alkux][alkuy] == merkki) {
+        while (alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki) {
             summa++;
             alkux += suunta[0];
             alkuy += suunta[1];
         }
         alkux = x + suunta[2];
         alkuy = y + suunta[3];
-        while (laudalla(alkux, alkuy) && lauta[alkux][alkuy] == merkki) {
+        while (alkux >= 0 && alkux < pituus && alkuy >= 0 && alkuy < pituus && lauta[alkux][alkuy] == merkki) {
             summa++;
             alkux += suunta[2];
             alkuy += suunta[3];
@@ -119,11 +151,6 @@ public class Lauta {
                 lauta[i][j] = '+';
             }
         }
-    }
-    
-    private boolean laudalla(int x, int y) {
-        if (x >= 0 && x < pituus && y >= 0 && y < pituus) return true;
-        return false;
     }
     
     /**
@@ -154,6 +181,14 @@ public class Lauta {
     }
     
     /**
+     * Tulostaa kumman pelaajan vuoro on, mustan vai valkoisen.
+     */
+    public void tulostaVuorot() {
+        if (vuorossa == 1) System.out.println("Vuorossa: MUSTA");
+        else System.out.println("Vuorossa: VALKOINEN");
+    }
+    
+    /**
      * Muuttaa pelitilannetta kuvaavan char[][]-taulukon merkkijonoksi.
      * @param lauta
      * @return pelitilanne merkkijonona.
@@ -170,14 +205,13 @@ public class Lauta {
         return new String(merkkijono);
     }
     
-    
     //TESTI-METODIT
     
     /**
      * Testimetodi. Metodia k‰ytet‰‰n apuna JUnit-testauksessa.
      * @param x 
      */
-    public void setVariTesti(char x) {
+    public void setVariTesti(int x) {
         this.vuorossa = x;
     }
     

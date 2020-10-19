@@ -31,7 +31,7 @@ public class TestAly {
     //Suljettu nelj‰n uhka on pakottava siirto.
     @Test
     public void bottiEst‰‰SuljetunNelj‰nUhanMusta() {
-        botti.setMerkki(1);
+        botti.setMerkki('X');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -46,7 +46,7 @@ public class TestAly {
 
     @Test
     public void bottiEst‰‰SuljetunNelj‰nUhanValkoinen() {
-        botti.setMerkki(0);
+        botti.setMerkki('O');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
@@ -63,7 +63,7 @@ public class TestAly {
     //Avoin kolmen uhka on pakottava siirto.
     @Test
     public void bottiEst‰‰AvoimenKolmenUhanMusta() {
-        botti.setMerkki(1);
+        botti.setMerkki('X');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -77,7 +77,7 @@ public class TestAly {
     
     @Test
     public void bottiEst‰‰AvoimenKolmenUhanValkoinen() {
-        botti.setMerkki(0);
+        botti.setMerkki('O');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
@@ -93,7 +93,7 @@ public class TestAly {
     //T‰m‰ on oleellinen ominaisuus ja m‰‰rittelee yll‰ olevien testien kanssa sen toimiiko botin kaikista perustavimmanlaatuiset toiminnot vai ei.
     @Test
     public void bottiP‰‰tt‰‰PelinKunOnPakkoMusta() {
-        botti.setMerkki(1);
+        botti.setMerkki('X');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -111,7 +111,7 @@ public class TestAly {
     
     @Test
     public void bottiP‰‰tt‰‰PelinKunOnPakkoValkoinen() {
-        botti.setMerkki(0);
+        botti.setMerkki('O');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
@@ -131,7 +131,7 @@ public class TestAly {
     //T‰m‰ ei sin‰ns‰ ole pakollinen ominaisuus, mutta haluttu kuitenkin ja saa botin pelin n‰ytt‰m‰‰n ihmism‰isemm‰lt‰.
     @Test
     public void bottiP‰‰t‰‰PelinMusta() {
-        botti.setMerkki(1);
+        botti.setMerkki('X');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -145,7 +145,7 @@ public class TestAly {
     
     @Test
     public void bottiP‰‰t‰‰PelinMusta2() {
-        botti.setMerkki(1);
+        botti.setMerkki('X');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -162,7 +162,7 @@ public class TestAly {
     
     @Test
     public void bottiP‰‰t‰‰PelinValkoinen() {
-        botti.setMerkki(0);
+        botti.setMerkki('X');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';
@@ -176,7 +176,7 @@ public class TestAly {
     
     @Test
     public void bottiP‰‰t‰‰PelinValkoinen2() {
-        botti.setMerkki(0);
+        botti.setMerkki('O');
         botti.setPituus(pituus);
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'O';

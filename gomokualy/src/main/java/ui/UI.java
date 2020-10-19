@@ -3,7 +3,7 @@ package ui;
 
 import java.util.Scanner;
 import logiikka.Aly;
-import logiikka.Lauta;
+import logiikka.VanhaLauta;
 
 /**
  * Pelin tekstikäyttöliittymä.
@@ -38,14 +38,14 @@ public class UI {
     /**
      * Pelilauta.
      */
-    private Lauta lauta;
+    private VanhaLauta lauta;
     
     public UI(Scanner s) {
         lukija = s;
         regex = "([1-9]|(1[0-9])) ([A-S])";
         bottiIhminen = false;
         botinVuoro = false;
-        lauta = new Lauta();
+        lauta = new VanhaLauta();
     }
     
     /**
@@ -91,7 +91,7 @@ public class UI {
                         
                         if (lauta.sijoita(x, y)) {
                             
-                            String tulos = lauta.tarkistaVoitto(x, y);
+                            String tulos = lauta.tarkistaVoitto(x,y);
                             
                             if (!tulos.equals("Jatketaan.")) {
                                 
@@ -210,11 +210,11 @@ public class UI {
                     
                     if (vastaus2.equals("1")) {
                         botinVuoro = false;
-                        botti1.setMerkki(0);
+                        botti1.setMerkki('O');
                         break;
                     } else if (vastaus2.equals("2")) {
                         botinVuoro = true;
-                        botti1.setMerkki(1);
+                        botti1.setMerkki('X');
                         break;
                     } else System.out.println("Syötä jonkin yllä näkyvän vaihtoehdon numero:");
                 }
@@ -227,8 +227,8 @@ public class UI {
                 botti2 = new Aly();
                 botti1.setPituus(lauta.getPituus());
                 botti2.setPituus(lauta.getPituus());
-                botti1.setMerkki(1);
-                botti2.setMerkki(0);
+                botti1.setMerkki('X');
+                botti2.setMerkki('O');
                 botinVuoro = true;
                 botin1Vuoro = true;
                 break;

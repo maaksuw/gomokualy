@@ -35,10 +35,10 @@ public class Aly {
 
     /**
      * Metodilla asetetaan kumman värisillä nappuloilla botti pelaa, mustilla vai valkoisilla.
-     * @param vari 1 on musta ja 0 on valkoinen.
+     * @param merkki 1 on musta ja 0 on valkoinen.
      */
-    public void setMerkki(int vari) {
-        if (vari == 1) botinMerkki = 'X';
+    public void setMerkki(char merkki) {
+        if (merkki == 'X') botinMerkki = 'X';
         else botinMerkki = 'O';
     }
 
