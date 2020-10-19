@@ -124,17 +124,6 @@ public class TestLista {
     
     //TILANNE-TESTIT
     
-//    private char[][] sana(String sana) {
-//        int n = sana.length();
-//        char[][] taulu = new char[n][n];
-//        for(int i = 0; i < n; i++){
-//            for(int j = 0; j < n; j++){
-//                taulu[i][j] = sana.charAt(j);
-//            }
-//        }
-//        return taulu;
-//    }
-    
     @Test
     public void lisaaPieniTestiTilanne() {
         ltilanne.lisaa(new Tilanne("pupu",30));

@@ -3,7 +3,6 @@ package logiikka;
 
 import java.util.Scanner;
 import ui.UI;
-import ui.UI2;
 
 public class Main {
 
@@ -11,10 +10,13 @@ public class Main {
         //TO DO:
         //Muuta
             //*Github-dokumentaatio kuntoon
-            //*Checkstyle kuntoon ja tarksta jacoco
+            //*Checkstyle kuntoon
+            //*Tarkista jacoco
+            //*Botin tehokkuusraportti
+            //*GUI
         
         Scanner s = new Scanner(System.in);
-        UI2 ui = new UI2(s);
+        UI ui = new UI(s);
         ui.kaynnista();
 
     }

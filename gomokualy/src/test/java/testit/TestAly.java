@@ -27,17 +27,8 @@ public class TestAly {
         }
     }
     
-    private void tulostaLauta() {
-        for(int i = 0; i < pituus; i++){
-            for(int j = 0; j < pituus; j++){
-                System.out.print(lauta[i][j] + " ");
-            }
-            System.out.println("");
-        }
-    }
-    
-    //Testaa reagoigo botti suljettuun neljän uhkaan
-    //Suljettu neljän uhka on pakottava siirto
+    //Testaa reagoigo botti suljettuun neljän uhkaan.
+    //Suljettu neljän uhka on pakottava siirto.
     @Test
     public void bottiEstääSuljetunNeljänUhanMusta() {
         botti.setMerkki(1);
@@ -68,8 +59,8 @@ public class TestAly {
         assertTrue(lauta[9][14] == 'O');
     }
     
-    //Testaa reagoigo botti avoimeen kolmen uhkaan
-    //Avoin kolmen uhka on pakottava siirto
+    //Testaa reagoigo botti avoimeen kolmen uhkaan.
+    //Avoin kolmen uhka on pakottava siirto.
     @Test
     public void bottiEstääAvoimenKolmenUhanMusta() {
         botti.setMerkki(1);
@@ -98,8 +89,8 @@ public class TestAly {
         assertTrue((lauta[8][14] == 'O') || (lauta[8][10] == 'O'));
     }
     
-    //Testaa tekeeko botti pelin päättävän voittavan siirron kun sen on pakko (tai se uhkaa hävitä)
-    //Tämä on oleellinen ominaisuus ja määrittelee yllä olevien testien kanssa sen toimiiko botin kaikista perustavimmanlaatuiset toiminnot vai ei
+    //Testaa tekeeko botti pelin päättävän voittavan siirron kun sen on pakko (tai se uhkaa hävitä).
+    //Tämä on oleellinen ominaisuus ja määrittelee yllä olevien testien kanssa sen toimiiko botin kaikista perustavimmanlaatuiset toiminnot vai ei.
     @Test
     public void bottiPäättääPelinKunOnPakkoMusta() {
         botti.setMerkki(1);
@@ -136,8 +127,8 @@ public class TestAly {
         assertTrue((lauta[9][8] == 'O') || (lauta[9][13] == 'O'));
     }
     
-    //Testaa tekeekö botti pelin päättävän voittavan siirron kun se on mahdollista (vaikka vastustaja ei pakota siirtoa)
-    //Tämä ei sinänsä ole pakollinen ominaisuus, mutta haluttu kuitenkin ja saa botin pelin näyttämään ihmismäisemmältä
+    //Testaa tekeekö botti pelin päättävän voittavan siirron kun se on mahdollista (vaikka vastustaja ei pakota siirtoa).
+    //Tämä ei sinänsä ole pakollinen ominaisuus, mutta haluttu kuitenkin ja saa botin pelin näyttämään ihmismäisemmältä.
     @Test
     public void bottiPäätääPelinMusta() {
         botti.setMerkki(1);

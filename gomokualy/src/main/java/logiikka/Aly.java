@@ -105,28 +105,35 @@ public class Aly {
         varasto.tyhjenna();
         int alpha = -AARETON;
         int beetta = AARETON;
-        arvioi(1, 1, lauta, alpha, beetta);
-        System.out.println("counter: " + counter);
+        long alku = System.nanoTime();
+        arvioi(lauta, 1, alpha, beetta, true);
+        long loppu = System.nanoTime();
+        System.out.println("siirtoja tutkittu: " + counter);
+        System.out.println("aikaa meni: " + (loppu - alku)/1e9 + " s");
         return koordinaatit;
     }
     
     /**
-     * Metodi saa parametrina pelilaudan, joka kuvaa pelitilanteen, ja palauttaa tilanteelle numeroarvion.
-     * Metodi tallentaa botin oliomuuttujaan koordinaatit parhaan siirron koordinaatit.
-     * @param minimax 1 tarkoittaa maximitasoa ja 0 tarkoittaa minimitasoa.
-     * @param taso kertoo mill‰ pelipuun tasolla ollaan menossa. Muuttuja pit‰‰ huolen siit‰ ett‰ rekursio p‰‰ttyy. Juurisolmu on tasolla 1.
+     * Minimax-algoritmi.
+     * Metodi arvioi mik‰ on botin paras siirto t‰ss‰ tilanteessa.
+     * Metodi saa parametrina pelilaudan, joka kuvaa pelitilanteen, ja palauttaa tilanteelle numeroarvion. 
+     * Metodi tallentaa parhaan siirron koordinaatit oliomuuttujaan koordinaatit.Suurimman numeroarvion saanut siirto on paras.
      * @param lauta pelilauta char[][]-taulukkona.
+     * @param taso kertoo mill‰ pelipuun tasolla ollaan menossa. Muuttuja pit‰‰ huolen siit‰ ett‰ rekursio p‰‰ttyy. Juurisolmu on tasolla 1.
      * @param alfa alaraja arviolle.
      * @param beetta yl‰raja arviolle.
+     * @param maksimoidaan true tarkoittaa maximitasoa ja false tarkoittaa minimitasoa.
      * @return numeroarvio pelitilanteelle.
      * @see Aly#koordinaatit
      */
-    private int arvioi(int minimax, int taso, char[][] lauta, int alfa, int beetta) {
+    private int arvioi(char[][] lauta, int taso, int alfa, int beetta, boolean maksimoidaan) {
         counter++;
+        //Tallennetaan t‰ll‰ kutsukerralla sijoitettava merkki muuttujaan sijoitettavaMerkki.
         char sijoitettavaMerkki;
-        if(botinMerkki == 'X') sijoitettavaMerkki = (minimax == 1) ? 'X' : 'O';
-        else sijoitettavaMerkki = (minimax == 1) ? 'O': 'X';
+        if(botinMerkki == 'X') sijoitettavaMerkki = (maksimoidaan) ? 'X' : 'O';
+        else sijoitettavaMerkki = (maksimoidaan) ? 'O': 'X';
         
+        //Tarkistetaan ollaanko rekursion pohjatasolla. Jos ollaan, palautetaan heuristinen arvio tilanteesta.
         if (taso == SYVYYS) {
             String tilanne = Lauta.muutaMerkkijonoksi(lauta);
             if(varasto.onkoAvainta(tilanne)) return varasto.hae(tilanne);
@@ -135,6 +142,7 @@ public class Aly {
             return arvio;
         }
         
+        //K‰yd‰‰n l‰pi kaikki t‰m‰n solmun lapset, annetaan niille arvio hyvyydest‰ ja lis‰t‰‰n ne listaan.
         Lista<Siirto> siirrot = new Lista<>();
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
@@ -147,10 +155,12 @@ public class Aly {
             }
         }
         
+        //J‰rjestetaan lapset paremmuusj‰rjestykseen.
         siirrot.jarjesta();
-        if(minimax == 1) siirrot.kaanna();
+        if(maksimoidaan) siirrot.kaanna();
         
-        int tulos = (minimax == 1) ? -AARETON - 1: AARETON + 1;
+        //K‰yd‰‰n lapset l‰pi.
+        int paras = (maksimoidaan) ? -AARETON - 1: AARETON + 1;
         for(int u = 0; u < siirrot.pituus(); u++){
             
             Siirto s = siirrot.hae(u);
@@ -159,62 +169,57 @@ public class Aly {
             lauta[i][j] = sijoitettavaMerkki;
             String tilanne = Lauta.muutaMerkkijonoksi(lauta);
             
-            if (minimax == 1) {
-                
-                if(onkoVoittoa(i, j, lauta)) {
-                    if(taso == 1){
-                        koordinaatit[0] = i;
-                        koordinaatit[1] = j;
-                    }
+            //Tarkistetaan onko t‰m‰ lapsi p‰‰tesolmu. Jos on, palautetaan sopiva arvo.
+            if(onkoVoittoa(i, j, lauta)) {
+                //Jos ollaan pelipuun ensimm‰isell‰ tasolla, tallennetaan parhaan siirron koordinaatit.
+                if(taso == 1){
+                    koordinaatit[0] = i;
+                    koordinaatit[1] = j;
+                }
+                lauta[i][j] = '+';
+                if(maksimoidaan) return AARETON;
+                else return -AARETON;
+            }
+            
+            //Katsotaan lˆytyykˆ solmun arvo jo hakemistosta. Muuten lasketaan solmun arvo rekursiivisesti.
+            int arvio = 0;
+            if(varasto.onkoAvainta(tilanne)) arvio = varasto.hae(tilanne);
+            else {
+                if(maksimoidaan) arvio = arvioi(lauta, taso + 1, alfa, beetta, false);
+                else arvio = arvioi(lauta, taso + 1, alfa, beetta, true);
+                varasto.lisaa(tilanne, arvio);
+            }
+            
+            //Verrataan saatua arviota parhaaseen tulokseen.
+            if (maksimoidaan) {
+                //Jos ollaan pelipuun ensimm‰isell‰ tasolla, tallennetaan t‰ll‰ hetkell‰ parhaan siirron koordinaatit.
+                if(arvio > paras && taso == 1){
+                    koordinaatit[0] = i;
+                    koordinaatit[1] = j;
+                }
+                //P‰ivitet‰‰n parasta tulosta.
+                paras = Matikka.max(paras, arvio);
+                //Beetta-katkaisu.
+                if(paras >= beetta) {
                     lauta[i][j] = '+';
-                    return AARETON;
+                    return paras;
                 }
-                
-                int arvio = 0;
-                if(varasto.onkoAvainta(tilanne)) arvio = varasto.hae(tilanne);
-                else {
-                    arvio = arvioi(0, taso + 1, lauta, alfa, beetta);
-                    varasto.lisaa(tilanne, arvio);
-                }
-                
-                if(arvio > tulos){
-                    tulos = arvio;
-                    if(taso == 1){
-                        koordinaatit[0] = i;
-                        koordinaatit[1] = j;
-                    }
-                }
-                if(tulos >= beetta) {
-                    lauta[i][j] = '+';
-                    return tulos;
-                }
-                if(tulos > alfa) alfa = tulos;
-                
+                //P‰ivitet‰‰n alfa-arvoa.
+                alfa = Matikka.max(paras, alfa);
             } else {
-                
-                if(onkoVoittoa(i, j, lauta)) {
+                //P‰ivitet‰‰n parasta tulosta.
+                paras = Matikka.min(paras, arvio);
+                //Alfa-katkaisu.
+                if(paras <= alfa) {
                     lauta[i][j] = '+';
-                    return -AARETON;
+                    return paras;
                 }
-                
-                int arvio = 0;
-                if(varasto.onkoAvainta(tilanne)) arvio = varasto.hae(tilanne);
-                else {
-                    arvio = arvioi(1, taso + 1, lauta, alfa, beetta);
-                    varasto.lisaa(tilanne, arvio);
-                }
-                tulos = Matikka.min(tulos, arvio);
-                
-                if(tulos <= alfa) {
-                    lauta[i][j] = '+';
-                    return tulos;
-                }
-                if(tulos < beetta) beetta = tulos;
-                
+                //P‰ivitet‰‰n beetta-arvoa.
+                beetta = Matikka.min(paras, beetta);
             }
             lauta[i][j] = '+';
         }
-        return tulos;
+        return paras;
     }
     
     /**
