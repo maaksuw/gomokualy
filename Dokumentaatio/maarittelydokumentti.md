@@ -24,8 +24,6 @@ Pelaaja painaa hiirellä graafisen käyttöliittymän painiketta pelilaudalla ja
 Tavoitteena on, että tekoäly pystyy laskemaan mahdollisimman syvälle pelipuuhun niin, että yksittäistä siirtoa ei joudu odottamaan 15 sekuntia pidempään. Loppupalautuksessa saavutettiin hakusyvyys pelipuun kuudennelle tasolle asti. Katso [Ohjelman puutteet ja jatkokehitysideat](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md).
 
 ## Lähteet ja muuta tietoa
-[Tietorakenteet ja algoritmit -kirja, Antti Laaksonen](https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/) Käytin tirakirjaa apuna toteuttaessani omat tietorakenteet.  
-[Principal variation search](https://en.wikipedia.org/wiki/Principal_variation_search#Pseudocode) Vaikka tämä hakualgoritmin versio ei päätynyt loppupalautukseen, otin mallia tästä pseudokoodista tekoälyn toisen version toteutuksessa. Osa koodista jäi mukaan myös loppupalautukseen, vaikka varsinaista algoritmia ei loppupalautuksessa vielä ole.  
-[JavaFX Game Tutorial: TicTacToe](https://www.youtube.com/watch?v=Uj8rPV6JbCE) Otin videolta mallia graafisenkäyttöliittymän toteuttamiseen.  
+Projektissa käytetyt lähteet löytyvät tiedoston [Toteutusdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md) lopusta.  
 Opinto-ohjelma: Tietojenkäsittelytieteen kanditaatti  
 Kieli: Suomi
