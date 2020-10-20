@@ -16,3 +16,5 @@ Linkkejä:
 * [Toteutusdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md)
 * [Testausdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/testausdokumentti.md)
 * [Käyttöohje](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/kayttoohje.md)
+* Loppupalautus
+    *[Linkki tähän]()

@@ -4,7 +4,7 @@ Ohjelma koostuu kolmesta pakkauksesta:
     * Logiikka:
     Tässä pakkauksessa on kaikki pelilogiikan kannalta oleelliset luokat, kuten tekoälyn Aly-luokka, pelilautaa kuvaava Lauta-luokka sekä pelin käynnistävä Main-luokka. Logiikka-pakkauksesta löytyy myös siirtoa kuvaava Siirto-luokka sekä pelitilannetta kuvaava Tilanne-luokka.
     * UI:
-    Pakkaus sisältää pelin tekstikäyttöliittymän rakentavan ja käynnistävän koodin luokassa UI.
+    Pakkaus sisältää pelin graafisen- ja tekstikäyttöliittymän rakentavan koodin. Graafisenkäyttöliittymän koodi on luokassa GUI.java, tekstikäyttöliittymän koodi on luokassa UI.java.
     * Apu:
     Apu-pakkaus sisältää itse toteutetut tietorakenteet sekä muut yleishyödylliset luokat. Pakkaus sisältää taulukkolistaa kuvaavan Lista-luokan, hakemistoa kuvaavan Hakemisto-luokan sekä Matikka-luokan, jossa on omat metodit muutamille yleisille laskuoperaatioille.
 Tämän lisäksi ohjelmaan kuuluu yksi testipakkaus, joka sisältää ohjelman JUnit-testit. Testipakkauksessa on luokat TestAly, joka testaa tekoälyä sekä TestLauta, joka testaa pelilaudan toimivuutta.
@@ -20,7 +20,7 @@ Tämän lisäksi ohjelmaan kuuluu yksi testipakkaus, joka sisältää ohjelman J
 
 ## Suorituskykyanalyysi
 Oleellinen ongelma tekoälyn tekemisessä on saada karsittua turhaa laskentaa niin, että tekoäly pystyy laskemaan mahdollisimman monta siirtoa eteenpäin ja näin tekemään parhaan mahdollisen valinnan. Miten pelipuuta karsitaan ohjelmassa?
-* Isolla pelilaudalla pelatessa ruutuja on 19*19 = 361. Solmun lasten määrää rajoitetaan sillä, että jokaista ruutua ei tarkastella mahdollisena siirtona, vaan ruutu otetaan huomioon vain, jos se on korkeintaan tietyn säteen päässä jostain toisesta pelimerkistä. Näin pelipuussa solmun lasten määrää saadaan karsittua niin, että turhia hyvin kauas keskeiseltä alueelta tehtäviä siirtoja ei tarkastella.
+* Ruutuja on 15*15 = 225. Solmun lasten määrää rajoitetaan sillä, että jokaista ruutua ei tarkastella mahdollisena siirtona, vaan ruutu otetaan huomioon vain, jos se on korkeintaan tietyn säteen päässä jostain toisesta pelimerkistä. Näin pelipuussa solmun lasten määrää saadaan karsittua niin, että turhia hyvin kauas keskeiseltä alueelta tehtäviä siirtoja ei tarkastella.
 * Alfa-beeta-karsinta. Antamalla minimax-algoritmille parametrinä ylä- ja alaraja saadaan nopeammin karsittua turhia haaroja pois.
 * Alkioiden järjestäminen. Jokaisessa pelitilanteessa seuraavia siirtoja ei käydä läpi mekaanisessa järjestyksessä vasemmalta oikealle, vaan jokaiselle siirrolle annetaan alustava arvio siirron hyvyydestä ja siirrot käydään läpi niin, että parhaimmaksi arvioidut siirrot tutkitaan ensin. Tämä tehostaa alfa-beeta-karsinnan vaikutusta, kun ylä- ja alarajat saadaan mahdollisimman tarkoiksi aikaisessa vaiheessa.
 * Pelitilanteiden taulukointi. Aina kun pelitilanteelle saadaan laskettua lopullinen arvio, se tallennetaan hajautustauluun. Ennen jokaisen pelitilanteen arvion laskemista, hajautustaulusta tarkistetaan ensin, onko tämän tilanteen arvo laskettu jo aikaisemmin.
@@ -29,5 +29,4 @@ Oleellinen ongelma tekoälyn tekemisessä on saada karsittua turhaa laskentaa ni
 Kirjoitetaan ne tänne.
 
 ## Lähteet
-[Go-Moku and Threat-Space Search, L.V.Allis, H.J. van den Herik, M.P.H. Huntjens](https://pdfs.semanticscholar.org/f476/00662cadb0975f9cfd7867389efedda6f873.pdf)  
 [Tietorakenteet ja algoritmit -kirja, Antti Laaksonen](https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/)  
