@@ -1,13 +1,14 @@
 # Toteutusdokumentti
 ## Ohjelman rakenne
-Ohjelma koostuu kolmesta pakkauksesta:  
-    * Logiikka:
-    Tässä pakkauksessa on kaikki pelilogiikan kannalta oleelliset luokat, kuten tekoälyn Aly-luokka, pelilautaa kuvaava Lauta-luokka sekä pelin käynnistävä Main-luokka. Logiikka-pakkauksesta löytyy myös siirtoa kuvaava Siirto-luokka sekä pelitilannetta kuvaava Tilanne-luokka.
-    * UI:
-    Pakkaus sisältää pelin graafisen- ja tekstikäyttöliittymän rakentavan koodin. Graafisenkäyttöliittymän koodi on luokassa GUI.java, tekstikäyttöliittymän koodi on luokassa UI.java.
-    * Apu:
-    Apu-pakkaus sisältää itse toteutetut tietorakenteet sekä muut yleishyödylliset luokat. Pakkaus sisältää taulukkolistaa kuvaavan Lista-luokan, hakemistoa kuvaavan Hakemisto-luokan sekä Matikka-luokan, jossa on omat metodit muutamille yleisille laskuoperaatioille.
-Tämän lisäksi ohjelmaan kuuluu yksi testipakkaus, joka sisältää ohjelman JUnit-testit. Testipakkauksessa on luokat TestAly, joka testaa tekoälyä sekä TestLauta, joka testaa pelilaudan toimivuutta.
+Ohjelma koostuu kolmesta pakkauksesta ja yhdestä testipakkauksesta.
+* Logiikka
+    * Tässä pakkauksessa on kaikki pelilogiikan kannalta oleelliset luokat, kuten tekoälyn Aly-luokka, pelilautaa kuvaava Lauta-luokka sekä pelin käynnistävä Main-luokka. Logiikka-pakkauksesta löytyy myös siirtoa kuvaava Siirto-luokka sekä pelitilannetta kuvaava Tilanne-luokka.
+* UI
+    * Pakkaus sisältää pelin graafisen- ja tekstikäyttöliittymän rakentavan koodin. Graafisenkäyttöliittymän koodi on luokassa GUI.java, tekstikäyttöliittymän koodi on luokassa UI.java.
+* Apu
+     * Apu-pakkaus sisältää itse toteutetut tietorakenteet sekä muut yleishyödylliset luokat. Pakkaus sisältää taulukkolistaa kuvaavan Lista-luokan, hakemistoa kuvaavan Hakemisto-luokan sekä Matikka-luokan, jossa on omat metodit muutamille yleisille laskuoperaatioille.  
+* Testipakkaus
+    * Sisältää ohjelman JUnit-testit. Testipakkauksessa on luokat TestAly, joka testaa tekoälyä sekä TestLauta, joka testaa pelilaudan toimivuutta.
 
 ## Saavutetut aikavaativuudet
 * Listan operaatiot:
