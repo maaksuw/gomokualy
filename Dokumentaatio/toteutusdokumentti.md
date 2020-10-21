@@ -12,16 +12,16 @@ Ohjelma koostuu kolmesta pakkauksesta ja yhdestä testipakkauksesta.
 
 ## Saavutetut aikavaativuudet
 * Listan operaatiot:
-    * hae(indeksi): O(1). Metodi palauttaa listan annetulla indeksillä olevan alkion.
-    * poista(): O(1). Metodi poistaa ja palauttaa listan viimeisen alkion.
-    * lisaa(): Keskimäärin O(1). Metodi lisää listan loppuun alkion. Operaatio saattaa laukaista listan kasvattamisen, jolloin opetaario vie aikaa O(n), kun n on listan alkoiden lukumäärä, mutta listan kasvattamista ei tapahtu liian usein.
-    * jarjesta(): O(nlog(n)), missä n on listan alkioiden lukumäärä. Metodi järjestää listan alkiot kasvavaan järjestykseen. Metodi on toteutettu niin, että pienet listat järjestetään käyttämällä lisäysjärjestämistä ja keskikokoiset ja suuret listat järjestetään lomitusjärjestämisellä. Kahden algoritmin käyttämiselle tässä ei ole hirveästi muita perusteluja, kuin että halusin kokeilla toteuttaa järjestämisen näin huvin vuoksi. Lisäysjärjestämisen ja lomitusjärjestämisen aikavaativuudet on listattu vielä alempana.
-    * kaanna(): O(n), missä n on listan alkioiden lukumäärä. Metodi kääntää listan toisinpäin. Kääntämiseen käytetään vakiomäärä muistia.
+    * **hae(indeksi)**: O(1). Metodi palauttaa listan annetulla indeksillä olevan alkion.
+    * **poista()**: O(1). Metodi poistaa ja palauttaa listan viimeisen alkion.
+    * **lisaa()**: Keskimäärin O(1). Metodi lisää listan loppuun alkion. Operaatio saattaa laukaista listan kasvattamisen, jolloin opetaario vie aikaa O(n), kun n on listan alkoiden lukumäärä, mutta listan kasvattamista ei tapahtu liian usein.
+    * **jarjesta()**: O(nlog(n)), missä n on listan alkioiden lukumäärä. Metodi järjestää listan alkiot kasvavaan järjestykseen. Metodi on toteutettu niin, että pienet listat järjestetään käyttämällä lisäysjärjestämistä ja keskikokoiset ja suuret listat järjestetään lomitusjärjestämisellä. Kahden algoritmin käyttämiselle tässä ei ole hirveästi muita perusteluja, kuin että halusin kokeilla toteuttaa järjestämisen näin huvin vuoksi. Lisäysjärjestämisen ja lomitusjärjestämisen aikavaativuudet on listattu vielä alempana.
+    * **kaanna()**: O(n), missä n on listan alkioiden lukumäärä. Metodi kääntää listan toisinpäin. Kääntämiseen käytetään vakiomäärä muistia.
 * Hakemiston operaatiot:
-    * lisaa(): Keskimäärin O(1). Metodi lisää hajautustauluun arvon annetulla avaimella. Jos annetulla avaimella löytyy jo arvo, arvo päivitetään. Aikavaativuus riippuu hajautuksen onnistumisesta. Tästä enemmän alempana.
-    * hae(): Keskimäärin O(1). Metodi palauttaa annetun avaimen arvon hajautustaulusta tai null, jos avaimelle ei ole tallennettu arvoa.
-    * onkoAvainta(): Keskimäärin O(1). Metodi palautta true, jos annettu avain löytyy hajautustaulusta.
-    * tyhjenna(): O(n), missä n on hajautustaulun koko eli paikkojen lukumäärä.  
+    * **lisaa()**: Keskimäärin O(1). Metodi lisää hajautustauluun arvon annetulla avaimella. Jos annetulla avaimella löytyy jo arvo, arvo päivitetään. Aikavaativuus riippuu hajautuksen onnistumisesta. Tästä enemmän alempana.
+    * **hae()**: Keskimäärin O(1). Metodi palauttaa annetun avaimen arvon hajautustaulusta tai null, jos avaimelle ei ole tallennettu arvoa.
+    * **onkoAvainta()**: Keskimäärin O(1). Metodi palautta true, jos annettu avain löytyy hajautustaulusta.
+    * **tyhjenna()**: O(n), missä n on hajautustaulun koko eli paikkojen lukumäärä.  
 
 Hakemiston operaatioiden aikavaativuudet riippuvat hajautuksen onnistumisesta. Ohjelman testeissä on mukana suoritettava tiedosto, joka arvioi listan ja hakemiston aikavaativuuksien toteutumista. Tehokkuustesteissä lisätään hakemistoon ohjelman kannalta tarpeeksi paljon alkioita ja katsotaan, mikä on näin syntynyt pisin lista hajautustaulun sisällä. Testeissä on mukana satunnaisuutta, joten saadut tulokset muuttuvat joka kerta, mutta suurimmillakin testattavilla arvoilla pisin listan pituus on lähes varmasti aina alle 10. Voidaan siis sanoa, että hakemiston operaatiot toimivat vakioajassa. Katso [Testausdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/testausdokumentti.md).
 * Lisäysjärjestäminen: O(n^2), kun n on listan alkioiden määrä.
@@ -38,6 +38,7 @@ Oleellinen ongelma tekoälyn tekemisessä on saada karsittua turhaa laskentaa ni
 * **Tekoäly ei laske tarpeeksi pitkälle.** Tämä on isoin ohjelmaan jäänyt puute ja paras tapa korjata tämä on tehdä tekoälystä tehokkaampi. Tällä hetkellä tekoälyn voi voittaa tekemällä kaksoisuhkia, joihin se ei osaa reagoida oikein ja tarpeeksi ajoissa. Yhden tai kahden siirron syvemmälle laskeminen parantaisi tilannetta jo huomattavasti, mutta tällä hetkellä tekoälyllä menee liian kauan aikaa laskea pidemmälle kuin syvyyteen 6. Halusin tehdä tekoälystä paremman ja tehokkaamman, mutta loppujen lopuksi siihen ei jäänyt tarpeeksi aikaa ja tekoälyn parantaminen jäi jatkokehitysideaksi.
 
 ## Lähteet
+Tässä on listattuna lähteet, joita olen käyttänyt projektia tehdessä.  
 [Tietorakenteet ja algoritmit -kirja, Antti Laaksonen](https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/) Käytin tirakirjaa apuna toteuttaessani omat tietorakenteet.  
 [Principal variation search](https://en.wikipedia.org/wiki/Principal_variation_search#Pseudocode) Vaikka tämä hakualgoritmin versio ei päätynyt loppupalautukseen, otin mallia tästä pseudokoodista tekoälyn toisen version toteutuksessa. Osa koodista jäi mukaan myös loppupalautukseen, vaikka varsinaista algoritmia ei loppupalautuksessa vielä ole.  
 [JavaFX Game Tutorial: TicTacToe](https://www.youtube.com/watch?v=Uj8rPV6JbCE) Otin videolta mallia graafisen käyttöliittymän toteuttamiseen.
