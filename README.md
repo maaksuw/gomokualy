@@ -1,6 +1,5 @@
-# Gomoku-tekoäly
-Ideana on toteuttaa toimiva Gomoku-pelin tekoäly. Gomoku on kaksinpelattava strategialautapeli, jota pelataan mustilla ja valkoisilla go-nappuloilla 19x19 tai 15x15 pelilaudalla. Pelin tavoitteena on saada viisi oman väristä nappulaa peräkkäin vaaka-, pystysuoraan tai vinoittain. Nappulat asetetaan pelilaudan ruutujen risteyskohtiin.  
-Tarkemmat säännöt löytyvät esimerkiksi täältä: [Wikipedia - Gomoku](https://en.wikipedia.org/wiki/Gomoku)
+# Ristinolla-tekoäly
+Ideana on toteuttaa ristinolla-peli ja siihen toimiva tekoäly. Peliä pelaa kaksi pelaajaa 15 x 15 pelilaudalla. Pelin tavoitteena on saada viisi omaa pelimerkkiä peräkkäin vaaka-, pystysuoraan tai vinoittain ennen vastustajaa. Tarkemmat säännöt löytyvät esimerkiksi täältä: [Wikipedia - Gomoku](https://en.wikipedia.org/wiki/Gomoku).  
 
 Projekti on Helsingin yliopiston Tietorakenteet ja algoritmit -labrakurssin harjoitustyö ja toteutetaan Javalla. Ideana on tutustua tekoälyn tekemiseen, hakualgoritmeihin ja toteuttaa erilaisia tietorakenteita itse.  
 
