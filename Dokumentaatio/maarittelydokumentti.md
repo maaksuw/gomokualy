@@ -21,9 +21,9 @@ Gomokussa pelipuu kasvaa nopeasti erittäin suureksi, joten haasteena on karsia 
 Pelaaja painaa hiirellä graafisen käyttöliittymän painiketta pelilaudalla ja kertoo näin, mihin haluaa sijoittaa pelimerkkinsä. Tekstikäyttöliittymässä pelaaja syöttää koordinaatit näppäimistöltä. Koordinaatit ilmoitetaan kirjaimen ja numeron yhdistelmänä samaan tapaan kuin esimerkiksi shakissa. Syöte määrittelee pelaajan siirron pelilaudalla.
 
 ## Tavoiteaika- ja tilavaativuudet
-Tavoitteena on, että tekoäly pystyy laskemaan mahdollisimman syvälle pelipuuhun niin, että yksittäistä siirtoa ei joudu odottamaan 15 sekuntia pidempään. Loppupalautuksessa saavutettiin hakusyvyys pelipuun kuudennelle tasolle asti. Katso [Ohjelman puutteet ja jatkokehitysideat](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md).
+Tavoitteena on, että tekoäly pystyy laskemaan mahdollisimman syvälle pelipuuhun niin, että yksittäistä siirtoa ei joudu odottamaan 15 sekuntia pidempään. Loppupalautuksessa saavutettiin hakusyvyys pelipuun kuudennelle tasolle asti. Katso [Ohjelman puutteet ja jatkokehitysideat](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md#ohjelman-puutteet-ja-jatkokehitysideat).
 
 ## Lähteet ja muuta tietoa
-Projektissa käytetyt lähteet löytyvät tiedoston [Toteutusdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md) lopusta.  
+Projektissa käytetyt lähteet löytyvät tiedoston [Toteutusdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md#l%C3%A4hteet) lopusta.  
 Opinto-ohjelma: Tietojenkäsittelytieteen kanditaatti  
 Kieli: Suomi
