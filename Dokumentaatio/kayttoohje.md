@@ -12,7 +12,7 @@ Aloitusvalikosta pääset pelaamaan peliä, lukemaan pelin säännöt ja sulkema
 
 Kun olet valinnut haluamasi asetukset, paina uudelleen painiketta "Aloita peli". Tämä avaa pelinäkymän.  
 
-![Pelinäkymä](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/Kuvat/tiralabrapeli.jpg)  
+![Pelinäkymä](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/Kuvat/tiralabrapelinakyma.jpg)  
 
 Peliä pelataan klikkaamalla pelilaudan ruutua, johon haluat sijoittaa oman nappulasi. Pelilaudan oikeassa ylänurkassa lukee, onko nyt vuorossa risti vai nolla.
 Pelilaudan ylhäällä on myös painike, jota painamalla voit keskeyttää pelin ja palata päävalikkoon.
