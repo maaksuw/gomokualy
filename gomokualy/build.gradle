@@ -42,10 +42,6 @@ checkstyleMain {
     source ='src/main/java'
 }
 
-tasks.withType(Checkstyle) {
-  exclude '**/logiikka/AlyVersio2.java/**'
-}
-
 checkstyleTest {
     source ='src/test/java'
 }

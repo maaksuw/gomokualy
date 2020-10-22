@@ -26,7 +26,7 @@ public class Hakemisto {
     
     /**
      * Lisää merkkijono-kokonaisluku parin hakemistoon.
-     * Jos tällä avaimella on löytyy jo arvo hakemistosta, vanha arvo korvataan uudella. 
+     * Jos tällä avaimella löytyy jo arvo hakemistosta, vanha arvo korvataan uudella. 
      * @param avain
      * @param arvo 
      */
@@ -60,6 +60,11 @@ public class Hakemisto {
         return x;
     }
     
+    /**
+     * Hakee ja palauttaa annettua avainta vastaavan arvon hakemistosta.
+     * @param avain
+     * @return arvo.
+     */
     public Integer hae(String avain) {
         int hajautusarvo = hajautusFunktio(avain);
         Lista<Tilanne> l = hakemisto[hajautusarvo];
@@ -71,6 +76,11 @@ public class Hakemisto {
         return null;
     }
     
+    /**
+     * Kertoo onko tällä avaimella jo arvo hakemistossa.
+     * @param avain
+     * @return true, jos avaimella on jo tallennettu arvo hakemistoon ja false muuten.
+     */
     public boolean onkoAvainta(String avain) {
         int hajautusarvo = hajautusFunktio(avain);
         Lista<Tilanne> l = hakemisto[hajautusarvo];
@@ -82,10 +92,17 @@ public class Hakemisto {
         return false;
     }
     
+    /**
+     * Kertoo kuinka monta alkiota hakemistossa on.
+     * @return hakemiston alkioiden lukumäärä.
+     */
     public int alkioita() {
         return alkioita;
     }
     
+    /**
+     * Tyhjentää hakemiston.
+     */
     public void tyhjenna() {
         for (int i = 0; i < koko; i++) {
             hakemisto[i] = null;
@@ -93,10 +110,14 @@ public class Hakemisto {
         alkioita = 0;
     }
 
+    /**
+     * Kertoo kuinka pitkä on hakemiston pisin lista.
+     * @return hakemiston pisimmän listan pituuden.
+     */
     public int pahinTormays() {
         int max = 0;
         for (int i = 0; i < koko; i++) {
-            if (hakemisto[i] != null) max = Math.max(max, hakemisto[i].pituus());
+            if (hakemisto[i] != null) max = Matikka.max(max, hakemisto[i].pituus());
         }
         return max;
     }

@@ -17,22 +17,36 @@ public class Siirto implements Comparable<Siirto> {
         this.y = y;
     }
 
-    public int getArvo() {
-        return arvo;
-    }
-
+    /**
+     * Kertoo siirron x-koordinaatin.
+     * @return siirron x-koordinaatti.
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Kertoo siirron y-koordinaatin.
+     * @return siirron y-koordinaatti.
+     */
     public int getY() {
         return y;
     }
-
-    public void setArvo(int arvo) {
-        this.arvo = arvo;
+    
+    /**
+     * Kertoon siirron arvon.
+     * @return siirron arvo.
+     */
+    public int getArvo() {
+        return arvo;
     }
 
+    /**
+     * Kertoo onko parametrina annettu olio sama kuin t‰m‰ siirto.
+     * Kaksi siirtoa ovat samat, jos niiden arvot, x-koordinaatit ja y-koordinaatit ovat samat.
+     * @param o
+     * @return true, jos siirrot ovat samat ja false muuten.
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
@@ -44,15 +58,17 @@ public class Siirto implements Comparable<Siirto> {
     
     /**
      * Siirrot j‰rjestet‰‰n niiden arvon mukaan.
-     * Metodi palauttaa -1, jos Siirron arvo on pienempi kuin parametrin‰ saadun Siirron arvo, 1 jos arvo on suurempi
-     * kuin parametrin arvo ja 0 muuten.
-     * @param k Siirto, johon oliota verrataan.
-     * @return -1, 0 tai 1.
+     * @param s siirto, johon oliota verrataan.
+     * @return -1, jos t‰m‰ siirto tulee j‰rjest‰ess‰ ennen parametrina annettua siirtoa, 0 jos j‰rjestyksell‰ ei ole v‰li‰ ja 1 muuten.
      */
-    public int compareTo(Siirto k) {
-        return this.arvo - k.arvo; 
+    public int compareTo(Siirto s) {
+        return this.arvo - s.arvo; 
     }
 
+    /**
+     * Palauttaa siirron merkkijonomuodon.
+     * @return siirto merkkijonona.
+     */
     @Override
     public String toString() {
         return "(" + arvo + ", " + x + ", " + y + ")";

@@ -15,18 +15,36 @@ public class Tilanne implements Comparable<Tilanne> {
         arvo = a;
     }
 
+    /**
+     * Palauttaa tilannetta kuvaavan pelilaudan.
+     * @return pelilauta.
+     */
     public String getLauta() {
         return lauta;
     }
     
+    /**
+     * Palauttaa tilanteen arvon.
+     * @return arvo.
+     */
     public int getArvo() {
         return arvo;
     }
 
+    /**
+     * Asettaa tilanteelle arvon.
+     * @param arvo 
+     */
     public void setArvo(int arvo) {
         this.arvo = arvo;
     }
     
+    /**
+     * Kertoo onko parametrina saatu olio sama kuin t‰m‰ tilanne.
+     * Kaksi tilannetta ovat samat, jos niiden arvot ja laudat ovat samat.
+     * @param o
+     * @return true, jos tilanteet ovat samat ja false muuten.
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
@@ -38,10 +56,9 @@ public class Tilanne implements Comparable<Tilanne> {
 
     /**
      * Tilanteet j‰rjestet‰‰n niiden arvon mukaan.
-     * Metodi palauttaa -1, jos Tilanteen arvo on pienempi kuin parametrin‰ saadun Tilanteen arvo, 1 jos arvo on suurempi
+     * @param t tilanne, johon oliota verrataan.
+     * @return -1, jos tilanteen arvo on pienempi kuin parametrin‰ saadun tilanteen arvo, 1 jos arvo on suurempi
      * kuin parametrin arvo ja 0 muuten.
-     * @param t Tilanne, johon oliota verrataan.
-     * @return -1, 0 tai 1.
      */
     @Override
     public int compareTo(Tilanne t) {

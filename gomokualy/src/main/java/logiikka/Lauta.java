@@ -7,7 +7,7 @@ package logiikka;
 
 public class Lauta {
     
-    private int pituus;
+    private final int pituus;
     private char[][] lauta;
     private int[][] suunnat;
     private char vuorossa;
@@ -24,18 +24,34 @@ public class Lauta {
         tasapeli = false;
     }
 
+    /**
+     * Kertoo onko peli p‰‰ttynyt tasapeliin.
+     * @return true, jos peli on p‰‰ttynyt tasapeliin ja false muuten.
+     */
     public boolean getTasapeli() {
         return tasapeli;
     }
 
+    /**
+     * Kertoo pelilaudan sivun pituuden.
+     * @return pelilaudan sivun pituus.
+     */
     public int getPituus() {
         return pituus;
     }
 
+    /**
+     * Palauttaa pelilautaa kuvaavan char[][]-taulukon.
+     * @return pelilauta.
+     */
     public char[][] getLauta() {
         return lauta;
     }
 
+    /**
+     * Kertoo kumman pelaajan vuoro on, rastin vai nollan.
+     * @return X, jos on rastin vuoro ja O, jos on nollan vuoro.
+     */
     public char getVuoro() {
         return vuorossa;
     }
@@ -50,8 +66,8 @@ public class Lauta {
         lauta[x][y] = vuorossa;
         vuoroja++;
         int tulos = tarkistaVoitto(x, y);
-        if(tulos >= 0) {
-            if(tulos == 0) tasapeli = true;
+        if (tulos >= 0) {
+            if (tulos == 0) tasapeli = true;
             return true;
         }
         vaihdaVuoro();
@@ -59,16 +75,10 @@ public class Lauta {
     }
     
     private void vaihdaVuoro() {
-        if(vuorossa == 'X') vuorossa = 'O';
+        if (vuorossa == 'X') vuorossa = 'O';
         else vuorossa = 'X';
     }
     
-    /**
-     * Tarkistaa, onko annettu siirto lopettanut pelin.
-     * @param x koordinaatti.
-     * @param y koordinaatti.
-     * @return -1, jos jatketaan peli‰, 1, jos peli p‰‰ttyi ja 0 jos tuli tasapeli.
-     */
     private int tarkistaVoitto(int x, int y) {
         boolean voitto = false;
         char merkki = lauta[x][y];
@@ -83,14 +93,6 @@ public class Lauta {
         return -1;
     }
     
-    /**
-     * Metodi laskee, mik‰ on pisin annetun suuntainen suora, jossa koordinaateissa oleva pelimerkki on mukana.
-     * @param x koordinaatti.
-     * @param y koordinaatti.
-     * @param suunta tutkittava suunta (vaakasuora, pystysuora tai vasen- tai oikea vinosuora).
-     * @param merkki pelimerkki, X tai O. Kertoo kumman pelaajan suoraa lasketaan.
-     * @return pisimm‰n annetun suuntaisen suoran pituus.
-     */
     private int laskePisinSuora(int x, int y, int[] suunta, char merkki) {
         int summa = 0;
         int alkux = x;
@@ -110,9 +112,6 @@ public class Lauta {
         return summa;
     }
     
-    /**
-     * Alustaa pelilaudan tyhj‰ll‰ merkill‰.
-     */
     private void alustaLauta() {
         for (int i = 0; i < pituus; i++) {
             for (int j = 0; j < pituus; j++) {
@@ -127,38 +126,11 @@ public class Lauta {
     }
     
     /**
-     * Tulostaa pelilaudan.
-     */
-    public void tulostaLauta() {
-        System.out.println("");
-        System.out.println("ohjeet(o) pelis‰‰nnˆt(p) lopeta(x)");
-        int vaakarivi = pituus;
-        for (int i = 0; i < pituus; i++) {
-            if (vaakarivi < 10) System.out.print(" ");
-            System.out.print(vaakarivi + " ");
-            for (int j = 0; j < pituus; j++) {
-                if (j == pituus - 1) System.out.print(lauta[i][j]);
-                else System.out.print(lauta[i][j] + " ");
-            }
-            System.out.println("");
-            vaakarivi--;
-        }
-        System.out.print("   ");
-        char asti = 'S';
-        if (pituus == 15) asti = 'O';
-        for (char i = 'A'; i <= asti; i++) {
-            if (i == asti) System.out.print(i);
-            else System.out.print(i + " ");
-        }
-        System.out.println("");
-    }
-    
-    /**
      * Muuttaa pelitilannetta kuvaavan char[][]-taulukon merkkijonoksi.
      * @param lauta
      * @return pelitilanne merkkijonona.
      */
-    static String muutaMerkkijonoksi(char[][] lauta) {
+    public static String muutaMerkkijonoksi(char[][] lauta) {
         char[] merkkijono = new char[lauta.length * lauta.length];
         int idx = 0; 
         for (int i = 0; i < lauta.length; i++) {
@@ -170,25 +142,4 @@ public class Lauta {
         return new String(merkkijono);
     }
     
-    
-    //TESTI-METODIT
-    
-    /**
-     * Testimetodi. Metodia k‰ytet‰‰n apuna JUnit-testauksessa.
-     * @param x 
-     */
-    public void setVariTesti(char x) {
-        this.vuorossa = x;
-    }
-    
-    /**
-     * Testimetodi. Metodia k‰ytet‰‰n apuna JUnit-testauksessa.
-     */
-    public void alustaLautaTesti() {
-        for (int i = 0; i < pituus; i++) {
-            for (int j = 0; j < pituus; j++) {
-                lauta[i][j] = '+';
-            }
-        }
-    }
 }

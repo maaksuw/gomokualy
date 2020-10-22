@@ -60,7 +60,7 @@ public class GUI extends Application {
     
     private Scene valikko() {
         VBox valikkoasetelma = new VBox(10);
-        valikkoasetelma.setPadding(new Insets(10,10,10,10));
+        valikkoasetelma.setPadding(new Insets(10, 10, 10, 10));
         valikkoasetelma.setAlignment(Pos.CENTER);
         
         Button saannot = new Button("Pelisäännöt");
@@ -80,7 +80,7 @@ public class GUI extends Application {
         
         HBox ylavalikko = new HBox(20);
         ylavalikko.setAlignment(Pos.CENTER);
-        ylavalikko.setPadding(new Insets(10,0,0,10));
+        ylavalikko.setPadding(new Insets(10, 0, 0, 10));
         
         Button palaaValikkoon = new Button("Takaisin valikkoon");
         palaaValikkoon.setOnAction(e -> nayttamo.setScene(valikko));
@@ -95,7 +95,7 @@ public class GUI extends Application {
     private Scene asetukset() {
         VBox peliasetukset = new VBox(10);
         peliasetukset.setAlignment(Pos.CENTER);
-        peliasetukset.setPadding(new Insets(10,10,10,10));
+        peliasetukset.setPadding(new Insets(10, 10, 10, 10));
         
         HBox pelaajaasetukset = new HBox(10);
         pelaajaasetukset.setAlignment(Pos.CENTER);
@@ -131,19 +131,18 @@ public class GUI extends Application {
             vuorossa.setText("Vuorossa: RASTI");
             
             int laudankoko = lauta.getPituus();
-            if(peliasetelma.getChildren().contains(pelilauta)) peliasetelma.getChildren().remove(pelilauta);
+            if (peliasetelma.getChildren().contains(pelilauta)) peliasetelma.getChildren().remove(pelilauta);
             pelilauta = luoPelilauta(laudankoko);
             peliasetelma.getChildren().add(pelilauta);
             
-            if(bottinappula.isSelected()){
+            if (bottinappula.isSelected()) {
                 botti = new Aly();
-                botti.setPituus(laudankoko);
                 bottiPelaa = true;
-            } else if(ihmisnappula.isSelected()){
+            } else if (ihmisnappula.isSelected()) {
                 bottiPelaa = false;
             }
             
-            if(bottiPelaa){
+            if (bottiPelaa) {
                 if (minanappula.isSelected()) botti.setMerkki('O');
                 else {
                     botti.setMerkki('X');
@@ -165,13 +164,13 @@ public class GUI extends Application {
     
     private GridPane luoPelilauta(int koko) {
         GridPane ristikko = new GridPane();
-        ristikko.setPadding(new Insets(10,10,10,10));
+        ristikko.setPadding(new Insets(10, 10, 10, 10));
         ristikko.setAlignment(Pos.CENTER);
         for (int i = 0; i < koko; i++) {
             for (int j = 0; j <= koko; j++) {
-                if (j == 0){
+                if (j == 0) {
                     Label numero = new Label("" + (koko - i));
-                    numero.setPadding(new Insets(2,2,2,2));
+                    numero.setPadding(new Insets(2, 2, 2, 2));
                     ristikko.add(numero, j, i);
                 } else {
                     ristikko.add(new Ruutu(i, j - 1), j, i);
@@ -179,7 +178,7 @@ public class GUI extends Application {
             }
         }
         char a = 'A';
-        for(int i = 1; i <= koko; i++){
+        for (int i = 1; i <= koko; i++) {
             ristikko.add(new Label("   " + a++), i, koko);
         }
         return ristikko;
@@ -190,7 +189,7 @@ public class GUI extends Application {
         saannotasetelma.setAlignment(Pos.CENTER);
         
         HBox nappula = new HBox();
-        nappula.setPadding(new Insets(10,10,10,10));
+        nappula.setPadding(new Insets(10, 10, 10, 10));
         nappula.setAlignment(Pos.CENTER);
         
         Button valikkoon = new Button("Takaisin valikkoon");
@@ -203,7 +202,7 @@ public class GUI extends Application {
                 + "\nEnsimmäinen pelaaja, joka saa viisi omaa nappulaansa peräkkäin, voittaa pelin."
                 + "\nRasti aloittaa.");
         selitys.setWrapText(true);
-        selitys.setPadding(new Insets(10,10,10,10));
+        selitys.setPadding(new Insets(10, 10, 10, 10));
         selitys.setMaxWidth(200);
         saannotasetelma.getChildren().addAll(nappula, selitys);
         return new Scene(saannotasetelma, leveys, korkeus);
@@ -213,7 +212,7 @@ public class GUI extends Application {
         if (lauta.getTasapeli()) vuorossa.setText("Tasapeli!");
         else if (lauta.getVuoro() == 'X') vuorossa.setText("Rasti voitti!");
         else vuorossa.setText("Nolla voitti!");
-        for(Node node: pelilauta.getChildren()){
+        for (Node node : pelilauta.getChildren()) {
             node.setDisable(true);
         }
     }
@@ -228,30 +227,30 @@ public class GUI extends Application {
             x = i;
             y = j;
             setAlignment(Pos.CENTER);
-            Rectangle rajat = new Rectangle(25,25);
+            Rectangle rajat = new Rectangle(25, 25);
             rajat.setFill(null);
             rajat.setStroke(Color.BLACK);
             getChildren().addAll(rajat, merkki);
             
             setOnMouseClicked(e -> {
-                if(merkki.getText().isEmpty()){
+                if (merkki.getText().isEmpty()) {
                     merkki.setText("" + lauta.getVuoro());
-                    if(lauta.sijoita(x, y)){
+                    if (lauta.sijoita(x, y)) {
                         peliPaattyi();
                     } else {
-                        if(bottiPelaa){
+                        if (bottiPelaa) {
                             tulostaLauta();
                             int[] koordinaatit = botti.teeSiirto(lauta.getLauta());
                             int column = koordinaatit[1] + 1;
                             int row = koordinaatit[0];
                             Ruutu sijoitus = (Ruutu) haeNodePelilaudalta(row, column);
                             sijoitus.setMerkki(lauta.getVuoro());
-                            if(lauta.sijoita(koordinaatit[0], koordinaatit[1])){
+                            if (lauta.sijoita(koordinaatit[0], koordinaatit[1])) {
                                 peliPaattyi();
                                 return;
                             }
                         }
-                        if(lauta.getVuoro() == 'X') vuorossa.setText("Vuorossa: RASTI");
+                        if (lauta.getVuoro() == 'X') vuorossa.setText("Vuorossa: RASTI");
                         else vuorossa.setText("Vuorossa: NOLLA");
                     }
                 }
@@ -265,16 +264,16 @@ public class GUI extends Application {
     }
     
     private Node haeNodePelilaudalta(int i, int j) {
-        for(Node node : pelilauta.getChildren()){
-            if(GridPane.getColumnIndex(node) == j && GridPane.getRowIndex(node) == i) return node;
+        for (Node node : pelilauta.getChildren()) {
+            if (GridPane.getColumnIndex(node) == j && GridPane.getRowIndex(node) == i) return node;
         }
         return null;
     }
     
     private void tulostaLauta() {
         char[][] l = lauta.getLauta();
-        for(int i = 0; i < lauta.getPituus(); i++){
-            for(int j = 0; j < lauta.getPituus(); j++){
+        for (int i = 0; i < lauta.getPituus(); i++) {
+            for (int j = 0; j < lauta.getPituus(); j++) {
                 System.out.print(l[i][j] + " ");
             }
             System.out.println("");

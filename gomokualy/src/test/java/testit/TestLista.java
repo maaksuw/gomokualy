@@ -32,13 +32,9 @@ public class TestLista {
     @Test
     public void lisaaSuuriTestiSiirto() {
         int n = 100000;
-        long alku = System.nanoTime();
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             lsiirto.lisaa(new Siirto(r.nextInt(n + 1),i,i));
         }
-        long loppu = System.nanoTime();
-        double aikaS = ((loppu - alku)/1e9);
-        assertTrue(aikaS < 1);
         assertEquals(n, lsiirto.pituus());
     }
     
@@ -58,18 +54,18 @@ public class TestLista {
     @Test
     public void jarjestaPieniToimiiSiirto() {
         int n = 15;
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
-            if(etumerkki == 0) arvo = -arvo;
+            if (etumerkki == 0) arvo = -arvo;
             lsiirto.lisaa(new Siirto(arvo,i,i));
         }
         lsiirto.jarjesta();
         boolean jarjestyksessa = true;
-        for(int i = 1; i < n; i++){
+        for (int i = 1; i < n; i++) {
             Siirto nykyinen = lsiirto.hae(i);
             Siirto edellinen = lsiirto.hae(i - 1);
-            if(nykyinen.getArvo() < edellinen.getArvo()){
+            if (nykyinen.getArvo() < edellinen.getArvo()) {
                 jarjestyksessa = false;
                 break;
             }
@@ -80,18 +76,18 @@ public class TestLista {
     @Test
     public void jarjestaIsoToimiiSiirto() {
         int n = 100000;
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
-            if(etumerkki == 0) arvo = -arvo;
+            if (etumerkki == 0) arvo = -arvo;
             lsiirto.lisaa(new Siirto(arvo,i,i));
         }
         lsiirto.jarjesta();
         boolean jarjestyksessa = true;
-        for(int i = 1; i < n; i++){
+        for (int i = 1; i < n; i++) {
             Siirto nykyinen = lsiirto.hae(i);
             Siirto edellinen = lsiirto.hae(i - 1);
-            if(nykyinen.getArvo() < edellinen.getArvo()){
+            if (nykyinen.getArvo() < edellinen.getArvo()) {
                 jarjestyksessa = false;
                 break;
             }
@@ -102,19 +98,19 @@ public class TestLista {
     @Test
     public void kaannaToimiiSiirto() {
         int n = 100;
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
-            if(etumerkki == 0) arvo = -arvo;
+            if (etumerkki == 0) arvo = -arvo;
             lsiirto.lisaa(new Siirto(arvo,i,i));
         }
         lsiirto.jarjesta();
         lsiirto.kaanna();
         boolean laskeva = true;
-        for(int i = 1; i < n; i++){
+        for (int i = 1; i < n; i++) {
             Siirto nykyinen = lsiirto.hae(i);
             Siirto edellinen = lsiirto.hae(i - 1);
-            if(nykyinen.getArvo() > edellinen.getArvo()){
+            if (nykyinen.getArvo() > edellinen.getArvo()) {
                 laskeva = false;
                 break;
             }
@@ -135,13 +131,9 @@ public class TestLista {
     @Test
     public void lisaaSuuriTestiTilanne() {
         int n = 100000;
-        long alku = System.nanoTime();
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             ltilanne.lisaa(new Tilanne("pupu", r.nextInt(n + 1)));
         }
-        long loppu = System.nanoTime();
-        double aikaS = ((loppu - alku)/1e9);
-        assertTrue(aikaS < 1);
         assertEquals(n, ltilanne.pituus());
     }
 
@@ -161,18 +153,18 @@ public class TestLista {
     @Test
     public void jarjestaPieniToimiiTilanne() {
         int n = 15;
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
-            if(etumerkki == 0) arvo = -arvo;
+            if (etumerkki == 0) arvo = -arvo;
             ltilanne.lisaa(new Tilanne("pupu", arvo));
         }
         ltilanne.jarjesta();
         boolean jarjestyksessa = true;
-        for(int i = 1; i < n; i++){
+        for (int i = 1; i < n; i++) {
             Tilanne nykyinen = ltilanne.hae(i);
             Tilanne edellinen = ltilanne.hae(i - 1);
-            if(nykyinen.getArvo() < edellinen.getArvo()){
+            if (nykyinen.getArvo() < edellinen.getArvo()) {
                 jarjestyksessa = false;
                 break;
             }
@@ -183,18 +175,18 @@ public class TestLista {
     @Test
     public void jarjestaIsoToimiiTilanne() {
         int n = 100000;
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
-            if(etumerkki == 0) arvo = -arvo;
+            if (etumerkki == 0) arvo = -arvo;
             ltilanne.lisaa(new Tilanne("pupu", arvo));
         }
         ltilanne.jarjesta();
         boolean jarjestyksessa = true;
-        for(int i = 1; i < n; i++){
+        for (int i = 1; i < n; i++) {
             Tilanne nykyinen = ltilanne.hae(i);
             Tilanne edellinen = ltilanne.hae(i - 1);
-            if(nykyinen.getArvo() < edellinen.getArvo()){
+            if (nykyinen.getArvo() < edellinen.getArvo()) {
                 jarjestyksessa = false;
                 break;
             }
@@ -205,19 +197,19 @@ public class TestLista {
     @Test
     public void kaannaToimiiTilanne() {
         int n = 100;
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
-            if(etumerkki == 0) arvo = -arvo;
+            if (etumerkki == 0) arvo = -arvo;
             ltilanne.lisaa(new Tilanne("pupu", arvo));
         }
         ltilanne.jarjesta();
         ltilanne.kaanna();
         boolean laskeva = true;
-        for(int i = 1; i < n; i++){
+        for (int i = 1; i < n; i++) {
             Tilanne nykyinen = ltilanne.hae(i);
             Tilanne edellinen = ltilanne.hae(i - 1);
-            if(nykyinen.getArvo() > edellinen.getArvo()){
+            if (nykyinen.getArvo() > edellinen.getArvo()) {
                 laskeva = false;
                 break;
             }

@@ -5,7 +5,7 @@ package apu;
  * Yksinkertainen j‰rjestett‰v‰ taulukkolista. 
  * Listan loppuun voi lis‰t‰ alkion ja listalta voi hakea alkion indeksin perusteella.
  * Listan voi j‰rjest‰‰ ja listan voi k‰‰nt‰‰ toisinp‰in.
- * @param <O> Listan alkioiden tulee toteuttaa Comparable-rajapinta.
+ * @param <O> Listan alkioiden tulee toteuttaa Comparable<O>-rajapinta.
  */
 
 public class Lista<O extends Comparable<O>> {
@@ -22,16 +22,30 @@ public class Lista<O extends Comparable<O>> {
         taytto = 0.9;
     }
     
+    /**
+     * Kertoo listan pituuden.
+     * @return listan pituus.
+     */
     public int pituus() {
         return loppu;
     }
     
+    /**
+     * Lis‰‰ alkion listan loppuun.
+     * @param o 
+     */
     public void lisaa(O o) {
         lista[loppu] = o;
         loppu++;
         if (loppu == (int) (koko * taytto)) suurennaListaa();
     }
     
+    /**
+     * Palauttaa annetussa indeksiss‰ olevan alkion.
+     * Jos annetulla indeksill‰ ei ole alkiota, metodi palauttaa null.
+     * @param indeksi
+     * @return alkio.
+     */
     public O hae(int indeksi) {
         if (indeksi < 0 || indeksi >= loppu) return null;
         return (O) lista[indeksi];
@@ -45,16 +59,9 @@ public class Lista<O extends Comparable<O>> {
         lista = uusilista;
     }
     
-    public String toString() {
-        String s = "[";
-        for (int i = 0; i < loppu; i++) {
-            if (i == loppu - 1) s += lista[i];
-            else s += lista[i].toString() + ", ";
-        }
-        s += "]";
-        return s;
-    }
-    
+    /**
+     * J‰rjest‰‰ listan alkiot pienimm‰st‰ suurimpaan.
+     */
     public void jarjesta() {
         if (loppu <= 20) lisaysjarjesta();
         else {
@@ -108,6 +115,9 @@ public class Lista<O extends Comparable<O>> {
         }
     }
     
+    /**
+     * K‰‰nt‰‰ listan ymp‰ri.
+     */
     public void kaanna() {
         for (int i = 0; i < loppu / 2; i++) {
             Object apu = lista[i];
