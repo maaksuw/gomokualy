@@ -15,7 +15,7 @@
     * Lisäysjärjestämistä käytetään pienten taulukoiden järjestämiseen
 
 ## Ratkaistava ongelma
-Gomokussa pelipuu kasvaa nopeasti erittäin suureksi, joten haasteena on karsia turhaa laskentaa ja löytää tehokas tapa arvioida siirtoja. Tekoälyn tavoite on pelata peliä mahdollisimman hyvin ja laskea peliä niin pitkälle, että se osaa tehdä pitkällä aikavälillä järkeviä siirtoja.
+15 x 15 laudalla ristinollassa pelipuu kasvaa nopeasti erittäin suureksi, joten haasteena on karsia turhaa laskentaa ja löytää tehokas tapa arvioida siirtoja. Tekoälyn tavoite on pelata peliä mahdollisimman hyvin ja laskea peliä niin pitkälle, että se osaa tehdä pitkällä aikavälillä järkeviä siirtoja.
 
 ## Syötteet
 Pelaaja painaa hiirellä graafisen käyttöliittymän painiketta pelilaudalla ja kertoo näin, mihin haluaa sijoittaa pelimerkkinsä. Tekstikäyttöliittymässä pelaaja syöttää koordinaatit näppäimistöltä. Koordinaatit ilmoitetaan kirjaimen ja numeron yhdistelmänä samaan tapaan kuin esimerkiksi shakissa. Syöte määrittelee pelaajan siirron pelilaudalla.
