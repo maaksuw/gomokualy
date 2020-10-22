@@ -1,4 +1,3 @@
-
 package logiikka;
 
 import apu.Hakemisto;

@@ -1,4 +1,3 @@
-
 package logiikka;
 
 import javafx.application.Application;
@@ -9,10 +8,10 @@ public class Main {
     public static void main(String[] args) {
         //TO DO:
         //Muuta
-            //*Github-dokumentaatio kuntoon
-            //*Botin tehokkuusraportti
+            //Botin extraraportti
             //Laita oma siirto näkyviin ennen botin siirtoa
             //Laita teksti ilmoittamaan, kun botti miettii
+            //Final release
         
         Application.launch(GUI.class, args);
 

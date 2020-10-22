@@ -28,7 +28,7 @@ public class TestAly {
     //Testaa reagoigo botti suljettuun nelj‰n uhkaan.
     //Suljettu nelj‰n uhka on pakottava siirto.
     @Test
-    public void bottiEstaaSuljetunNelj‰nUhanMusta() {
+    public void bottiEstaaSuljetunNelj‰nUhanRisti() {
         botti.setMerkki('X');
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -42,7 +42,7 @@ public class TestAly {
     }
 
     @Test
-    public void bottiEstaaSuljetunNelj‰nUhanValkoinen() {
+    public void bottiEstaaSuljetunNelj‰nUhanNolla() {
         lauta[7][7] = 'X';
         botti.setMerkki('O');
         int[] koordinaatit = botti.teeSiirto(lauta);
@@ -58,7 +58,7 @@ public class TestAly {
     //Testaa reagoigo botti avoimeen kolmen uhkaan.
     //Avoin kolmen uhka on pakottava siirto.
     @Test
-    public void bottiEstaaAvoimenKolmenUhanMusta() {
+    public void bottiEstaaAvoimenKolmenUhanRisti() {
         botti.setMerkki('X');
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -71,7 +71,7 @@ public class TestAly {
     }
     
     @Test
-    public void bottiEstaaAvoimenKolmenUhanValkoinen() {
+    public void bottiEstaaAvoimenKolmenUhanNolla() {
         lauta[7][7] = 'X';
         botti.setMerkki('O');
         int[] koordinaatit = botti.teeSiirto(lauta);
@@ -87,7 +87,7 @@ public class TestAly {
     //Testaa tekeeko botti pelin p‰‰tt‰v‰n voittavan siirron kun sen on pakko (tai se uhkaa h‰vit‰).
     //T‰m‰ on oleellinen ominaisuus ja m‰‰rittelee yll‰ olevien testien kanssa sen toimiiko botin kaikista perustavimmanlaatuiset toiminnot vai ei.
     @Test
-    public void bottiPaattaaPelinKunOnPakkoMusta() {
+    public void bottiPaattaaPelinKunOnPakkoRisti() {
         botti.setMerkki('X');
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -104,7 +104,7 @@ public class TestAly {
     }
     
     @Test
-    public void bottiPaattaaPelinKunOnPakkoValkoinen() {
+    public void bottiPaattaaPelinKunOnPakkoNolla() {
         lauta[7][7] = 'X';
         botti.setMerkki('O');
         int[] koordinaatit = botti.teeSiirto(lauta);
@@ -124,7 +124,7 @@ public class TestAly {
     //Testaa tekeekˆ botti pelin p‰‰tt‰v‰n voittavan siirron kun se on mahdollista (vaikka vastustaja ei pakota siirtoa).
     //T‰m‰ ei sin‰ns‰ ole pakollinen ominaisuus, mutta haluttu kuitenkin ja saa botin pelin n‰ytt‰m‰‰n ihmism‰isemm‰lt‰.
     @Test
-    public void bottiPaattaaPelinMusta() {
+    public void bottiPaattaaPelinRasti() {
         botti.setMerkki('X');
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -137,7 +137,7 @@ public class TestAly {
     }
     
     @Test
-    public void bottiPaataaPelinMusta2() {
+    public void bottiPaataaPelinRasti2() {
         botti.setMerkki('X');
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -153,7 +153,7 @@ public class TestAly {
     }
     
     @Test
-    public void bottiPaataaPelinValkoinen() {
+    public void bottiPaataaPelinNolla() {
         lauta[1][1] = 'X';
         botti.setMerkki('O');
         int[] koordinaatit = botti.teeSiirto(lauta);
@@ -168,7 +168,7 @@ public class TestAly {
     }
     
     @Test
-    public void bottiPaataaPelinValkoinen2() {
+    public void bottiPaataaPelinNolla2() {
         lauta[1][1] = 'X';
         botti.setMerkki('O');
         int[] koordinaatit = botti.teeSiirto(lauta);
