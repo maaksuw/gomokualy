@@ -30,7 +30,7 @@ Miten listan ja hakemiston tehokkuutta on testattu? Entä botin tehokkuutta? Luo
 * Botti  
     * Botin tehokkuuden mittariksi valitsin keskimääräisen ja pisimmän siirtoajan. Automaattisessa testissä botti pelaa esimerkkipelin itseään vastaan ja tästä lasketaan, kuinka kauan botilla meni keskimäärin aikaa yhden siirron tekemiseen ja mikä oli pisin aika, minkä vastustaja joutui odottamaan botin siirtoa. Tässä on esimerkkinä erään suorituskerran tulokset:  
     ![Botin esimerkkipeli](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/Kuvat/tiralabrabotti1.jpg)  
-    Näyttää siltä että otti tekee siirtonsa melko nopeasti, eikä tekoälyn siirtoa tarvitse odottaa liian pitkään. Botin pelaama peli itseään vastaan on kuitenkin melko lyhyt ja pelin pituus vaikuttaa botin siirtoon käyttämän ajan pituuteen. Hieman pidemmässä ihmistä vastaan pelatussa pelissä botilla kestää keskimäärin 4 sekuntia tehdä siirto ja pisin odotusaika on yleensä 15 sekunnin luokkaa.
+    Näyttää siltä että botti tekee siirtonsa melko nopeasti, eikä tekoälyn siirtoa tarvitse odottaa liian pitkään. Botin pelaama peli itseään vastaan on kuitenkin melko lyhyt ja pelin pituus vaikuttaa botin siirtoon käyttämän ajan pituuteen. Hieman pidemmässä ihmistä vastaan pelatussa pelissä botilla kestää keskimäärin 4 sekuntia tehdä siirto ja pisin odotusaika on yleensä 15 sekunnin luokkaa.
     
 ## Testikattavuus
 Testien rivikattavuutta on seurattu Jacocolla. Tässä on jacocon raportti lopullisesta rivi- ja haaraumakattavuudesta.  
