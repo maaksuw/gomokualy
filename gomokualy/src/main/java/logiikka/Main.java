@@ -9,8 +9,6 @@ public class Main {
         //TO DO:
         //Muuta
             //Botin extraraportti
-            //Laita oma siirto näkyviin ennen botin siirtoa
-            //Laita teksti ilmoittamaan, kun botti miettii
             //Final release
         
         Application.launch(GUI.class, args);

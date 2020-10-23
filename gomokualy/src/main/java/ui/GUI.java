@@ -39,6 +39,7 @@ public class GUI extends Application {
     
     Aly botti;
     boolean bottiPelaa;
+    boolean bottiLaskee;
     
     private Lauta lauta;
 
@@ -84,6 +85,7 @@ public class GUI extends Application {
         Button palaaValikkoon = new Button("Takaisin valikkoon");
         palaaValikkoon.setOnAction(e -> nayttamo.setScene(valikko));
         vuorossa = new Label("");
+        vuorossa.setMinWidth(150);
         
         ylavalikko.getChildren().addAll(palaaValikkoon, vuorossa);
         
@@ -127,7 +129,7 @@ public class GUI extends Application {
         valmis.setOnAction(e -> {
             
             lauta = new Lauta();
-            vuorossa.setText("Vuorossa: RASTI");
+            asetaVuoroTeksti();
             
             int laudankoko = lauta.getPituus();
             if (peliasetelma.getChildren().contains(pelilauta)) peliasetelma.getChildren().remove(pelilauta);
@@ -149,8 +151,9 @@ public class GUI extends Application {
                     int column = koordinaatit[1] + 1;
                     int row = koordinaatit[0];
                     Ruutu sijoitus = (Ruutu) haeNodePelilaudalta(row, column);
-                    sijoitus.setMerkki(lauta.getVuoro());
+                    sijoitus.setMerkki(lauta.getVuorossa());
                     lauta.sijoita(koordinaatit[0], koordinaatit[1]);
+                    asetaVuoroTeksti();
                 }
             }
             
@@ -209,7 +212,7 @@ public class GUI extends Application {
     
     private void peliPaattyi() {
         if (lauta.getTasapeli()) vuorossa.setText("Tasapeli!");
-        else if (lauta.getVuoro() == 'X') vuorossa.setText("Rasti voitti!");
+        else if (lauta.getVuorossa() == 'X') vuorossa.setText("Rasti voitti!");
         else vuorossa.setText("Nolla voitti!");
         for (Node node : pelilauta.getChildren()) {
             node.setDisable(true);
@@ -232,25 +235,47 @@ public class GUI extends Application {
             getChildren().addAll(rajat, merkki);
             
             setOnMouseClicked(e -> {
+                
+                if(bottiLaskee) return;
+                
                 if (merkki.getText().isEmpty()) {
-                    merkki.setText("" + lauta.getVuoro());
+                    
+                    merkki.setText("" + lauta.getVuorossa());
+                    
                     if (lauta.sijoita(x, y)) {
+                        
                         peliPaattyi();
+                        
                     } else {
+                        
                         if (bottiPelaa) {
-                            tulostaLauta();
-                            int[] koordinaatit = botti.teeSiirto(lauta.getLauta());
-                            int column = koordinaatit[1] + 1;
-                            int row = koordinaatit[0];
-                            Ruutu sijoitus = (Ruutu) haeNodePelilaudalta(row, column);
-                            sijoitus.setMerkki(lauta.getVuoro());
-                            if (lauta.sijoita(koordinaatit[0], koordinaatit[1])) {
-                                peliPaattyi();
-                                return;
-                            }
-                        }
-                        if (lauta.getVuoro() == 'X') vuorossa.setText("Vuorossa: RASTI");
-                        else vuorossa.setText("Vuorossa: NOLLA");
+                            
+                            vuorossa.setText("Odota hetki, botti miettii...");
+                            
+                            Thread t = new Thread(() -> {
+                                
+                                bottiLaskee = true;
+                                int[] koordinaatit = botti.teeSiirto(lauta.getLauta());
+                                int column = koordinaatit[1] + 1;
+                                int row = koordinaatit[0];
+                                Ruutu sijoitus = (Ruutu) haeNodePelilaudalta(row, column);
+                                sijoitus.setMerkki(lauta.getVuorossa());
+                                
+                                Platform.runLater(() -> {
+                                        if (lauta.sijoita(koordinaatit[0], koordinaatit[1])) {
+                                            peliPaattyi();
+                                        } else asetaVuoroTeksti();
+                                    }
+                                );
+                                
+                                bottiLaskee = false;
+                                
+                            });
+                            
+                            t.start();
+                            
+                        } else asetaVuoroTeksti();
+                        
                     }
                 }
             });
@@ -269,14 +294,9 @@ public class GUI extends Application {
         return null;
     }
     
-    private void tulostaLauta() {
-        char[][] l = lauta.getLauta();
-        for (int i = 0; i < lauta.getPituus(); i++) {
-            for (int j = 0; j < lauta.getPituus(); j++) {
-                System.out.print(l[i][j] + " ");
-            }
-            System.out.println("");
-        }
+    private void asetaVuoroTeksti() {
+        if (lauta.getVuorossa() == 'X') vuorossa.setText("Vuorossa: RASTI");
+        else vuorossa.setText("Vuorossa: NOLLA");
     }
     
 }

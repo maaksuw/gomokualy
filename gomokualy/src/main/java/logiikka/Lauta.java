@@ -51,8 +51,16 @@ public class Lauta {
      * Kertoo kumman pelaajan vuoro on, rastin vai nollan.
      * @return X, jos on rastin vuoro ja O, jos on nollan vuoro.
      */
-    public char getVuoro() {
+    public char getVuorossa() {
         return vuorossa;
+    }
+    
+    /**
+     * Kertoo kuinka monta vuoroa peliss‰ on pelattu.
+     * @return pelattujen vuorojen m‰‰r‰.
+     */
+    public int getVuoroja() {
+        return vuoroja;
     }
     
     /**
