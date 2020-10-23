@@ -16,6 +16,14 @@ jacocoTestReport {
     }
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'logiikka.Main'
+        )
+    }
+}
+
 repositories {
     jcenter()
 }
