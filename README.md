@@ -11,9 +11,9 @@ Linkkejä:
     * [Viikko 4](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti4.md)
     * [Viikko 5](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti5.md)
     * [Viikko 6](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/viikkoraportti6.md)
+* [Käyttöohje](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/kayttoohje.md)
 * [Määrittelydokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/maarittelydokumentti.md)
 * [Toteutusdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md)
 * [Testausdokumentti](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/testausdokumentti.md)
-* [Käyttöohje](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/kayttoohje.md)
-* Loppupalautus
-    *[Linkki tähän]()
+
+* [Loppupalautus](https://github.com/pinjaw/ristinollapeli/releases/tag/final)
