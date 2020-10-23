@@ -1,6 +1,7 @@
 # Käyttöohje
 ## Ohjelman lataaminen ja käynnistäminen
-Tulossa, kunhan olen saanut loppujulkaisun tehtyä.
+Mene sivulle [loppupalautus](https://github.com/pinjaw/ristinollapeli/releases/tag/final) ja lataa sivulta löytyvä jar-tiedosto gomokualy.jar. Suorita tiedosto ja pääset pelaamaan peliä. Windows 10 käyttöjärjestelmällä gomokualy.jar-tiedoston suorittaminen onnistuu komennolla ``java -jar gomokualy.jar``. Komento tulee suorittaa samassa kansiossa, kuin missä jar-tiedosto on.  
+
 ## Pelin pelaaminen
 Kun avaat pelin, näet ensimmäisenä päävalikon.  
 
