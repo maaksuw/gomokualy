@@ -1,14 +1,17 @@
 # Toteutusdokumentti
 ## Ohjelman rakenne
-Ohjelma koostuu kolmesta pakkauksesta ja yhdestä testipakkauksesta.
+Ohjelma koostuu kolmesta pakkauksesta ja kahdesta testipakkauksesta.
 * Logiikka
     * Tässä pakkauksessa on kaikki pelilogiikan kannalta oleelliset luokat. Tekoäly on toteutettu luokkaan Aly ja pelilauta luokkaan Lauta. Pelin käynnistävä Main-luokka löytyy myös tästä pakkauksesta. Logiikka-pakkauksessa on myös siirtoa kuvaava Siirto-luokka sekä pelitilannetta kuvaava Tilanne-luokka, joita käytetään kapseloimaan tietoa tekoälyn toteutuksessa.
 * UI
     * Pakkaus sisältää pelin graafisen- ja tekstikäyttöliittymän rakentavan koodin. Graafisen käyttöliittymän koodi on luokassa GUI.java ja tekstikäyttöliittymän koodi on luokassa UI.java.
 * Apu
      * Apu-pakkaus sisältää itse toteutetut tietorakenteet sekä muut yleishyödylliset luokat. Pakkaus sisältää taulukkolistaa kuvaavan Lista-luokan, hakemistoa kuvaavan Hakemisto-luokan sekä Matikka-luokan, jossa on omat metodit muutamille yleisille laskuoperaatioille.  
-* Testipakkaus
-    * Testipakkaus on jaettu vielä selkeyden vuoksi kahteen pakkaukseen. Pakkaus testit sisältää ohjelman JUnit-testit. Siellä on luokat TestAly, joka testaa tekoälyä, TestHakemisto, joka testaa hajautustaulun omaa toteutusta, TestLauta, joka testaa pelilaudan toimivuutta sekä TestLista, joka testaa järjestettävän listan omaa toteutusta.
+* Testit
+    * Pakkaus sisältää ohjelman JUnit-testit. Siellä on luokat TestAly, joka testaa tekoälyä, TestHakemisto, joka testaa hajautustaulun omaa toteutusta, TestLauta, joka testaa pelilaudan toimivuutta sekä TestLista, joka testaa järjestettävän listan omaa toteutusta.
+* Tehokkuustesti
+     * Pakkaus sisältää vain yhden luokan, Tehokkuustestit.java. Tämä on suoritettava ohjelmatiedosto, joka testaa itse toteutettujen tietorakenteiden ja botin tehokkuutta ja antaa tuloksista raportin. 
+     * *Huomio! Loppupalautuksessa Tehokkuustestit-luokka on siirretty epäloogisesti testipakkauksesta projektin lähdepakkaukseen, vaikka tehokkuustestit ovat myös testejä ja kuuluisivat siksi testipakkaukseen.  Tämä johtuu siitä, että en osannut poislukea tehokkuustestejä Gradlen test tai build-taskeista ja en halunnut suorittaa sitä aina kun ajoin muut testit. Tehokkuustestit tiedoston suorittamiseen menee pidemmän aikaa kuin muihin testeihin ja ohjelma tulostaa samalla raportin tuloksista, eikä sen suorittaminen joka kerta kun testasi ohjelmaa automaattisesti ollut kovin mielekästä. Pahoittelut tästä epäloogisuudesta.*
 
 ## Saavutetut aikavaativuudet
 * Listan operaatiot:
