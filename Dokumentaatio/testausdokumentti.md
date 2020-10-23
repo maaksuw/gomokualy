@@ -9,7 +9,7 @@ Ohjelmaan on kirjoitettu JUnit testit luokille Aly, Hakemisto, Lauta ja Lista. T
 Automaattisten yksikkötestien lisäksi ohjelmaa on kokonaisuudessaan testattu aktiivisesti projektin edetessä käsin pelaamalla bottia vastaan. Näin on tarkistettu yksittäisten metodien lisäksi, että botti tekee järkeviä siirtoja, ei tee yksinkertaisia virheitä ja että eri luokat toimivat halutulla tavalla yhteen. Botti tuntuu pelaavan ihan hyvin tavallista ihmistä vastaan ja olen siihen tyytyväinen tämän kurssin ajan ja tavoitteiden puitteissa. Taitavalle pelaajalle botti kyllä häviää, sillä se ei näe useita kaksoisuhkia tällä hetkellä ja että botista saisi oikean vastuksen, sitä pitäisi vielä parantaa.
 
 ## Tehokkuustestit
-Miten listan ja hakemiston tehokkuutta on testattu? Entä botin tehokkuutta? Luokka Tehokkuustestit testaa tietorakenteiden ja botin oleellisten toimintojen tehokkuutta.
+Miten listan ja hakemiston tehokkuutta on testattu? Entä botin tehokkuutta? Luokka Tehokkuustestit testaa tietorakenteiden ja botin oleellisten toimintojen tehokkuutta.  
 * Lista  
     Testeissä Lista-luokan suoriutumista verrataan Javan ArrayListiin ja Javan valmiisiin metodeihin. Selkeyden vuoksi sanotaan vielä, että tekstissä lista viittaa Lista-luokkaan.
     * Ensimmäisessä testikokonaisuudessa katsotaan kuinka kauan kestää lisätä alkioita listan loppuun. Tätä testataan sen vuoksi, että voidaan olla vakuuttuneita siitä, että taulukkolistan loppuun lisääminen todellakin on nopeaa ja että satunnaiset enemmän aikaa vievät operaatiot (katso [Saavutetut aikavaativuudet](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/toteutusdokumentti.md#saavutetut-aikavaativuudet)) kun Lista-luokan sisäistä taulukkoa kasvatetaan, eivät vaikuta oleellisesti Listan tehokkuutteen. Yhden testikerran tulos on keskiarvo 100:sta testikerrasta, lukuunottamatta suurimman syötekoon testiä. Testin tulos kertoo myös Javan ArrayListin keskiarvon samasta testistä vertailun vuoksi. Listoja testataan eri kokoisilla syötteillä, 10 000, 100 000, 1 000 000 ja 10 000 000 alkiota. Tässä on esimerkki tyypillisen suorituskerran tuloksista:  
@@ -30,8 +30,7 @@ Miten listan ja hakemiston tehokkuutta on testattu? Entä botin tehokkuutta? Luo
 * Botti  
     * Botin tehokkuuden mittariksi valitsin keskimääräisen ja pisimmän siirtoajan. Automaattisessa testissä botti pelaa esimerkkipelin itseään vastaan ja tästä lasketaan, kuinka kauan botilla meni keskimäärin aikaa yhden siirron tekemiseen ja mikä oli pisin aika, minkä vastustaja joutui odottamaan botin siirtoa. Tässä on esimerkkinä erään suorituskerran tulokset:  
     ![Botin esimerkkipeli](https://github.com/pinjaw/gomokualy/blob/master/Dokumentaatio/Kuvat/tiralabrabotti1.jpg)  
-    Näyttää siltä että otti tekee siirtonsa melko nopeasti, eikä tekoälyn siirtoa tarvitse odottaa liian pitkään. Botin pelaama peli itseään vastaan ei kuitenkaan täysin vastaa tavallista ihmistä vastaan pelattua hieman pidempää peliä, joten tässä on vielä tilastoja eräästä ihmisen bottia vastaan pelaamasta pelistä.  
-    (lisätään kuva ja tiedostot tähän)
+    Näyttää siltä että otti tekee siirtonsa melko nopeasti, eikä tekoälyn siirtoa tarvitse odottaa liian pitkään. Botin pelaama peli itseään vastaan on kuitenkin melko lyhyt ja pelin pituus vaikuttaa botin siirtoon käyttämän ajan pituuteen. Hieman pidemmässä ihmistä vastaan pelatussa pelissä botilla kestää keskimäärin 4 sekuntia tehdä siirto ja pisin odotusaika on yleensä 15 sekunnin luokkaa.
     
 ## Testikattavuus
 Testien rivikattavuutta on seurattu Jacocolla. Tässä on jacocon raportti lopullisesta rivi- ja haaraumakattavuudesta.  
