@@ -236,7 +236,7 @@ public class GUI extends Application {
             
             setOnMouseClicked(e -> {
                 
-                if(bottiLaskee) return;
+                if (bottiLaskee) return;
                 
                 if (merkki.getText().isEmpty()) {
                     

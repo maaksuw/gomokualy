@@ -28,7 +28,7 @@ public class TestAly {
     //Testaa reagoigo botti suljettuun nelj‰n uhkaan.
     //Suljettu nelj‰n uhka on pakottava siirto.
     @Test
-    public void bottiEstaaSuljetunNelj‰nUhanRisti() {
+    public void bottiEstaaSuljetunNeljanUhanRisti() {
         botti.setMerkki('X');
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';
@@ -42,7 +42,7 @@ public class TestAly {
     }
 
     @Test
-    public void bottiEstaaSuljetunNelj‰nUhanNolla() {
+    public void bottiEstaaSuljetunNeljanUhanNolla() {
         lauta[7][7] = 'X';
         botti.setMerkki('O');
         int[] koordinaatit = botti.teeSiirto(lauta);
@@ -267,7 +267,7 @@ public class TestAly {
     }
     
     @Test
-    public void bottiEst‰‰NeljanVastenSeinaa() {
+    public void bottiEstaaNeljanVastenSeinaa() {
         botti.setMerkki('X');
         int[] koordinaatit = botti.teeSiirto(lauta);
         lauta[koordinaatit[0]][koordinaatit[1]] = 'X';

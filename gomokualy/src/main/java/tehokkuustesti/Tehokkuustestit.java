@@ -1,4 +1,4 @@
-package tehokkuustestit;
+package tehokkuustesti;
 
 import apu.Hakemisto;
 import apu.Lista;
@@ -8,11 +8,9 @@ import java.util.Random;
 import logiikka.Aly;
 import logiikka.Lauta;
 import logiikka.Siirto;
-import org.junit.Test;
 
 public class Tehokkuustestit {
     
-    @Test
     public void testiraportti() {
         System.out.println("TEHOKKUUSTESTIT"
                 + "\nSuoritetaan tietorakenteiden tehokkuustestit.");
@@ -41,7 +39,7 @@ public class Tehokkuustestit {
         long alku = System.nanoTime();
         int[] koordinaatit = botti.teeSiirto(lauta.getLauta());
         long loppu = System.nanoTime();
-        tulokset.add((loppu - alku)/1e9);
+        tulokset.add((loppu - alku) / 1e9);
         return lauta.sijoita(koordinaatit[0], koordinaatit[1]);
     }
     
@@ -144,15 +142,15 @@ public class Tehokkuustestit {
         Lista<Siirto> lista = new Lista();
         long alku = System.nanoTime();
         for (int i = 0; i < n; i++) {
-            lista.lisaa(new Siirto(i,i,i));
+            lista.lisaa(new Siirto(i, i, i));
         }
         long loppu = System.nanoTime();
-        double aikaLista = ((loppu - alku)/1e9);
+        double aikaLista = ((loppu - alku) / 1e9);
         
         ArrayList<Siirto> javalista = new ArrayList<>();
         alku = System.nanoTime();
         for (int i = 0; i < n; i++) {
-            javalista.add(new Siirto(i,i,i));
+            javalista.add(new Siirto(i, i, i));
         }
         loppu = System.nanoTime();
         double aikaJavalista = ((loppu - alku) / 1e9);
@@ -171,8 +169,8 @@ public class Tehokkuustestit {
         for (int i = 0; i < n; i++) {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
-            if(etumerkki == 0) arvo = -arvo;
-            lista.lisaa(new Siirto(arvo,i,i));
+            if (etumerkki == 0) arvo = -arvo;
+            lista.lisaa(new Siirto(arvo, i, i));
         }
         
         long alku = System.nanoTime();
@@ -185,7 +183,7 @@ public class Tehokkuustestit {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
             if (etumerkki == 0) arvo = -arvo;
-            javalista.add(new Siirto(arvo,i,i));
+            javalista.add(new Siirto(arvo, i, i));
         }
         
         alku = System.nanoTime();
@@ -202,7 +200,7 @@ public class Tehokkuustestit {
     private double[] listaKaannaVertailu(int n) {
         Lista<Siirto> lista = new Lista();
         for (int i = 0; i < n; i++) {
-            lista.lisaa(new Siirto(i,i,i));
+            lista.lisaa(new Siirto(i, i, i));
         }
         long alku = System.nanoTime();
         lista.kaanna();
@@ -211,7 +209,7 @@ public class Tehokkuustestit {
         
         ArrayList<Siirto> javalista = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            javalista.add(new Siirto(i,i,i));
+            javalista.add(new Siirto(i, i, i));
         }
         alku = System.nanoTime();
         Collections.reverse(javalista);

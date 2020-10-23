@@ -23,9 +23,9 @@ public class TestLista {
     
     @Test
     public void lisaaPieniTestiSiirto() {
-        lsiirto.lisaa(new Siirto(1,2,3));
-        lsiirto.lisaa(new Siirto(2,4,4));
-        lsiirto.lisaa(new Siirto(3,13,0));
+        lsiirto.lisaa(new Siirto(1, 2, 3));
+        lsiirto.lisaa(new Siirto(2, 4, 4));
+        lsiirto.lisaa(new Siirto(3, 13, 0));
         assertEquals(3, lsiirto.pituus());
     }
     
@@ -33,18 +33,18 @@ public class TestLista {
     public void lisaaSuuriTestiSiirto() {
         int n = 100000;
         for (int i = 1; i <= n; i++) {
-            lsiirto.lisaa(new Siirto(r.nextInt(n + 1),i,i));
+            lsiirto.lisaa(new Siirto(r.nextInt(n + 1), i, i));
         }
         assertEquals(n, lsiirto.pituus());
     }
     
     @Test
     public void lisatytAlkiotLoytyvatListaltaSiirto() {
-        Siirto s1 = new Siirto(1,2,3);
+        Siirto s1 = new Siirto(1, 2, 3);
         lsiirto.lisaa(s1);
-        Siirto s2 = new Siirto(2,4,4);
+        Siirto s2 = new Siirto(2, 4, 4);
         lsiirto.lisaa(s2);
-        Siirto s3 = new Siirto(3,13,0);
+        Siirto s3 = new Siirto(3, 13, 0);
         lsiirto.lisaa(s3);
         assertTrue(lsiirto.hae(0).equals(s1));
         assertTrue(lsiirto.hae(1).equals(s2));
@@ -58,7 +58,7 @@ public class TestLista {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
             if (etumerkki == 0) arvo = -arvo;
-            lsiirto.lisaa(new Siirto(arvo,i,i));
+            lsiirto.lisaa(new Siirto(arvo, i, i));
         }
         lsiirto.jarjesta();
         boolean jarjestyksessa = true;
@@ -80,7 +80,7 @@ public class TestLista {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
             if (etumerkki == 0) arvo = -arvo;
-            lsiirto.lisaa(new Siirto(arvo,i,i));
+            lsiirto.lisaa(new Siirto(arvo, i, i));
         }
         lsiirto.jarjesta();
         boolean jarjestyksessa = true;
@@ -102,7 +102,7 @@ public class TestLista {
             int arvo = r.nextInt(n + 1);
             int etumerkki = r.nextInt(2);
             if (etumerkki == 0) arvo = -arvo;
-            lsiirto.lisaa(new Siirto(arvo,i,i));
+            lsiirto.lisaa(new Siirto(arvo, i, i));
         }
         lsiirto.jarjesta();
         lsiirto.kaanna();
@@ -122,9 +122,9 @@ public class TestLista {
     
     @Test
     public void lisaaPieniTestiTilanne() {
-        ltilanne.lisaa(new Tilanne("pupu",30));
-        ltilanne.lisaa(new Tilanne("misse",31));
-        ltilanne.lisaa(new Tilanne("makkis",13));
+        ltilanne.lisaa(new Tilanne("pupu", 30));
+        ltilanne.lisaa(new Tilanne("misse", 31));
+        ltilanne.lisaa(new Tilanne("makkis", 13));
         assertEquals(3, ltilanne.pituus());
     }
     
@@ -223,8 +223,8 @@ public class TestLista {
     public void haePalauttaaNull() {
         assertTrue(lsiirto.hae(-1) == null);
         assertTrue(lsiirto.hae(0) == null);
-        lsiirto.lisaa(new Siirto(1,11,111));
-        lsiirto.lisaa(new Siirto(2,22,222));
+        lsiirto.lisaa(new Siirto(1, 11, 111));
+        lsiirto.lisaa(new Siirto(2, 22, 222));
         assertTrue(lsiirto.hae(2) == null);
     }
 }
