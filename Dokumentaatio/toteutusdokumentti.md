@@ -39,6 +39,7 @@ Oleellinen ongelma tekoälyn tekemisessä on saada karsittua turhaa laskentaa ni
 
 ## Ohjelman puutteet ja jatkokehitysideat
 * **Tekoäly ei laske tarpeeksi pitkälle.** Tämä on isoin ohjelmaan jäänyt puute ja paras tapa korjata tämä on tehdä tekoälystä tehokkaampi. Tällä hetkellä tekoälyn voi voittaa tekemällä kaksoisuhkia, joihin se ei osaa reagoida oikein ja tarpeeksi ajoissa. Yhden tai kahden siirron syvemmälle laskeminen parantaisi tilannetta jo huomattavasti, mutta tällä hetkellä tekoälyllä menee liian kauan aikaa laskea pidemmälle kuin syvyyteen 6. Halusin tehdä tekoälystä paremman ja tehokkaamman, mutta loppujen lopuksi siihen ei jäänyt tarpeeksi aikaa ja tekoälyn parantaminen jäi jatkokehitysideaksi.
+* **GUI:ssa viimeisimmän siirron voisi korostaa jotenkin.** Näin erottaisi selkeästi mihin botti on tehnyt uusimman siirtonsa. Tällä hetkellä voi olla vaikeaa erottaa pitemmässä pelissä, mihin botti on tehnyt siirtonsa, kun pelimerkkejä on paljon.
 
 ## Lähteet
 Tässä on listattuna lähteet, joita olen käyttänyt projektia tehdessä.  
